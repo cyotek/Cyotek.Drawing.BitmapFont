@@ -16,8 +16,6 @@ using Cyotek.Drawing.BitmapFont;
 
 namespace BitmapFontViewer
 {
-  // Icon from http://www.iconfinder.com/icondetails/18377/32/bitmap_font_icon
-
   public partial class MainForm : Form
   {
     #region  Private Member Declarations
@@ -43,10 +41,8 @@ namespace BitmapFontViewer
     private void charListBox_SelectedIndexChanged(object sender, EventArgs e)
     {
       Character character;
-      Page page;
 
       character = _font[Convert.ToChar(charListBox.SelectedItem)];
-      page = _font.Pages[character.TexturePage];
 
       if (character.TexturePage != _currentPage)
       {
@@ -55,7 +51,7 @@ namespace BitmapFontViewer
       }
 
       this.SetCharacterImage(character);
-      characterPropertyGrid.SelectedObject = character;
+      characterPropertyGrid.SelectedObject = character.ToString();
 
       _currentCharacter = character;
     }
@@ -117,31 +113,34 @@ namespace BitmapFontViewer
     private void DrawPreview()
     {
       Size size;
-      Bitmap image;
-      string normalizedText;
-      int x;
-      int y;
-      char previousCharacter;
+      string text;
 
-      previousCharacter = ' ';
-      normalizedText = _font.NormalizeLineBreaks(previewTextBox.Text);
-      size = _font.MeasureFont(normalizedText);
+      text = previewTextBox.Text;
+      size = _font.MeasureFont(text);
 
       if (size.Height != 0 && size.Width != 0)
       {
+        Bitmap image;
+        int x;
+        int y;
+        char previousCharacter;
+
         image = new Bitmap(size.Width, size.Height);
         x = 0;
         y = 0;
+        previousCharacter = ' ';
 
         using (Graphics g = Graphics.FromImage(image))
         {
-          foreach (char character in normalizedText)
+          foreach (char character in text)
           {
             switch (character)
             {
               case '\n':
                 x = 0;
                 y += _font.LineHeight;
+                break;
+              case '\r':
                 break;
               default:
                 Character data;
@@ -166,7 +165,8 @@ namespace BitmapFontViewer
 
     private void OpenFont(string fileName)
     {
-      _font = BitmapFontLoader.LoadFontFromFile(fileName);
+      _font = new BitmapFont();
+      _font.Load(fileName);
 
       this.Text = string.Format("{0} - {1}", Path.GetFileName(fileName), ((AssemblyTitleAttribute)Assembly.GetEntryAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false)[0]).Title);
 

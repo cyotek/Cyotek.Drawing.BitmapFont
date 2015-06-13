@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>..\..\resources\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cyotek.Windows.Forms.ImageBox">
@@ -128,7 +128,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Icon.ico" />
+    <Content Include="..\..\resources\icon.ico">
+      <Link>icon.ico</Link>
+    </Content>
     <Content Include="samples\arial-32bi.xml_0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

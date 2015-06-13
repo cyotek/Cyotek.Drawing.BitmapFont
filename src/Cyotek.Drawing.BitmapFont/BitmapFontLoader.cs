@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Xml;
 
 namespace Cyotek.Drawing.BitmapFont
 {
@@ -34,7 +33,8 @@ namespace Cyotek.Drawing.BitmapFont
       {
         throw new ArgumentNullException("fileName", "File name not specified");
       }
-      else if (!File.Exists(fileName))
+
+      if (!File.Exists(fileName))
       {
         throw new FileNotFoundException(string.Format("Cannot find file '{0}'", fileName), fileName);
       }
@@ -73,105 +73,25 @@ namespace Cyotek.Drawing.BitmapFont
     public static BitmapFont LoadFontFromTextFile(string fileName)
     {
       BitmapFont font;
-      IDictionary<int, Page> pageData;
-      IDictionary<Kerning, int> kerningDictionary;
-      IDictionary<char, Character> charDictionary;
-      string resourcePath;
-      string[] lines;
 
       if (string.IsNullOrEmpty(fileName))
       {
-        throw new ArgumentNullException("fileName", "File name not specified");
+        throw new ArgumentNullException("fileName");
       }
-      else if (!File.Exists(fileName))
+
+      if (!File.Exists(fileName))
       {
         throw new FileNotFoundException(string.Format("Cannot find file '{0}'", fileName), fileName);
       }
 
-      pageData = new SortedDictionary<int, Page>();
-      kerningDictionary = new Dictionary<Kerning, int>();
-      charDictionary = new Dictionary<char, Character>();
       font = new BitmapFont();
 
-      resourcePath = Path.GetDirectoryName(fileName);
-      lines = File.ReadAllLines(fileName);
-
-      foreach (string line in lines)
+      using (Stream stream = File.OpenRead(fileName))
       {
-        string[] parts;
-
-        parts = BitmapFontLoader.Split(line, ' ');
-
-        if (parts.Length != 0)
-        {
-          switch (parts[0])
-          {
-            case "info":
-              font.FamilyName = BitmapFontLoader.GetNamedString(parts, "face");
-              font.FontSize = BitmapFontLoader.GetNamedInt(parts, "size");
-              font.Bold = BitmapFontLoader.GetNamedBool(parts, "bold");
-              font.Italic = BitmapFontLoader.GetNamedBool(parts, "italic");
-              font.Charset = BitmapFontLoader.GetNamedString(parts, "charset");
-              font.Unicode = BitmapFontLoader.GetNamedBool(parts, "unicode");
-              font.StretchedHeight = BitmapFontLoader.GetNamedInt(parts, "stretchH");
-              font.Smoothed = BitmapFontLoader.GetNamedBool(parts, "smooth");
-              font.SuperSampling = BitmapFontLoader.GetNamedInt(parts, "aa");
-              font.Padding = BitmapFontLoader.ParsePadding(BitmapFontLoader.GetNamedString(parts, "padding"));
-              font.Spacing = BitmapFontLoader.ParsePoint(BitmapFontLoader.GetNamedString(parts, "spacing"));
-              font.OutlineSize = BitmapFontLoader.GetNamedInt(parts, "outline");
-              break;
-            case "common":
-              font.LineHeight = BitmapFontLoader.GetNamedInt(parts, "lineHeight");
-              font.BaseHeight = BitmapFontLoader.GetNamedInt(parts, "base");
-              font.TextureSize = new Size(BitmapFontLoader.GetNamedInt(parts, "scaleW"), BitmapFontLoader.GetNamedInt(parts, "scaleH"));
-              font.Packed = BitmapFontLoader.GetNamedBool(parts, "packed");
-              font.AlphaChannel = BitmapFontLoader.GetNamedInt(parts, "alphaChnl");
-              font.RedChannel = BitmapFontLoader.GetNamedInt(parts, "redChnl");
-              font.GreenChannel = BitmapFontLoader.GetNamedInt(parts, "greenChnl");
-              font.BlueChannel = BitmapFontLoader.GetNamedInt(parts, "blueChnl");
-              break;
-            case "page":
-              int id;
-              string name;
-              string textureId;
-
-              id = BitmapFontLoader.GetNamedInt(parts, "id");
-              name = BitmapFontLoader.GetNamedString(parts, "file");
-              textureId = Path.GetFileNameWithoutExtension(name);
-
-              pageData.Add(id, new Page(id, Path.Combine(resourcePath, name)));
-              break;
-            case "char":
-              Character charData;
-
-              charData = new Character
-                         {
-                           Char = (char)BitmapFontLoader.GetNamedInt(parts, "id"),
-                           Bounds = new Rectangle(BitmapFontLoader.GetNamedInt(parts, "x"), BitmapFontLoader.GetNamedInt(parts, "y"), BitmapFontLoader.GetNamedInt(parts, "width"), BitmapFontLoader.GetNamedInt(parts, "height")),
-                           Offset = new Point(BitmapFontLoader.GetNamedInt(parts, "xoffset"), BitmapFontLoader.GetNamedInt(parts, "yoffset")),
-                           XAdvance = BitmapFontLoader.GetNamedInt(parts, "xadvance"),
-                           TexturePage = BitmapFontLoader.GetNamedInt(parts, "page"),
-                           Channel = BitmapFontLoader.GetNamedInt(parts, "chnl")
-                         };
-              charDictionary.Add(charData.Char, charData);
-              break;
-            case "kerning":
-              Kerning key;
-
-              key = new Kerning((char)BitmapFontLoader.GetNamedInt(parts, "first"), (char)BitmapFontLoader.GetNamedInt(parts, "second"), BitmapFontLoader.GetNamedInt(parts, "amount"));
-
-              if (!kerningDictionary.ContainsKey(key))
-              {
-                kerningDictionary.Add(key, key.Amount);
-              }
-              break;
-          }
-        }
+        font.LoadText(stream);
       }
 
-      font.Pages = BitmapFontLoader.ToArray(pageData.Values);
-      font.Characters = charDictionary;
-      font.Kernings = kerningDictionary;
+      BitmapFontLoader.QualifyResourcePaths(font, Path.GetDirectoryName(fileName));
 
       return font;
     }
@@ -183,104 +103,26 @@ namespace Cyotek.Drawing.BitmapFont
     /// <returns></returns>
     public static BitmapFont LoadFontFromXmlFile(string fileName)
     {
-      XmlDocument document;
       BitmapFont font;
-      IDictionary<int, Page> pageData;
-      IDictionary<Kerning, int> kerningDictionary;
-      IDictionary<char, Character> charDictionary;
-      string resourcePath;
-      XmlNode root;
-      XmlNode properties;
 
       if (string.IsNullOrEmpty(fileName))
       {
-        throw new ArgumentNullException("fileName", "File name not specified");
+        throw new ArgumentNullException("fileName");
       }
-      else if (!File.Exists(fileName))
+
+      if (!File.Exists(fileName))
       {
         throw new FileNotFoundException(string.Format("Cannot find file '{0}'", fileName), fileName);
       }
 
-      document = new XmlDocument();
-      pageData = new SortedDictionary<int, Page>();
-      kerningDictionary = new Dictionary<Kerning, int>();
-      charDictionary = new Dictionary<char, Character>();
       font = new BitmapFont();
 
-      resourcePath = Path.GetDirectoryName(fileName);
-      document.Load(fileName);
-      document.Load(fileName);
-      root = document.DocumentElement;
-
-      // load the basic attributes
-      properties = root.SelectSingleNode("info");
-      font.FamilyName = properties.Attributes["face"].Value;
-      font.FontSize = Convert.ToInt32(properties.Attributes["size"].Value);
-      font.Bold = Convert.ToInt32(properties.Attributes["bold"].Value) != 0;
-      font.Italic = Convert.ToInt32(properties.Attributes["italic"].Value) != 0;
-      font.Unicode = Convert.ToInt32(properties.Attributes["unicode"].Value) != 0;
-      font.StretchedHeight = Convert.ToInt32(properties.Attributes["stretchH"].Value);
-      font.Charset = properties.Attributes["charset"].Value;
-      font.Smoothed = Convert.ToInt32(properties.Attributes["smooth"].Value) != 0;
-      font.SuperSampling = Convert.ToInt32(properties.Attributes["aa"].Value);
-      font.Padding = BitmapFontLoader.ParsePadding(properties.Attributes["padding"].Value);
-      font.Spacing = BitmapFontLoader.ParsePoint(properties.Attributes["spacing"].Value);
-      font.OutlineSize = Convert.ToInt32(properties.Attributes["outline"].Value);
-
-      // common attributes
-      properties = root.SelectSingleNode("common");
-      font.BaseHeight = Convert.ToInt32(properties.Attributes["lineHeight"].Value);
-      font.LineHeight = Convert.ToInt32(properties.Attributes["base"].Value);
-      font.TextureSize = new Size(Convert.ToInt32(properties.Attributes["scaleW"].Value), Convert.ToInt32(properties.Attributes["scaleH"].Value));
-      font.Packed = Convert.ToInt32(properties.Attributes["packed"].Value) != 0;
-      font.AlphaChannel = Convert.ToInt32(properties.Attributes["alphaChnl"].Value);
-      font.RedChannel = Convert.ToInt32(properties.Attributes["redChnl"].Value);
-      font.GreenChannel = Convert.ToInt32(properties.Attributes["greenChnl"].Value);
-      font.BlueChannel = Convert.ToInt32(properties.Attributes["blueChnl"].Value);
-
-      // load texture information
-      foreach (XmlNode node in root.SelectNodes("pages/page"))
+      using (Stream stream = File.OpenRead(fileName))
       {
-        Page page;
-
-        page = new Page();
-        page.Id = Convert.ToInt32(node.Attributes["id"].Value);
-        page.FileName = Path.Combine(resourcePath, node.Attributes["file"].Value);
-
-        pageData.Add(page.Id, page);
+        font.LoadXml(stream);
       }
-      font.Pages = BitmapFontLoader.ToArray(pageData.Values);
 
-      // load character information
-      foreach (XmlNode node in root.SelectNodes("chars/char"))
-      {
-        Character character;
-
-        character = new Character();
-        character.Char = (char)Convert.ToInt32(node.Attributes["id"].Value);
-        character.Bounds = new Rectangle(Convert.ToInt32(node.Attributes["x"].Value), Convert.ToInt32(node.Attributes["y"].Value), Convert.ToInt32(node.Attributes["width"].Value), Convert.ToInt32(node.Attributes["height"].Value));
-        character.Offset = new Point(Convert.ToInt32(node.Attributes["xoffset"].Value), Convert.ToInt32(node.Attributes["yoffset"].Value));
-        character.XAdvance = Convert.ToInt32(node.Attributes["xadvance"].Value);
-        character.TexturePage = Convert.ToInt32(node.Attributes["page"].Value);
-        character.Channel = Convert.ToInt32(node.Attributes["chnl"].Value);
-
-        charDictionary.Add(character.Char, character);
-      }
-      font.Characters = charDictionary;
-
-      // loading kerning information
-      foreach (XmlNode node in root.SelectNodes("kernings/kerning"))
-      {
-        Kerning key;
-
-        key = new Kerning((char)Convert.ToInt32(node.Attributes["first"].Value), (char)Convert.ToInt32(node.Attributes["second"].Value), Convert.ToInt32(node.Attributes["amount"].Value));
-
-        if (!kerningDictionary.ContainsKey(key))
-        {
-          kerningDictionary.Add(key, key.Amount);
-        }
-      }
-      font.Kernings = kerningDictionary;
+      BitmapFontLoader.QualifyResourcePaths(font, Path.GetDirectoryName(fileName));
 
       return font;
     }
@@ -291,7 +133,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <param name="parts">The array of parts.</param>
     /// <param name="name">The name of the value to return.</param>
     /// <returns></returns>
-    private static bool GetNamedBool(string[] parts, string name)
+    internal static bool GetNamedBool(string[] parts, string name)
     {
       return BitmapFontLoader.GetNamedInt(parts, name) != 0;
     }
@@ -302,7 +144,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <param name="parts">The array of parts.</param>
     /// <param name="name">The name of the value to return.</param>
     /// <returns></returns>
-    private static int GetNamedInt(string[] parts, string name)
+    internal static int GetNamedInt(string[] parts, string name)
     {
       return Convert.ToInt32(BitmapFontLoader.GetNamedString(parts, name));
     }
@@ -313,31 +155,34 @@ namespace Cyotek.Drawing.BitmapFont
     /// <param name="parts">The array of parts.</param>
     /// <param name="name">The name of the value to return.</param>
     /// <returns></returns>
-    private static string GetNamedString(string[] parts, string name)
+    internal static string GetNamedString(string[] parts, string name)
     {
       string result;
 
       result = string.Empty;
-      name = name.ToLowerInvariant();
 
       foreach (string part in parts)
       {
         int nameEndIndex;
 
-        nameEndIndex = part.IndexOf("=");
+        nameEndIndex = part.IndexOf('=');
         if (nameEndIndex != -1)
         {
           string namePart;
           string valuePart;
 
-          namePart = part.Substring(0, nameEndIndex).ToLowerInvariant();
+          namePart = part.Substring(0, nameEndIndex);
           valuePart = part.Substring(nameEndIndex + 1);
 
-          if (namePart == name)
+          if (string.Equals(name, namePart, StringComparison.InvariantCultureIgnoreCase))
           {
-            if (valuePart.StartsWith("\"") && valuePart.EndsWith("\""))
+            int length;
+
+            length = valuePart.Length;
+
+            if (length > 1 && valuePart[0] == '"' && valuePart[length - 1] == '"')
             {
-              valuePart = valuePart.Substring(1, valuePart.Length - 2);
+              valuePart = valuePart.Substring(1, length - 2);
             }
 
             result = valuePart;
@@ -354,7 +199,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// </summary>
     /// <param name="s">The string.</param>
     /// <returns></returns>
-    private static Padding ParsePadding(string s)
+    internal static Padding ParsePadding(string s)
     {
       string[] parts;
 
@@ -374,7 +219,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// </summary>
     /// <param name="s">The string.</param>
     /// <returns></returns>
-    private static Point ParsePoint(string s)
+    internal static Point ParsePoint(string s)
     {
       string[] parts;
 
@@ -393,11 +238,11 @@ namespace Cyotek.Drawing.BitmapFont
     /// <param name="s">The string to split.</param>
     /// <param name="delimiter">The delimiter.</param>
     /// <returns></returns>
-    private static string[] Split(string s, char delimiter)
+    internal static string[] Split(string s, char delimiter)
     {
       string[] results;
 
-      if (s.Contains("\""))
+      if (s.IndexOf('"') != -1)
       {
         List<string> parts;
         int partStart;
@@ -412,8 +257,8 @@ namespace Cyotek.Drawing.BitmapFont
           int quoteEnd;
           bool hasQuotes;
 
-          quoteStart = s.IndexOf("\"", partStart + 1);
-          quoteEnd = s.IndexOf("\"", quoteStart + 1);
+          quoteStart = s.IndexOf('"', partStart + 1);
+          quoteEnd = s.IndexOf('"', quoteStart + 1);
           partEnd = s.IndexOf(delimiter, partStart + 1);
 
           if (partEnd == -1)
@@ -456,7 +301,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <typeparam name="T">Type of the items in the array</typeparam>
     /// <param name="values">The values.</param>
     /// <returns></returns>
-    private static T[] ToArray<T>(ICollection<T> values)
+    internal static T[] ToArray<T>(ICollection<T> values)
     {
       T[] result;
 
@@ -469,5 +314,23 @@ namespace Cyotek.Drawing.BitmapFont
     }
 
     #endregion
+
+    internal static void QualifyResourcePaths(BitmapFont font, string resourcePath)
+    {
+      Page[] pages;
+
+      pages = font.Pages;
+
+      for (int i = 0; i < pages.Length; i++)
+      {
+        Page page;
+
+        page = pages[i];
+        page.FileName = Path.Combine(resourcePath, page.FileName);
+        pages[i] = page;
+      }
+
+      font.Pages = pages;
+    }
   }
 }
