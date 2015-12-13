@@ -1,6 +1,7 @@
 *.suo
 *.user
 
+.vs
 releases
 packages
 bin

@@ -18,25 +18,28 @@ namespace BitmapFontViewer
 {
   public partial class MainForm : Form
   {
-    #region  Private Member Declarations
+    #region Fields
 
     private Character _currentCharacter;
+
     private int _currentPage;
+
     private BitmapFont _font;
+
     private Dictionary<int, Image> _textures;
 
-    #endregion  Private Member Declarations
+    #endregion
 
-    #region  Public Constructors
+    #region Constructors
 
     public MainForm()
     {
-      InitializeComponent();
+      this.InitializeComponent();
     }
 
-    #endregion  Public Constructors
+    #endregion
 
-    #region  Event Handlers
+    #region Methods
 
     private void charListBox_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -56,58 +59,11 @@ namespace BitmapFontViewer
       _currentCharacter = character;
     }
 
-    private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      this.Close();
-    }
-
-    private void MainForm_Load(object sender, EventArgs e)
-    {
-      string path;
-
-      path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "samples");
-      openFileDialog.InitialDirectory = path;
-
-      _textures = new Dictionary<int, Image>();
-      previewTextBox.Text = "Bitmap Font\r\nRendering Example";
-
-      this.OpenFont(Path.Combine(path, "treasuremap-48b.xml.fnt"));
-    }
-
-    private void openToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      if (openFileDialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
-        this.OpenFont(openFileDialog.FileName);
-    }
-
-    private void pageImageBox_Paint(object sender, PaintEventArgs e)
-    {
-      if (!_currentCharacter.Bounds.IsEmpty)
-      {
-        using (Pen pen = new Pen(Color.Red))
-          e.Graphics.DrawRectangle(pen, pageImageBox.GetOffsetRectangle(_currentCharacter.Bounds));
-      }
-    }
-
-    private void previewTextBox_TextChanged(object sender, EventArgs e)
-    {
-      if (previewImageBox.Image != null)
-      {
-        previewImageBox.Image.Dispose();
-        previewImageBox.Image = null;
-      }
-
-      if (_font != null)
-        this.DrawPreview();
-    }
-
-    #endregion  Event Handlers
-
-    #region  Private Methods
-
     private void DrawCharacter(Graphics g, Character character, int x, int y)
     {
-      g.DrawImage(_textures[character.TexturePage], new RectangleF(x, y, character.Bounds.Width, character.Bounds.Height), character.Bounds, GraphicsUnit.Pixel);
+      g.DrawImage(_textures[character.TexturePage],
+                  new RectangleF(x, y, character.Bounds.Width, character.Bounds.Height), character.Bounds,
+                  GraphicsUnit.Pixel);
     }
 
     private void DrawPreview()
@@ -163,16 +119,39 @@ namespace BitmapFontViewer
       }
     }
 
+    private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      this.Close();
+    }
+
+    private void MainForm_Load(object sender, EventArgs e)
+    {
+      string path;
+
+      path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "samples");
+      openFileDialog.InitialDirectory = path;
+
+      _textures = new Dictionary<int, Image>();
+      previewTextBox.Text = "Bitmap Font\r\nRendering Example";
+
+      this.OpenFont(Path.Combine(path, "treasuremap-48b.xml.fnt"));
+    }
+
     private void OpenFont(string fileName)
     {
       _font = new BitmapFont();
       _font.Load(fileName);
 
-      this.Text = string.Format("{0} - {1}", Path.GetFileName(fileName), ((AssemblyTitleAttribute)Assembly.GetEntryAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false)[0]).Title);
+      this.Text = string.Format("{0} - {1}", Path.GetFileName(fileName),
+                                ((AssemblyTitleAttribute)Assembly.GetEntryAssembly().
+                                                                  GetCustomAttributes(typeof(AssemblyTitleAttribute),
+                                                                                      false)[0]).Title);
 
       // clean up
       foreach (KeyValuePair<int, Image> pair in _textures)
+      {
         pair.Value.Dispose();
+      }
       pageImageBox.Image = null;
       characterImageBox.Image = null;
       characterPropertyGrid.SelectedObject = null;
@@ -183,20 +162,59 @@ namespace BitmapFontViewer
       // load the textures
       _textures.Clear();
       foreach (Page page in _font.Pages)
+      {
         _textures.Add(page.Id, Image.FromFile(page.FileName));
+      }
 
       // list the characters
       charListBox.BeginUpdate();
       charListBox.Items.Clear();
       foreach (Character character in _font)
+      {
         charListBox.Items.Add(character.ToString());
+      }
       charListBox.EndUpdate();
 
       if (charListBox.Items.Count != 0)
+      {
         charListBox.SelectedIndex = 0;
+      }
 
       // force any preview text to update
-      previewTextBox_TextChanged(previewTextBox, EventArgs.Empty);
+      this.previewTextBox_TextChanged(previewTextBox, EventArgs.Empty);
+    }
+
+    private void openToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+      {
+        this.OpenFont(openFileDialog.FileName);
+      }
+    }
+
+    private void pageImageBox_Paint(object sender, PaintEventArgs e)
+    {
+      if (!_currentCharacter.Bounds.IsEmpty)
+      {
+        using (Pen pen = new Pen(Color.Red))
+        {
+          e.Graphics.DrawRectangle(pen, pageImageBox.GetOffsetRectangle(_currentCharacter.Bounds));
+        }
+      }
+    }
+
+    private void previewTextBox_TextChanged(object sender, EventArgs e)
+    {
+      if (previewImageBox.Image != null)
+      {
+        previewImageBox.Image.Dispose();
+        previewImageBox.Image = null;
+      }
+
+      if (_font != null)
+      {
+        this.DrawPreview();
+      }
     }
 
     private void SetCharacterImage(Character character)
@@ -211,12 +229,14 @@ namespace BitmapFontViewer
 
       image = new Bitmap(character.Bounds.Width, character.Bounds.Height);
       using (Graphics g = Graphics.FromImage(image))
+      {
         this.DrawCharacter(g, character, 0, 0);
+      }
 
       characterImageBox.Image = image;
       pageImageBox.Invalidate();
     }
 
-    #endregion  Private Methods
+    #endregion
   }
 }

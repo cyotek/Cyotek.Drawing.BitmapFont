@@ -13,7 +13,7 @@ namespace BitmapFontViewer
 {
   static class Program
   {
-    #region  Private Class Methods
+    #region Static Methods
 
     /// <summary>
     /// The main entry point for the application.
@@ -26,6 +26,6 @@ namespace BitmapFontViewer
       Application.Run(new MainForm());
     }
 
-    #endregion  Private Class Methods
+    #endregion
   }
 }

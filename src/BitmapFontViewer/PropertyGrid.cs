@@ -15,25 +15,13 @@ namespace BitmapFontViewer
 
   internal class PropertyGrid : System.Windows.Forms.PropertyGrid
   {
-    #region  Private Member Declarations
+    #region Fields
 
     private bool _readOnly;
 
-    #endregion  Private Member Declarations
+    #endregion
 
-    #region  Protected Overridden Methods
-
-    protected override void OnSelectedObjectsChanged(EventArgs e)
-    {
-      if (this.SelectedObject != null)
-        this.SetObjectAsReadOnly(this.SelectedObject, this.ReadOnly);
-
-      base.OnSelectedObjectsChanged(e);
-    }
-
-    #endregion  Protected Overridden Methods
-
-    #region  Public Properties
+    #region Properties
 
     [Category("Behavior"), DefaultValue(false)]
     public bool ReadOnly
@@ -44,19 +32,34 @@ namespace BitmapFontViewer
         _readOnly = value;
 
         if (this.SelectedObject != null)
+        {
           this.SetObjectAsReadOnly(this.SelectedObject, _readOnly);
+        }
       }
     }
 
-    #endregion  Public Properties
+    #endregion
 
-    #region  Protected Methods
+    #region Methods
+
+    protected override void OnSelectedObjectsChanged(EventArgs e)
+    {
+      if (this.SelectedObject != null)
+      {
+        this.SetObjectAsReadOnly(this.SelectedObject, this.ReadOnly);
+      }
+
+      base.OnSelectedObjectsChanged(e);
+    }
 
     protected void SetObjectAsReadOnly(object selectedObject, bool readOnly)
     {
-      TypeDescriptor.AddAttributes(selectedObject, new Attribute[] { new ReadOnlyAttribute(readOnly) });
+      TypeDescriptor.AddAttributes(selectedObject, new Attribute[]
+                                                   {
+                                                     new ReadOnlyAttribute(readOnly)
+                                                   });
     }
 
-    #endregion  Protected Methods
+    #endregion
   }
 }

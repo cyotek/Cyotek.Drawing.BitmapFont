@@ -6,6 +6,9 @@
  * Licensed under the MIT License. See license.txt for the full text.
  */
 
+// Some documentation derived from the BMFont file format specification
+// http://www.angelcode.com/products/bmfont/doc/file_format.html
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,77 +19,247 @@ using System.Xml;
 
 namespace Cyotek.Drawing.BitmapFont
 {
+  /// <summary>
+  /// A bitmap font.
+  /// </summary>
+  /// <seealso cref="T:System.Collections.Generic.IEnumerable{Cyotek.Drawing.BitmapFont.Character}"/>
   public class BitmapFont : IEnumerable<Character>
   {
     #region Constants
 
+    /// <summary>
+    /// When used with <see cref="MeasureFont(string,double)"/>, specifies that no wrapping should occur.
+    /// </summary>
     public const int NoMaxWidth = -1;
 
     #endregion
 
     #region Properties
 
+    /// <summary>
+    /// Gets or sets the alpha channel.
+    /// </summary>
+    /// <value>
+    /// The alpha channel.
+    /// </value>
+    /// <remarks>Set to 0 if the channel holds the glyph data, 1 if it holds the outline, 2 if it holds the glyph and the outline, 3 if its set to zero, and 4 if its set to one.</remarks>
     public int AlphaChannel { get; set; }
 
+    /// <summary>
+    /// Gets or sets the number of pixels from the absolute top of the line to the base of the characters.
+    /// </summary>
+    /// <value>
+    /// The number of pixels from the absolute top of the line to the base of the characters.
+    /// </value>
     public int BaseHeight { get; set; }
 
+    /// <summary>
+    /// Gets or sets the blue channel.
+    /// </summary>
+    /// <value>
+    /// The blue channel.
+    /// </value>
+    /// <remarks>Set to 0 if the channel holds the glyph data, 1 if it holds the outline, 2 if it holds the glyph and the outline, 3 if its set to zero, and 4 if its set to one.</remarks>
     public int BlueChannel { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the font is bold.
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if the font is bold, otherwise <c>false</c>.
+    /// </value>
     public bool Bold { get; set; }
 
+    /// <summary>
+    /// Gets or sets the characters that comprise the font.
+    /// </summary>
+    /// <value>
+    /// The characters that comprise the font.
+    /// </value>
     public IDictionary<char, Character> Characters { get; set; }
 
+    /// <summary>
+    /// Gets or sets the name of the OEM charset used.
+    /// </summary>
+    /// <value>
+    /// The name of the OEM charset used (when not unicode).
+    /// </value>
     public string Charset { get; set; }
 
+    /// <summary>
+    /// Gets or sets the name of the true type font.
+    /// </summary>
+    /// <value>
+    /// The font family name.
+    /// </value>
     public string FamilyName { get; set; }
 
+    /// <summary>
+    /// Gets or sets the size of the font.
+    /// </summary>
+    /// <value>
+    /// The size of the font.
+    /// </value>
     public int FontSize { get; set; }
 
+    /// <summary>
+    /// Gets or sets the green channel.
+    /// </summary>
+    /// <value>
+    /// The green channel.
+    /// </value>
+    /// <remarks>Set to 0 if the channel holds the glyph data, 1 if it holds the outline, 2 if it holds the glyph and the outline, 3 if its set to zero, and 4 if its set to one.</remarks>
     public int GreenChannel { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the font is italic.
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if the font is italic, otherwise <c>false</c>.
+    /// </value>
     public bool Italic { get; set; }
 
+    /// <summary>
+    /// Indexer to get items within this collection using array index syntax.
+    /// </summary>
+    /// <param name="character">The character.</param>
+    /// <returns>
+    /// The indexed item.
+    /// </returns>
     public Character this[char character]
     {
       get { return this.Characters[character]; }
     }
 
+    /// <summary>
+    /// Gets or sets the character kernings for the font.
+    /// </summary>
+    /// <value>
+    /// The character kernings for the font.
+    /// </value>
     public IDictionary<Kerning, int> Kernings { get; set; }
 
+    /// <summary>
+    /// Gets or sets the distance in pixels between each line of text.
+    /// </summary>
+    /// <value>
+    /// The distance in pixels between each line of text.
+    /// </value>
     public int LineHeight { get; set; }
 
+    /// <summary>
+    /// Gets or sets the outline thickness for the characters.
+    /// </summary>
+    /// <value>
+    /// The outline thickness for the characters.
+    /// </value>
     public int OutlineSize { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the monochrome characters have been packed into each of the texture channels.
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if the characters are packed, otherwise <c>false</c>.
+    /// </value>
+    /// <remarks>
+    /// When packed, the <see cref="AlphaChannel"/> property describes what is stored in each channel.
+    /// </remarks>
     public bool Packed { get; set; }
 
+    /// <summary>
+    /// Gets or sets the padding for each character.
+    /// </summary>
+    /// <value>
+    /// The padding for each character.
+    /// </value>
     public Padding Padding { get; set; }
 
+    /// <summary>
+    /// Gets or sets the texture pages for the font.
+    /// </summary>
+    /// <value>
+    /// The pages.
+    /// </value>
     public Page[] Pages { get; set; }
 
+    /// <summary>
+    /// Gets or sets the red channel.
+    /// </summary>
+    /// <value>
+    /// The red channel.
+    /// </value>
+    /// <remarks>Set to 0 if the channel holds the glyph data, 1 if it holds the outline, 2 if it holds the glyph and the outline, 3 if its set to zero, and 4 if its set to one.</remarks>
     public int RedChannel { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the font is smoothed.
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if the font is smoothed, otherwise <c>false</c>.
+    /// </value>
     public bool Smoothed { get; set; }
 
+    /// <summary>
+    /// Gets or sets the spacing for each character.
+    /// </summary>
+    /// <value>
+    /// The spacing for each character.
+    /// </value>
     public Point Spacing { get; set; }
 
+    /// <summary>
+    /// Gets or sets the font height stretch.
+    /// </summary>
+    /// <value>
+    /// The font height stretch.
+    /// </value>
+    /// <remarks>100% means no stretch.</remarks>
     public int StretchedHeight { get; set; }
 
+    /// <summary>
+    /// Gets or sets the level of super sampling used by the font.
+    /// </summary>
+    /// <value>
+    /// The super sampling level of the font.
+    /// </value>
+    /// <remarks>A value of 1 indicates no super sampling is in use.</remarks>
     public int SuperSampling { get; set; }
 
+    /// <summary>
+    /// Gets or sets the size of the texture images used by the font.
+    /// </summary>
+    /// <value>
+    /// The size of the texture.
+    /// </value>
     public Size TextureSize { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the font is unicode.
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if the font is unicode, otherwise <c>false</c>.
+    /// </value>
     public bool Unicode { get; set; }
 
     #endregion
 
     #region Methods
 
+    /// <summary>
+    /// Gets the kerning for the specified character combination.
+    /// </summary>
+    /// <param name="previous">The previous character.</param>
+    /// <param name="current">The current character.</param>
+    /// <returns>
+    /// The spacing between the specified characters.
+    /// </returns>
     public int GetKerning(char previous, char current)
     {
       Kerning key;
       int result;
 
       key = new Kerning(previous, current, 0);
+
       if (!this.Kernings.TryGetValue(key, out result))
       {
         result = 0;
@@ -95,6 +268,14 @@ namespace Cyotek.Drawing.BitmapFont
       return result;
     }
 
+    /// <summary>
+    /// Load font information from the specified <see cref="Stream"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
+    /// <exception cref="ArgumentException">Thrown when one or more arguments have unsupported or
+    /// illegal values.</exception>
+    /// <exception cref="InvalidDataException">Thrown when an Invalid Data error condition occurs.</exception>
+    /// <param name="stream">The stream to load.</param>
     public virtual void Load(Stream stream)
     {
       byte[] buffer;
@@ -130,6 +311,12 @@ namespace Cyotek.Drawing.BitmapFont
       }
     }
 
+    /// <summary>
+    /// Load font information from the specified file.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
+    /// <exception cref="FileNotFoundException">Thrown when the requested file is not present.</exception>
+    /// <param name="fileName">The file name to load.</param>
     public void Load(string fileName)
     {
       if (string.IsNullOrEmpty(fileName))
@@ -150,6 +337,11 @@ namespace Cyotek.Drawing.BitmapFont
       BitmapFontLoader.QualifyResourcePaths(this, Path.GetDirectoryName(fileName));
     }
 
+    /// <summary>
+    /// Loads font information from the specified string.
+    /// </summary>
+    /// <param name="text">String containing the font to load.</param>
+    /// <remarks>The source data must be in BMFont text format.</remarks>
     public void LoadText(string text)
     {
       using (StringReader reader = new StringReader(text))
@@ -158,6 +350,14 @@ namespace Cyotek.Drawing.BitmapFont
       }
     }
 
+    /// <summary>
+    /// Loads font information from the specified stream.
+    /// </summary>
+    /// <remarks>
+    /// The source data must be in BMFont text format.
+    /// </remarks>
+    /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
+    /// <param name="stream">The stream containing the font to load.</param>
     public void LoadText(Stream stream)
     {
       if (stream == null)
@@ -171,6 +371,14 @@ namespace Cyotek.Drawing.BitmapFont
       }
     }
 
+    /// <summary>
+    /// Loads font information from the specified <see cref="TextReader"/>.
+    /// </summary>
+    /// <remarks>
+    /// The source data must be in BMFont text format.
+    /// </remarks>
+    /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
+    /// <param name="reader">The <strong>TextReader</strong> used to feed the data into the font.</param>
     public virtual void LoadText(TextReader reader)
     {
       IDictionary<int, Page> pageData;
@@ -218,7 +426,8 @@ namespace Cyotek.Drawing.BitmapFont
               case "common":
                 this.LineHeight = BitmapFontLoader.GetNamedInt(parts, "lineHeight");
                 this.BaseHeight = BitmapFontLoader.GetNamedInt(parts, "base");
-                this.TextureSize = new Size(BitmapFontLoader.GetNamedInt(parts, "scaleW"), BitmapFontLoader.GetNamedInt(parts, "scaleH"));
+                this.TextureSize = new Size(BitmapFontLoader.GetNamedInt(parts, "scaleW"),
+                                            BitmapFontLoader.GetNamedInt(parts, "scaleH"));
                 this.Packed = BitmapFontLoader.GetNamedBool(parts, "packed");
                 this.AlphaChannel = BitmapFontLoader.GetNamedInt(parts, "alphaChnl");
                 this.RedChannel = BitmapFontLoader.GetNamedInt(parts, "redChnl");
@@ -240,8 +449,14 @@ namespace Cyotek.Drawing.BitmapFont
                 charData = new Character
                            {
                              Char = (char)BitmapFontLoader.GetNamedInt(parts, "id"),
-                             Bounds = new Rectangle(BitmapFontLoader.GetNamedInt(parts, "x"), BitmapFontLoader.GetNamedInt(parts, "y"), BitmapFontLoader.GetNamedInt(parts, "width"), BitmapFontLoader.GetNamedInt(parts, "height")),
-                             Offset = new Point(BitmapFontLoader.GetNamedInt(parts, "xoffset"), BitmapFontLoader.GetNamedInt(parts, "yoffset")),
+                             Bounds =
+                               new Rectangle(BitmapFontLoader.GetNamedInt(parts, "x"),
+                                             BitmapFontLoader.GetNamedInt(parts, "y"),
+                                             BitmapFontLoader.GetNamedInt(parts, "width"),
+                                             BitmapFontLoader.GetNamedInt(parts, "height")),
+                             Offset =
+                               new Point(BitmapFontLoader.GetNamedInt(parts, "xoffset"),
+                                         BitmapFontLoader.GetNamedInt(parts, "yoffset")),
                              XAdvance = BitmapFontLoader.GetNamedInt(parts, "xadvance"),
                              TexturePage = BitmapFontLoader.GetNamedInt(parts, "page"),
                              Channel = BitmapFontLoader.GetNamedInt(parts, "chnl")
@@ -251,7 +466,9 @@ namespace Cyotek.Drawing.BitmapFont
               case "kerning":
                 Kerning key;
 
-                key = new Kerning((char)BitmapFontLoader.GetNamedInt(parts, "first"), (char)BitmapFontLoader.GetNamedInt(parts, "second"), BitmapFontLoader.GetNamedInt(parts, "amount"));
+                key = new Kerning((char)BitmapFontLoader.GetNamedInt(parts, "first"),
+                                  (char)BitmapFontLoader.GetNamedInt(parts, "second"),
+                                  BitmapFontLoader.GetNamedInt(parts, "amount"));
 
                 if (!kerningDictionary.ContainsKey(key))
                 {
@@ -268,6 +485,11 @@ namespace Cyotek.Drawing.BitmapFont
       this.Kernings = kerningDictionary;
     }
 
+    /// <summary>
+    /// Loads font information from the specified string.
+    /// </summary>
+    /// <param name="xml">String containing the font to load.</param>
+    /// <remarks>The source data must be in BMFont XML format.</remarks>
     public void LoadXml(string xml)
     {
       using (StringReader reader = new StringReader(xml))
@@ -276,6 +498,14 @@ namespace Cyotek.Drawing.BitmapFont
       }
     }
 
+    /// <summary>
+    /// Loads font information from the specified <see cref="TextReader"/>.
+    /// </summary>
+    /// <remarks>
+    /// The source data must be in BMFont XML format.
+    /// </remarks>
+    /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
+    /// <param name="reader">The <strong>TextReader</strong> used to feed the data into the font.</param>
     public virtual void LoadXml(TextReader reader)
     {
       XmlDocument document;
@@ -317,7 +547,8 @@ namespace Cyotek.Drawing.BitmapFont
       properties = root.SelectSingleNode("common");
       this.BaseHeight = Convert.ToInt32(properties.Attributes["lineHeight"].Value);
       this.LineHeight = Convert.ToInt32(properties.Attributes["base"].Value);
-      this.TextureSize = new Size(Convert.ToInt32(properties.Attributes["scaleW"].Value), Convert.ToInt32(properties.Attributes["scaleH"].Value));
+      this.TextureSize = new Size(Convert.ToInt32(properties.Attributes["scaleW"].Value),
+                                  Convert.ToInt32(properties.Attributes["scaleH"].Value));
       this.Packed = Convert.ToInt32(properties.Attributes["packed"].Value) != 0;
       this.AlphaChannel = Convert.ToInt32(properties.Attributes["alphaChnl"].Value);
       this.RedChannel = Convert.ToInt32(properties.Attributes["redChnl"].Value);
@@ -344,8 +575,12 @@ namespace Cyotek.Drawing.BitmapFont
 
         character = new Character();
         character.Char = (char)Convert.ToInt32(node.Attributes["id"].Value);
-        character.Bounds = new Rectangle(Convert.ToInt32(node.Attributes["x"].Value), Convert.ToInt32(node.Attributes["y"].Value), Convert.ToInt32(node.Attributes["width"].Value), Convert.ToInt32(node.Attributes["height"].Value));
-        character.Offset = new Point(Convert.ToInt32(node.Attributes["xoffset"].Value), Convert.ToInt32(node.Attributes["yoffset"].Value));
+        character.Bounds = new Rectangle(Convert.ToInt32(node.Attributes["x"].Value),
+                                         Convert.ToInt32(node.Attributes["y"].Value),
+                                         Convert.ToInt32(node.Attributes["width"].Value),
+                                         Convert.ToInt32(node.Attributes["height"].Value));
+        character.Offset = new Point(Convert.ToInt32(node.Attributes["xoffset"].Value),
+                                     Convert.ToInt32(node.Attributes["yoffset"].Value));
         character.XAdvance = Convert.ToInt32(node.Attributes["xadvance"].Value);
         character.TexturePage = Convert.ToInt32(node.Attributes["page"].Value);
         character.Channel = Convert.ToInt32(node.Attributes["chnl"].Value);
@@ -359,7 +594,9 @@ namespace Cyotek.Drawing.BitmapFont
       {
         Kerning key;
 
-        key = new Kerning((char)Convert.ToInt32(node.Attributes["first"].Value), (char)Convert.ToInt32(node.Attributes["second"].Value), Convert.ToInt32(node.Attributes["amount"].Value));
+        key = new Kerning((char)Convert.ToInt32(node.Attributes["first"].Value),
+                          (char)Convert.ToInt32(node.Attributes["second"].Value),
+                          Convert.ToInt32(node.Attributes["amount"].Value));
 
         if (!kerningDictionary.ContainsKey(key))
         {
@@ -369,6 +606,14 @@ namespace Cyotek.Drawing.BitmapFont
       this.Kernings = kerningDictionary;
     }
 
+    /// <summary>
+    /// Loads font information from the specified stream.
+    /// </summary>
+    /// <remarks>
+    /// The source data must be in BMFont XML format.
+    /// </remarks>
+    /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
+    /// <param name="stream">The stream containing the font to load.</param>
     public void LoadXml(Stream stream)
     {
       if (stream == null)
@@ -382,11 +627,27 @@ namespace Cyotek.Drawing.BitmapFont
       }
     }
 
+    /// <summary>
+    /// Provides the size, in pixels, of the specified text when drawn with this font.
+    /// </summary>
+    /// <param name="text">The text to measure.</param>
+    /// <returns>
+    /// The <see cref="Size"/>, in pixels, of <paramref name="text"/> drawn with this font.
+    /// </returns>
     public Size MeasureFont(string text)
     {
       return this.MeasureFont(text, NoMaxWidth);
     }
 
+    /// <summary>
+    /// Provides the size, in pixels, of the specified text when drawn with this font, automatically wrapping to keep within the specified with.
+    /// </summary>
+    /// <param name="text">The text to measure.</param>
+    /// <param name="maxWidth">The maximum width.</param>
+    /// <returns>
+    /// The <see cref="Size"/>, in pixels, of <paramref name="text"/> drawn with this font.
+    /// </returns>
+    /// <remarks>The MeasureText method uses the <paramref name="maxWidth"/> parameter to automatically wrap when determining text size.</remarks>
     public Size MeasureFont(string text, double maxWidth)
     {
       Size result;
@@ -475,16 +736,18 @@ namespace Cyotek.Drawing.BitmapFont
       return result;
     }
 
-    public string NormalizeLineBreaks(string s)
-    {
-      // TODO: Apart from the fact this isn't effecient, why is it public? Really doesn't belong here
-      return s.Replace("\r\n", "\n").Replace("\r", "\n");
-    }
-
     #endregion
 
     #region IEnumerable<Character> Interface
 
+    /// <summary>
+    /// Returns an enumerator that iterates through the collection.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through
+    /// the collection.
+    /// </returns>
+    /// <seealso cref="M:System.Collections.Generic.IEnumerable{Cyotek.Drawing.BitmapFont.Character}.GetEnumerator()"/>
     public IEnumerator<Character> GetEnumerator()
     {
       foreach (KeyValuePair<char, Character> pair in this.Characters)
@@ -493,6 +756,12 @@ namespace Cyotek.Drawing.BitmapFont
       }
     }
 
+    /// <summary>
+    /// Gets the enumerator.
+    /// </summary>
+    /// <returns>
+    /// The enumerator.
+    /// </returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
       return this.GetEnumerator();
