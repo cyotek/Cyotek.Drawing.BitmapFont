@@ -145,10 +145,23 @@ namespace Cyotek.Drawing.BitmapFont
     /// </summary>
     /// <param name="parts">The array of parts.</param>
     /// <param name="name">The name of the value to return.</param>
+    /// <param name="defaultValue">Default value(if the key doesnt exist or can't be parsed)</param>
     /// <returns></returns>
-    internal static bool GetNamedBool(string[] parts, string name)
+    internal static bool GetNamedBool(string[] parts, string name, bool defaultValue = false)
     {
-      return GetNamedInt(parts, name) != 0;
+      var s = GetNamedString(parts, name);
+
+      bool result;
+      int v;
+      if (int.TryParse(s, out v))
+      {
+        result = v > 0;
+      } else
+      {
+        result = defaultValue;
+      }
+
+      return result;
     }
 
     /// <summary>
@@ -156,10 +169,19 @@ namespace Cyotek.Drawing.BitmapFont
     /// </summary>
     /// <param name="parts">The array of parts.</param>
     /// <param name="name">The name of the value to return.</param>
+    /// <param name="defaultValue">Default value(if the key doesnt exist or can't be parsed)</param>
     /// <returns></returns>
-    internal static int GetNamedInt(string[] parts, string name)
+    internal static int GetNamedInt(string[] parts, string name, int defaultValue = 0)
     {
-      return Convert.ToInt32(GetNamedString(parts, name));
+      var s = GetNamedString(parts, name);
+
+      int result;
+      if (!int.TryParse(s, out result))
+      {
+        result = defaultValue;
+      }
+
+      return result;
     }
 
     /// <summary>
