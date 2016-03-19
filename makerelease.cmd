@@ -11,7 +11,7 @@ PUSHD
 CD releases
 NUGET pack ..\src\Cyotek.Drawing.BitmapFont\Cyotek.Drawing.BitmapFont.csproj -Prop Configuration=Release
 
-%zipexe% -a Cyotek.Drawing.BitmapFont.x.x.x.x.zip ..\src\Cyotek.Drawing.BitmapFont\bin\Release\Cyotek.Drawing.BitmapFont.dll -ex
+%zipexe% a -bd -tZip Cyotek.Drawing.BitmapFont.x.x.x.x.zip ..\src\Cyotek.Drawing.BitmapFont\bin\Release\Cyotek.Drawing.BitmapFont.dll
 
 POPD
 

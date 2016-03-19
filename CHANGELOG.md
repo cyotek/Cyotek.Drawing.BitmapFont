@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+1.3.1
+-----
+
+### Removed
+* Removed nuget.exe and related resources as this is now handled natively by Visual Studio 2015
+
+### Fixed
+* Fixed an issue where missing attributes in plain text font files could cause a crash. Thanks to rds1983 for the fix.
+
 1.3.0
 -----
 

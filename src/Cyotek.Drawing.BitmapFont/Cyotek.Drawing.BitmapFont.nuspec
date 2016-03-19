@@ -2,9 +2,9 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Cyotek.Drawing.BitmapFont</id>
-    <version>$version$</version>
+    <version>1.3.1</version>
     <title>Cyotek BitmapFont</title>
-    <authors>Cyotek</authors>
+    <authors>Cyotek, rds1983</authors>
     <owners>Cyotek</owners>
     <licenseUrl>https://raw.githubusercontent.com/cyotek/Cyotek.Drawing.BitmapFont/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/cyotek/Cyotek.Drawing.BitmapFont</projectUrl>
@@ -17,7 +17,7 @@
       Generic parser for the AngelCode BMFont format, supporting the text and XML versions of the format.
     </summary>
     <releaseNotes />
-    <copyright>Copyright 2012-2015 Cyotek Ltd.</copyright>
+    <copyright>Copyright 2012-2016 Cyotek Ltd.</copyright>
     <language>en-GB</language>
     <tags>bmfont bitmap font cyotek</tags>
   </metadata>
