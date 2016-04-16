@@ -1,15 +1,25 @@
 AngelCode bitmap font parsing using C#
 ======================================
 
-> This has been copied from the [original article](http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp). Aside from fixing the screenshot links, I haven't reviewed this for errors, or had time to look at the code properly. Updates will follow!
-
 [![The font parser library was used by this OpenGL application that renders text](http://www.cyotek.com/files/articleimages/bitmapfont1-thumbnail.png)](http://www.cyotek.com/files/articleimages/bitmapfont1.png)
 
-While writing some bitmap font processing for an OpenGL project, I settled on using [AngelCode's BMFont](http://www.angelcode.com/products/bmfont/) utility to generate both the textures and the font definition. However, this means I then needed to write a parser in order to use this in my OpenGL solution.
+While writing bitmap font processing code for an OpenGL project, I settled on using [AngelCode's BMFont](http://www.angelcode.com/products/bmfont/) utility to generate both the textures and the font definition.
 
 This library is a generic parser for the BMFont format - it doesn't include any rendering functionality or exotic references and should be usable in any version of .NET from 2.0 upwards. BMFont can generate fonts in three formats - binary, text and XML. The library currently supports text and XML, I may add binary support at another time; but currently I'm happy using the text format.
 
-> Note: This library only provides parsing functionality for loading BMFont data. It is up to you to provide functionality used to load textures and render characters
+> Note: This library only provides parsing functionality for loading font meta data. It is up to you to provide functionality used to load textures and render characters.
+
+> Note: The library currently only supports the plain text and XML flavours of the format.
+
+#### Getting the library
+
+The easiest way of obtaining the library is via NuGet
+
+> <kbd>Install-Package Cyotek.Drawing.BitmapFont</kbd>
+
+If you don't use NuGet, then release binaries can be obtained from the [GitHub Releases page](https://github.com/cyotek/Cyotek.Drawing.BitmapFont/releases)
+
+Of course, you can always grab [the source](https://github.com/cyotek/Cyotek.Drawing.BitmapFont) and build it yourself!
 
 #### Overview of the library
 
@@ -48,11 +58,11 @@ The `Character` class describes a single character. Your rendering functionality
 
 #### Example rendering using GDI
 
-> The sample project which accompanies this article shows a very basic way of rending using GDI; however this is just for demonstration purposes and you should probably come up with something more efficient in a real application!
+> The sample project shows a very basic way of rending using GDI; however this is just for demonstration purposes and you should probably come up with something more efficient in a real application!
 
 [![Example rendering using the bitmap font viewer](http://www.cyotek.com/files/articleimages/bitmapfont3-thumbnail.png)](http://www.cyotek.com/files/articleimages/bitmapfont3.png)
 
-<pre class="brush: c#">
+
     private void DrawCharacter(Graphics g, Character character, int x, int y)
     {
       g.DrawImage(_textures[character.TexturePage], new RectangleF(x, y, character.Bounds.Width, character.Bounds.Height), character.Bounds, GraphicsUnit.Pixel);
@@ -107,22 +117,13 @@ The `Character` class describes a single character. Your rendering functionality
         previewImageBox.Image = image;
       }
     }
-</pre>
+
 
 #### The Bitmap Font Viewer application
 
 [![This sample application loads and previews bitmap fonts](http://www.cyotek.com/files/articleimages/bitmapfont2-thumbnail.png)](http://www.cyotek.com/files/articleimages/bitmapfont2.png)
 
-Also included in the download for this article is a simple Windows Forms application for viewing a bitmap font.
+Included in this repository is a sample WinForms application for viewing BMFont font definitions.
 
 > Note: All of the fonts I have created and tested were unpacked. The font viewer does not support packed textures, and while it will still load the font, it will not draw glyphs properly as it isn't able to do any of the magic with channels that the packed texture requires. In addition, as .NET doesn't support the TGA format by default, neither does this sample project.
 
-#### Final Thoughts
-
-Unlike my other articles, I haven't really gone into the source code or pointed out how it works, however it should all be simple to understand and use (despite having virtually no documentation) - please let me know if you think otherwise!
-
-As mentioned above, I'm currently not using packed textures. The font parser will give you all the information you need regarding channels for extracting the information, but could probably be nicer done, such as using enums instead of magic ints - I may address this in a future update, along side implementing the binary file format.
-
-Ideally the best way to use this code would be to inherit or extend the `BitmapFont` class. Therefore it would probably be better directly embedding the source code into your application, change the namespaces to match your own solution, then build from there.
-
-I haven't tested with many fancy fonts - it's probable that the `MeasureFont` method doesn't handle cases of fonts with have a larger draw area than their basic box size.
