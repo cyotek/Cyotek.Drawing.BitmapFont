@@ -55,7 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cyopublic.snk" />
-    <None Include="Cyotek.Drawing.BitmapFont.nuspec" />
+    <None Include="Cyotek.Drawing.BitmapFont.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

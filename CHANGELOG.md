@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+1.3.2
+
+### Changed
+* Replaced digital signature
+* Corrected version information
+
 1.3.1
 -----
 

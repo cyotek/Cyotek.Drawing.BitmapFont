@@ -15,6 +15,13 @@ namespace Cyotek.Drawing.BitmapFont
   {
     #region Constructors
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="firstCharacter">The first character.</param>
+    /// <param name="secondCharacter">The second character.</param>
+    /// <param name="amount">How much the x position should be adjusted when drawing the second
+    /// character immediately following the first.</param>
     public Kerning(char firstCharacter, char secondCharacter, int amount)
       : this()
     {
