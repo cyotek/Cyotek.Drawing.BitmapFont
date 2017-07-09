@@ -73,6 +73,35 @@ namespace Cyotek.Drawing.BitmapFont
     {
       return string.Format("{0} to {1} = {2}", this.FirstCharacter, this.SecondCharacter, this.Amount);
     }
+    
+    /// <summary>
+    /// Check if the object represents kerning between the same two characters.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns>
+    /// Whether or not the object represents kerning between the same two characters.
+    /// </returns>
+    public override bool Equals(object obj)
+    {
+      if (obj == null) return false;
+      if (obj.GetType() != typeof(Kerning)) return false;
+      Kerning k = (Kerning)obj;
+      return FirstCharacter == k.FirstCharacter && SecondCharacter == k.SecondCharacter;
+    }
+
+    /// <summary>
+    /// Return the hash code of the kerning between the two characters.
+    /// </summary>
+    /// <returns>
+    /// A unique hash code of the kerning between the two characters.
+    /// </returns>
+    public override int GetHashCode()
+    {
+      unchecked
+      {
+        return (FirstCharacter << 16) | SecondCharacter;
+      }
+    }
 
     #endregion
   }
