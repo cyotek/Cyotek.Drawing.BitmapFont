@@ -6,12 +6,14 @@
  * Licensed under the MIT License. See license.txt for the full text.
  */
 
+using System;
+
 namespace Cyotek.Drawing.BitmapFont
 {
   /// <summary>
   /// Represents the font kerning between two characters.
   /// </summary>
-  public struct Kerning
+  public struct Kerning : IEquatable<Kerning>
   {
     #region Constructors
 
@@ -87,6 +89,18 @@ namespace Cyotek.Drawing.BitmapFont
       if (obj.GetType() != typeof(Kerning)) return false;
       Kerning k = (Kerning)obj;
       return FirstCharacter == k.FirstCharacter && SecondCharacter == k.SecondCharacter;
+    }
+
+    /// <summary>
+    /// Check if the other kerning is between the same two characters.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns>
+    /// Whether or not the other kerning is between the same two characters.
+    /// </returns>
+    public bool Equals(Kerning other)
+    {
+      return Equals(other);
     }
 
     /// <summary>
