@@ -6,12 +6,14 @@
  * Licensed under the MIT License. See license.txt for the full text.
  */
 
+using System;
+
 namespace Cyotek.Drawing.BitmapFont
 {
   /// <summary>
   /// Represents the font kerning between two characters.
   /// </summary>
-  public struct Kerning
+  public struct Kerning : IEquatable<Kerning>
   {
     #region Constructors
 
@@ -72,6 +74,47 @@ namespace Cyotek.Drawing.BitmapFont
     public override string ToString()
     {
       return string.Format("{0} to {1} = {2}", this.FirstCharacter, this.SecondCharacter, this.Amount);
+    }
+    
+    /// <summary>
+    /// Check if the object represents kerning between the same two characters.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns>
+    /// Whether or not the object represents kerning between the same two characters.
+    /// </returns>
+    public override bool Equals(object obj)
+    {
+      if (obj == null) return false;
+      if (obj.GetType() != typeof(Kerning)) return false;
+
+      return this.Equals((Kerning)obj);
+    }
+
+    /// <summary>
+    /// Check if the other kerning is between the same two characters.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns>
+    /// Whether or not the other kerning is between the same two characters.
+    /// </returns>
+    public bool Equals(Kerning other)
+    {
+      return FirstCharacter == other.FirstCharacter && SecondCharacter == other.SecondCharacter;
+    }
+
+    /// <summary>
+    /// Return the hash code of the kerning between the two characters.
+    /// </summary>
+    /// <returns>
+    /// A unique hash code of the kerning between the two characters.
+    /// </returns>
+    public override int GetHashCode()
+    {
+      unchecked
+      {
+        return (FirstCharacter << 16) | SecondCharacter;
+      }
     }
 
     #endregion
