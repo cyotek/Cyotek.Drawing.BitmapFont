@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+1.3.3
+-----
+
+### Fixed
+* `BitmapFont.GetKerning` always returned zero
+
 1.3.2
 
 ### Changed

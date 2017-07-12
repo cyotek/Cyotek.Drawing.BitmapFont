@@ -87,8 +87,8 @@ namespace Cyotek.Drawing.BitmapFont
     {
       if (obj == null) return false;
       if (obj.GetType() != typeof(Kerning)) return false;
-      Kerning k = (Kerning)obj;
-      return FirstCharacter == k.FirstCharacter && SecondCharacter == k.SecondCharacter;
+
+      return this.Equals((Kerning)obj);
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// </returns>
     public bool Equals(Kerning other)
     {
-      return Equals(other);
+      return FirstCharacter == other.FirstCharacter && SecondCharacter == other.SecondCharacter;
     }
 
     /// <summary>
