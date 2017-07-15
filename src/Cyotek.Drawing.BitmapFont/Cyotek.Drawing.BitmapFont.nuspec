@@ -4,7 +4,7 @@
     <id>$id$</id>
     <version>$version$</version>
     <title>Cyotek BitmapFont</title>
-    <authors>Cyotek, rds1983</authors>
+    <authors>Cyotek, rds1983, ScottSWu</authors>
     <owners>Cyotek</owners>
     <licenseUrl>https://raw.githubusercontent.com/cyotek/Cyotek.Drawing.BitmapFont/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/cyotek/Cyotek.Drawing.BitmapFont</projectUrl>
@@ -19,6 +19,6 @@
     <releaseNotes />
     <copyright>$copyright$</copyright>
     <language>en-GB</language>
-    <tags>bmfont bitmap font cyotek</tags>
+    <tags>angelcode bitmapfont bmfont bitmap font cyotek</tags>
   </metadata>
 </package>
