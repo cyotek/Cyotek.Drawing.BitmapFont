@@ -9,3 +9,4 @@ obj
 NDependOut
 push.cmd
 
+*.ncrunchsolution
