@@ -86,7 +86,7 @@ namespace Cyotek.Drawing.BitmapFont.Tests
 
     private static void AreEqual(IDictionary<char, Character> expected, IDictionary<char, Character> actual)
     {
-      //Assert.AreEqual(expected.Count, actual.Count, nameof(BitmapFont.Characters) + " count does not match.");
+      Assert.AreEqual(expected.Count, actual.Count, nameof(BitmapFont.Characters) + " count does not match.");
 
       foreach (KeyValuePair<char, Character> expectedPair in expected)
       {
