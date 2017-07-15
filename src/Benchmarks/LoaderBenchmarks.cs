@@ -1,4 +1,12 @@
-﻿using System;
+﻿/* AngelCode bitmap font parsing using C#
+ * http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
+ *
+ * Copyright © 2012-2017 Cyotek Ltd.
+ *
+ * Licensed under the MIT License. See LICENSE.txt for the full text.
+ */
+
+ using System;
 using System.IO;
 using BenchmarkDotNet.Attributes;
 using Cyotek.Drawing.BitmapFont;
