@@ -10,3 +10,4 @@ NDependOut
 push.cmd
 
 *.ncrunchsolution
+*.ncrunchproject

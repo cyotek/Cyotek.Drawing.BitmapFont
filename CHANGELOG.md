@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+WIP
+
+### Added
+* Added benchmark project
+* Added tests
+
+### Fixed
+* The `LineHeight` and `BaseHeight` property values were swapped when loading XML format fonts
+
 1.3.3
 -----
 
@@ -8,6 +17,7 @@ Change Log
 * `BitmapFont.GetKerning` always returned zero
 
 1.3.2
+-----
 
 ### Changed
 * Replaced digital signature

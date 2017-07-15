@@ -545,8 +545,8 @@ namespace Cyotek.Drawing.BitmapFont
 
       // common attributes
       properties = root.SelectSingleNode("common");
-      this.BaseHeight = Convert.ToInt32(properties.Attributes["lineHeight"].Value);
-      this.LineHeight = Convert.ToInt32(properties.Attributes["base"].Value);
+      this.BaseHeight = Convert.ToInt32(properties.Attributes["base"].Value);
+      this.LineHeight = Convert.ToInt32(properties.Attributes["lineHeight"].Value);
       this.TextureSize = new Size(Convert.ToInt32(properties.Attributes["scaleW"].Value),
                                   Convert.ToInt32(properties.Attributes["scaleH"].Value));
       this.Packed = Convert.ToInt32(properties.Attributes["packed"].Value) != 0;
