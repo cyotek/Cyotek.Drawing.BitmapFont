@@ -22,6 +22,7 @@
     <PackageProjectUrl>https://github.com/cyotek/Cyotek.Drawing.BitmapFont</PackageProjectUrl>
     <NeutralLanguage>en-GB</NeutralLanguage>
     <RepositoryType>GitHub</RepositoryType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
