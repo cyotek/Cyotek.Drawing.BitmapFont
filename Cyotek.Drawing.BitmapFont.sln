@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cyotek.Drawing.BitmapFont", "src\Cyotek.Drawing.BitmapFont\Cyotek.Drawing.BitmapFont.csproj", "{A8E42972-0BC3-4F26-99DF-87B6379E875F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cyotek.Drawing.BitmapFont", "src\Cyotek.Drawing.BitmapFont\Cyotek.Drawing.BitmapFont.csproj", "{A8E42972-0BC3-4F26-99DF-87B6379E875F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitmapFontViewer", "src\BitmapFontViewer\BitmapFontViewer.csproj", "{AA21D910-910A-444F-8A13-AE8EEFECC6E1}"
 EndProject
