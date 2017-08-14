@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.4;net20</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;net20</TargetFrameworks>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <Description>This library is a generic parser for the AngelCode BMFont format, supporting the text and XML versions of the format.</Description>
     <SignAssembly>True</SignAssembly>
@@ -27,7 +27,7 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.4'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Xml.XmlDocument">
       <Version>4.3.0</Version>
     </PackageReference>
