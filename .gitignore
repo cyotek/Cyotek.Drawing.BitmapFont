@@ -1,13 +1,15 @@
-*.suo
-*.user
+.vs/
+releases/
+packages/
+bin/
+obj/
+NDependOut/
+_NCrunch_*/
+nuget/
 
-.vs
-releases
-packages
-bin
-obj
-NDependOut
 push.cmd
 
 *.ncrunchsolution
 *.ncrunchproject
+*.suo
+*.user

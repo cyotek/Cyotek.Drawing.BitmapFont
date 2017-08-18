@@ -209,7 +209,7 @@ namespace Cyotek.Drawing.BitmapFont
           namePart = part.Substring(0, nameEndIndex);
           valuePart = part.Substring(nameEndIndex + 1);
 
-          if (string.Equals(name, namePart, StringComparison.InvariantCultureIgnoreCase))
+          if (string.Equals(name, namePart, StringComparison.OrdinalIgnoreCase))
           {
             int length;
 
