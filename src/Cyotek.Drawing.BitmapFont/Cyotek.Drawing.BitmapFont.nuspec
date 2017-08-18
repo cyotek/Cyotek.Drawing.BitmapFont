@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <!--<id>$ id$</id>--> <!-- Even though commented out, nuget.exe crashes if a token sequence is found -->
+    <id>Cyotek.Drawing.BitmapFont</id>
+    <!--<version>$ version$</version>-->
+    <version>1.3.4-beta1</version>
+    <title>Cyotek BitmapFont</title>
+    <authors>Cyotek, rds1983, ScottSWu</authors>
+    <owners>Cyotek</owners>
+    <licenseUrl>https://raw.githubusercontent.com/cyotek/Cyotek.Drawing.BitmapFont/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/cyotek/Cyotek.Drawing.BitmapFont</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/cyotek/Cyotek.Drawing.BitmapFont/master/resources/icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      This library is a generic parser for the AngelCode BMFont format, supporting the text and XML versions of the format.
+    </description>
+    <summary>
+      Generic parser for the AngelCode BMFont format, supporting the text and XML versions of the format.
+    </summary>
+    <releaseNotes />
+    <!--<copyright>$ copyright$</copyright>-->
+    <copyright>Copyright © 2012-2017 Cyotek Ltd. All Rights Reserved</copyright>
+    <language>en-GB</language>
+    <tags>angelcode bitmapfont bmfont bitmap font cyotek</tags>
+  </metadata>
+    <files>
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net20\Cyotek.Drawing.BitmapFont.dll" target="lib\net20\Cyotek.Drawing.BitmapFont.dll" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net20\Cyotek.Drawing.BitmapFont.pdb" target="lib\net20\Cyotek.Drawing.BitmapFont.pdb" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net35\Cyotek.Drawing.BitmapFont.dll" target="lib\net35\Cyotek.Drawing.BitmapFont.dll" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net35\Cyotek.Drawing.BitmapFont.pdb" target="lib\net35\Cyotek.Drawing.BitmapFont.pdb" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net40\Cyotek.Drawing.BitmapFont.dll" target="lib\net40\Cyotek.Drawing.BitmapFont.dll" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net40\Cyotek.Drawing.BitmapFont.pdb" target="lib\net40\Cyotek.Drawing.BitmapFont.pdb" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net45\Cyotek.Drawing.BitmapFont.dll" target="lib\net45\Cyotek.Drawing.BitmapFont.dll" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net45\Cyotek.Drawing.BitmapFont.pdb" target="lib\net45\Cyotek.Drawing.BitmapFont.pdb" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net46\Cyotek.Drawing.BitmapFont.dll" target="lib\net46\Cyotek.Drawing.BitmapFont.dll" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net46\Cyotek.Drawing.BitmapFont.pdb" target="lib\net46\Cyotek.Drawing.BitmapFont.pdb" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net47\Cyotek.Drawing.BitmapFont.dll" target="lib\net47\Cyotek.Drawing.BitmapFont.dll" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\net47\Cyotek.Drawing.BitmapFont.pdb" target="lib\net47\Cyotek.Drawing.BitmapFont.pdb" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\netstandard1.3\Cyotek.Drawing.BitmapFont.dll" target="lib\netstandard1.3\Cyotek.Drawing.BitmapFont.dll" />
+        <file src="Cyotek.Drawing.BitmapFont\bin\Release\netstandard1.3\Cyotek.Drawing.BitmapFont.pdb" target="lib\netstandard1.3\Cyotek.Drawing.BitmapFont.pdb" />
+    </files>
+</package>
