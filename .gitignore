@@ -5,6 +5,7 @@ bin/
 obj/
 NDependOut/
 _NCrunch_*/
+nuget/
 
 push.cmd
 
