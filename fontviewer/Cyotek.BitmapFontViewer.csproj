@@ -36,12 +36,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>..\..\resources\icon.ico</ApplicationIcon>
+    <ApplicationIcon>..\res\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cyotek.Windows.Forms.ImageBox, Version=1.1.5.1, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CyotekImageBox.1.1.5.1\lib\net20\Cyotek.Windows.Forms.ImageBox.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\CyotekImageBox.1.1.5.1\lib\net20\Cyotek.Windows.Forms.ImageBox.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -67,7 +66,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cyotek.Drawing.BitmapFont\Cyotek.Drawing.BitmapFont.csproj">
+    <ProjectReference Include="..\src\Cyotek.Drawing.BitmapFont.csproj">
       <Project>{A8E42972-0BC3-4F26-99DF-87B6379E875F}</Project>
       <Name>Cyotek.Drawing.BitmapFont</Name>
     </ProjectReference>
@@ -128,7 +127,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\resources\icon.ico">
+    <Content Include="..\res\icon.ico">
       <Link>icon.ico</Link>
     </Content>
     <None Include="samples\arial-32bi.xml_0.png">

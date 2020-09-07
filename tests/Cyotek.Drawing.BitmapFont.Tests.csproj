@@ -32,7 +32,6 @@
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,7 +68,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Cyotek.Drawing.BitmapFont\Cyotek.Drawing.BitmapFont.csproj">
+    <ProjectReference Include="..\src\Cyotek.Drawing.BitmapFont.csproj">
       <Project>{A8E42972-0BC3-4F26-99DF-87B6379E875F}</Project>
       <Name>Cyotek.Drawing.BitmapFont</Name>
     </ProjectReference>
