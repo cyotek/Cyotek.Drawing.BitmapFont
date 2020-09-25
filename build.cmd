@@ -4,18 +4,27 @@ SETLOCAL
 
 CALL ..\..\..\build\set35vars.bat
 
-%msbuild15exe% Cyotek.Drawing.BitmapFont.sln /p:Configuration=Release /verbosity:minimal /nologo /m /t:Clean,Build
-CALL dualsigncmd src\Cyotek.Drawing.BitmapFont\bin\Release\net20\Cyotek.Drawing.BitmapFont.dll
-CALL dualsigncmd src\Cyotek.Drawing.BitmapFont\bin\Release\net35\Cyotek.Drawing.BitmapFont.dll
-CALL dualsigncmd src\Cyotek.Drawing.BitmapFont\bin\Release\net40\Cyotek.Drawing.BitmapFont.dll
-CALL     signcmd src\Cyotek.Drawing.BitmapFont\bin\Release\net45\Cyotek.Drawing.BitmapFont.dll
-CALL     signcmd src\Cyotek.Drawing.BitmapFont\bin\Release\net46\Cyotek.Drawing.BitmapFont.dll
-CALL     signcmd src\Cyotek.Drawing.BitmapFont\bin\Release\net47\Cyotek.Drawing.BitmapFont.dll
-CALL     signcmd src\Cyotek.Drawing.BitmapFont\bin\Release\netstandard1.3\Cyotek.Drawing.BitmapFont.dll
+SET RELDIR=src\bin\Release\
+SET PRJFILE=src\Cyotek.Drawing.BitmapFont.csproj
+SET DLLNAME=Cyotek.Drawing.BitmapFont.dll
 
-IF NOT EXIST nuget MKDIR nuget
+IF EXIST %RELDIR%*.nupkg DEL /F %RELDIR%*.nupkg
+IF EXIST %RELDIR%*.snupkg DEL /F %RELDIR%*.snupkg
 
-powershell -File build.ps1 -NoProfile
-%nuget4exe% pack src\Cyotek.Drawing.BitmapFont\Cyotek.Drawing.BitmapFont.nuspec -BasePath "%~dp0src" -OutputDirectory "%~dp0nuget" -Verbosity detailed -NonInteractive
+dotnet build %PRJFILE% --configuration Release
+CALL signcmd %RELDIR%net35\%DLLNAME%
+CALL signcmd %RELDIR%net40\%DLLNAME%
+CALL signcmd %RELDIR%net452\%DLLNAME%
+CALL signcmd %RELDIR%net462\%DLLNAME%
+CALL signcmd %RELDIR%net472\%DLLNAME%
+CALL signcmd %RELDIR%net48\%DLLNAME%
+CALL signcmd %RELDIR%netcoreapp2.1\%DLLNAME%
+CALL signcmd %RELDIR%netcoreapp2.2\%DLLNAME%
+CALL signcmd %RELDIR%netcoreapp3.1\%DLLNAME%
+CALL signcmd %RELDIR%netstandard2.0\%DLLNAME%
+CALL signcmd %RELDIR%netstandard2.1\%DLLNAME%
+dotnet pack %PRJFILE% --configuration Release --no-build
+CALL sign-package %RELDIR%*.nupkg
+CALL sign-package %RELDIR%*.snupkg
 
 ENDLOCAL

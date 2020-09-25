@@ -1,35 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFrameworks>net20;netstandard1.3;net35;net40;net45;net46;net47</TargetFrameworks>
-    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-    <Description>This library is a generic parser for the AngelCode BMFont format, supporting the text and XML versions of the format.</Description>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>cyopublic.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>False</DelaySign>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <TargetFrameworks>net48;net35;net40;net452;net462;net472;netcoreapp2.1;netcoreapp2.2;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Company>Cyotek Ltd</Company>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>cyopublic.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\res\icon.png" Link="icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <PackageReference Include="System.Xml.XmlDocument">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Xml.XPath.XmlDocument">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
-  </ItemGroup>
+  <PropertyGroup>
+    <!-- https://github.com/dotnet/msbuild/issues/1333#issuecomment-296346352 -->
+    <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net35'">$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
+  </PropertyGroup>
 </Project>
