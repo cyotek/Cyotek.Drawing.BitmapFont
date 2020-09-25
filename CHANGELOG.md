@@ -20,6 +20,7 @@
 
 * Added benchmark project
 * Added tests
+* Added SourceLink package support
 
 ### Fixed
 
