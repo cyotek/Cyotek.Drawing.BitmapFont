@@ -21,6 +21,7 @@ CALL signcmd %RELDIR%net48\%DLLNAME%
 CALL signcmd %RELDIR%netcoreapp2.1\%DLLNAME%
 CALL signcmd %RELDIR%netcoreapp2.2\%DLLNAME%
 CALL signcmd %RELDIR%netcoreapp3.1\%DLLNAME%
+CALL signcmd %RELDIR%netstandard1.3\%DLLNAME%
 CALL signcmd %RELDIR%netstandard2.0\%DLLNAME%
 CALL signcmd %RELDIR%netstandard2.1\%DLLNAME%
 dotnet pack %PRJFILE% --configuration Release --no-build

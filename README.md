@@ -195,6 +195,7 @@ containing the following targets.
 * .NET 4.6.2
 * .NET 4.7.2
 * .NET 4.8
+* .NET Standard 1.3
 * .NET Standard 2.0
 * .NET Standard 2.1
 * .NET Core 2.1
@@ -226,6 +227,6 @@ for the full text.
 [10]: https://github.com/cyotek/Cyotek.Drawing.BitmapFont
 
 [20]: https://www.cyotek.com/files/articleimages/bitmapfont1.png
-[21]: http://www.angelcode.com/products/bmfont/
+[21]: https://www.angelcode.com/products/bmfont/
 [22]: https://www.cyotek.com/files/articleimages/bitmapfont3.png
 [23]: https://www.cyotek.com/files/articleimages/bitmapfont2.png
