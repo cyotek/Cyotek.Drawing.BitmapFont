@@ -7,11 +7,10 @@
     <VersionSuffix>beta1</VersionSuffix>
     <Copyright>Copyright © 2012-2020 Cyotek Ltd. All Rights Reserved.</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/cyotek/Cyotek.Data.Nbt</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/cyotek/Cyotek.Drawing.BitmapFont</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/cyotek/Cyotek.Drawing.BitmapFont</RepositoryUrl>
     <Description>This library is a generic parser for the AngelCode BMFont format, supporting the text and XML versions of the format.</Description>
-    <Summary>Generic parser for the AngelCode BMFont format, supporting the text and XML versions of the format.</Summary>
     <PackageTags>angelcode;bitmapfont;bmfont;bitmap;font;cyotek</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
