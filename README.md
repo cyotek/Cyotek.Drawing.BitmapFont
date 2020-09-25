@@ -25,7 +25,7 @@ in due course.
 
 ## Getting the library
 
-The easiest way of obtaining the library is via NuGet
+The easiest way of obtaining the library is via [NuGet][4].
 
 > `Install-Package Cyotek.Drawing.BitmapFont`
 
@@ -186,7 +186,7 @@ Included in this repository is a sample WinForms application for viewing BMFont 
 
 .NET Framework 2.0 or later.
 
-Pre-built binaries are available via a signed [NuGet package][3]
+Pre-built binaries are available via a signed [NuGet package][4]
 containing the following targets.
 
 * .NET 3.5
