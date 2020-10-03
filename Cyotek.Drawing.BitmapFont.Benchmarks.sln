@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarks", "benchmarks\Benchmarks.csproj", "{5B961609-E7A3-4774-96C3-DACF481E4309}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cyotek.Drawing.BitmapFont", "src\Cyotek.Drawing.BitmapFont.csproj", "{A8E42972-0BC3-4F26-99DF-87B6379E875F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8E42972-0BC3-4F26-99DF-87B6379E875F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E42972-0BC3-4F26-99DF-87B6379E875F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E42972-0BC3-4F26-99DF-87B6379E875F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A8E42972-0BC3-4F26-99DF-87B6379E875F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A8E42972-0BC3-4F26-99DF-87B6379E875F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A8E42972-0BC3-4F26-99DF-87B6379E875F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E42972-0BC3-4F26-99DF-87B6379E875F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E42972-0BC3-4F26-99DF-87B6379E875F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A8E42972-0BC3-4F26-99DF-87B6379E875F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A8E42972-0BC3-4F26-99DF-87B6379E875F}.Release|x86.ActiveCfg = Release|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Debug|x86.Build.0 = Debug|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Release|x86.ActiveCfg = Release|Any CPU
+		{5B961609-E7A3-4774-96C3-DACF481E4309}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF63FD74-59FF-49B4-AABE-C24C67FBA2F9}
+	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\Cyotek.Drawing.BitmapFont.ndproj"
+	EndGlobalSection
+EndGlobal
