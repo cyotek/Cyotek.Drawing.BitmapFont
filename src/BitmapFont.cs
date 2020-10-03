@@ -1,14 +1,3 @@
-﻿/* AngelCode bitmap font parsing using C#
- * http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
- *
- * Copyright © 2012-2015 Cyotek Ltd.
- *
- * Licensed under the MIT License. See license.txt for the full text.
- */
-
-// Some documentation derived from the BMFont file format specification
-// http://www.angelcode.com/products/bmfont/doc/file_format.html
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +5,20 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Xml;
+
+// AngelCode bitmap font parsing using C#
+// https://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
+
+// Copyright © 2012-2020 Cyotek Ltd.
+
+// This work is licensed under the MIT License.
+// See LICENSE.TXT for the full text
+
+// Found this code useful?
+// https://www.paypal.me/cyotek
+
+// Some documentation derived from the BMFont file format specification
+// http://www.angelcode.com/products/bmfont/doc/file_format.html
 
 namespace Cyotek.Drawing.BitmapFont
 {
@@ -278,32 +281,25 @@ namespace Cyotek.Drawing.BitmapFont
     /// <param name="stream">The stream to load.</param>
     public virtual void Load(Stream stream)
     {
-      byte[] buffer;
-      string header;
-
       if (stream == null)
       {
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
       }
 
       if (!stream.CanSeek)
       {
-        throw new ArgumentException("Stream must be seekable in order to determine file format.", "stream");
+        throw new ArgumentException("Stream must be seekable in order to determine file format.", nameof(stream));
       }
 
-      // read the first five bytes so we can try and work out what the format is
-      // then reset the position so the format loaders can work
-      buffer = new byte[5];
-      stream.Read(buffer, 0, 5);
-      stream.Seek(0, SeekOrigin.Begin);
-      header = Encoding.ASCII.GetString(buffer);
-
-      switch (header)
+      switch (BitmapFontLoader.GetFileFormat(stream))
       {
-        case "info ":
+        case BitmapFontFormat.Binary:
+          this.LoadBinary(stream);
+          break;
+        case BitmapFontFormat.Text:
           this.LoadText(stream);
           break;
-        case "<?xml":
+        case BitmapFontFormat.Xml:
           this.LoadXml(stream);
           break;
         default:
@@ -321,7 +317,7 @@ namespace Cyotek.Drawing.BitmapFont
     {
       if (string.IsNullOrEmpty(fileName))
       {
-        throw new ArgumentNullException("fileName");
+        throw new ArgumentNullException(nameof(fileName));
       }
 
       if (!File.Exists(fileName))
@@ -335,6 +331,81 @@ namespace Cyotek.Drawing.BitmapFont
       }
 
       BitmapFontLoader.QualifyResourcePaths(this, Path.GetDirectoryName(fileName));
+    }
+
+    /// <summary>
+    /// Loads font information from the specified stream.
+    /// </summary>
+    /// <remarks>
+    /// The source data must be in BMFont binary format.
+    /// </remarks>
+    /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
+    /// <param name="stream">The stream containing the font to load.</param>
+    public void LoadBinary(Stream stream)
+    {
+      byte[] buffer;
+
+      if (stream == null)
+      {
+        throw new ArgumentNullException(nameof(stream));
+      }
+
+      buffer = new byte[1024];
+
+      // The first three bytes are the file identifier and must always be 66, 77, 70, or "BMF". The fourth byte gives the format version, currently it must be 3.
+
+      stream.Read(buffer, 0, 4);
+
+      if (buffer[0] != 66 || buffer[1] != 77 || buffer[2] != 70)
+      {
+        throw new InvalidDataException("Source steam does not contain BMFont data.");
+      }
+
+      if (buffer[3] != 3)
+      {
+        throw new InvalidDataException("Only BMFont version 3 format data is supported.");
+      }
+
+      // Following the first four bytes is a series of blocks with information. Each block starts with a one byte block type identifier, followed by a 4 byte integer that gives the size of the block, not including the block type identifier and the size value.
+
+      while (stream.Read(buffer, 0, 5) != 0)
+      {
+        byte blockType;
+        int blockSize;
+
+        blockType = buffer[0];
+
+        blockSize = WordHelpers.MakeDWordLittleEndian(buffer, 1);
+        if (blockSize > buffer.Length)
+        {
+          buffer = new byte[blockSize];
+        }
+
+        if (stream.Read(buffer, 0, blockSize) != blockSize)
+        {
+          throw new InvalidDataException("Failed to read enough data to fill block.");
+        }
+
+        switch (blockType)
+        {
+          case 1: // Block type 1: info
+            this.LoadInfoBlock(buffer);
+            break;
+          case 2: // Block type 2: common
+            this.LoadCommonBlock(buffer);
+            break;
+          case 3: // Block type 3: pages
+            this.LoadPagesBlock(buffer);
+            break;
+          case 4: // Block type 4: chars
+            this.LoadCharactersBlock(buffer, blockSize);
+            break;
+          case 5: // Block type 5: kerning pairs
+            this.LoadKerningsBlock(buffer, blockSize);
+            break;
+          default: throw new InvalidDataException("Block type " + blockType + " is not a valid BMFont block");
+        }
+      }
     }
 
     /// <summary>
@@ -362,7 +433,7 @@ namespace Cyotek.Drawing.BitmapFont
     {
       if (stream == null)
       {
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
       }
 
       using (TextReader reader = new StreamReader(stream))
@@ -388,7 +459,7 @@ namespace Cyotek.Drawing.BitmapFont
 
       if (reader == null)
       {
-        throw new ArgumentNullException("reader");
+        throw new ArgumentNullException(nameof(reader));
       }
 
       pageData = new SortedDictionary<int, Page>();
@@ -447,20 +518,20 @@ namespace Cyotek.Drawing.BitmapFont
                 Character charData;
 
                 charData = new Character
-                           {
-                             Char = (char)BitmapFontLoader.GetNamedInt(parts, "id"),
-                             Bounds =
+                {
+                  Char = (char)BitmapFontLoader.GetNamedInt(parts, "id"),
+                  Bounds =
                                new Rectangle(BitmapFontLoader.GetNamedInt(parts, "x"),
                                              BitmapFontLoader.GetNamedInt(parts, "y"),
                                              BitmapFontLoader.GetNamedInt(parts, "width"),
                                              BitmapFontLoader.GetNamedInt(parts, "height")),
-                             Offset =
+                  Offset =
                                new Point(BitmapFontLoader.GetNamedInt(parts, "xoffset"),
                                          BitmapFontLoader.GetNamedInt(parts, "yoffset")),
-                             XAdvance = BitmapFontLoader.GetNamedInt(parts, "xadvance"),
-                             TexturePage = BitmapFontLoader.GetNamedInt(parts, "page"),
-                             Channel = BitmapFontLoader.GetNamedInt(parts, "chnl")
-                           };
+                  XAdvance = BitmapFontLoader.GetNamedInt(parts, "xadvance"),
+                  TexturePage = BitmapFontLoader.GetNamedInt(parts, "page"),
+                  Channel = BitmapFontLoader.GetNamedInt(parts, "chnl")
+                };
                 charDictionary.Add(charData.Char, charData);
                 break;
               case "kerning":
@@ -517,7 +588,7 @@ namespace Cyotek.Drawing.BitmapFont
 
       if (reader == null)
       {
-        throw new ArgumentNullException("reader");
+        throw new ArgumentNullException(nameof(reader));
       }
 
       document = new XmlDocument();
@@ -618,7 +689,7 @@ namespace Cyotek.Drawing.BitmapFont
     {
       if (stream == null)
       {
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
       }
 
       using (TextReader reader = new StreamReader(stream))
@@ -734,6 +805,142 @@ namespace Cyotek.Drawing.BitmapFont
       }
 
       return result;
+    }
+
+    private string GetString(byte[] buffer, int index)
+    {
+      StringBuilder sb;
+
+      sb = new StringBuilder();
+
+      for (int i = index; i < buffer.Length; i++)
+      {
+        byte chr;
+
+        chr = buffer[i];
+
+        if (chr == 0)
+        {
+          break;
+        }
+
+        sb.Append((char)chr);
+      }
+
+      return sb.ToString();
+    }
+
+    private void LoadCharactersBlock(byte[] buffer, int blockSize)
+    {
+      IDictionary<char, Character> characters;
+      int charCount;
+
+      charCount = blockSize / 20; // The number of characters in the file can be computed by taking the size of the block and dividing with the size of the charInfo structure, i.e.: numChars = charsBlock.blockSize/20.
+      characters = new Dictionary<char, Character>(charCount);
+
+      for (int i = 0; i < charCount; i++)
+      {
+        int start;
+        Character chr;
+
+        start = i * 20;
+
+        chr = new Character
+        {
+          Char = (char)WordHelpers.MakeDWordLittleEndian(buffer, start),
+          Offset = new Point(WordHelpers.MakeWordLittleEndian(buffer, start + 12), WordHelpers.MakeWordLittleEndian(buffer, start + 14)),
+          Bounds = new Rectangle(WordHelpers.MakeWordLittleEndian(buffer, start + 4), WordHelpers.MakeWordLittleEndian(buffer, start + 6), WordHelpers.MakeWordLittleEndian(buffer, start + 8), WordHelpers.MakeWordLittleEndian(buffer, start + 10)),
+          XAdvance = WordHelpers.MakeWordLittleEndian(buffer, start + 16),
+          TexturePage = buffer[start + 18],
+          Channel = buffer[start + 19]
+        };
+
+        characters.Add(chr.Char, chr);
+      }
+
+      this.Characters = characters;
+    }
+
+    private void LoadCommonBlock(byte[] buffer)
+    {
+      this.LineHeight = WordHelpers.MakeWordLittleEndian(buffer, 0);
+      this.BaseHeight = WordHelpers.MakeWordLittleEndian(buffer, 2);
+      this.TextureSize = new Size(WordHelpers.MakeWordLittleEndian(buffer, 4), WordHelpers.MakeWordLittleEndian(buffer, 6));
+      this.Pages = new Page[WordHelpers.MakeWordLittleEndian(buffer, 8)];
+      this.AlphaChannel = buffer[11];
+      this.RedChannel = buffer[12];
+      this.GreenChannel = buffer[13];
+      this.BlueChannel = buffer[14];
+    }
+
+    private void LoadInfoBlock(byte[] buffer)
+    {
+      byte bits;
+
+      this.FontSize = WordHelpers.MakeWordLittleEndian(buffer, 0);
+      bits = buffer[2]; // 	bit 0: smooth, bit 1: unicode, bit 2: italic, bit 3: bold, bit 4: fixedHeigth, bits 5-7: reserved
+      this.Smoothed = (bits & (1 << 7)) != 0;
+      this.Unicode = (bits & (1 << 6)) != 0;
+      this.Italic = (bits & (1 << 5)) != 0;
+      this.Bold = (bits & (1 << 4)) != 0;
+      this.Charset = string.Empty; // TODO: buffer[3]
+      this.StretchedHeight = WordHelpers.MakeWordLittleEndian(buffer, 4);
+      this.SuperSampling = WordHelpers.MakeWordLittleEndian(buffer, 6);
+      this.Padding = new Padding(buffer[10], buffer[7], buffer[8], buffer[9]);
+      this.Spacing = new Point(buffer[11], buffer[12]);
+      this.OutlineSize = buffer[13];
+      this.FamilyName = this.GetString(buffer, 14);
+    }
+
+    private void LoadKerningsBlock(byte[] buffer, int blockSize)
+    {
+      Dictionary<Kerning, int> kernings;
+      int pairCount;
+
+      pairCount = blockSize / 10;
+      kernings = new Dictionary<Kerning, int>(pairCount);
+
+      for (int i = 0; i < pairCount; i++)
+      {
+        int start;
+        Kerning kerning;
+
+        start = i * 10;
+
+        kerning = new Kerning
+        {
+          FirstCharacter = (char)WordHelpers.MakeDWordLittleEndian(buffer, start),
+          SecondCharacter = (char)WordHelpers.MakeDWordLittleEndian(buffer, start + 4),
+          Amount = WordHelpers.MakeWordLittleEndian(buffer, start + 8),
+        };
+
+        kernings.Add(kerning, kerning.Amount);
+      }
+
+      this.Kernings = kernings;
+    }
+
+    private void LoadPagesBlock(byte[] buffer)
+    {
+      int nextStringStart;
+
+      nextStringStart = 0;
+
+      for (int i = 0; i < this.Pages.Length; i++)
+      {
+        Page page;
+        string name;
+
+        page = this.Pages[i];
+
+        name = this.GetString(buffer, nextStringStart);
+        nextStringStart += name.Length;
+
+        page.Id = i;
+        page.FileName = name;
+
+        this.Pages[i] = page;
+      }
     }
 
     #endregion
