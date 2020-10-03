@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Cyotek Ltd")]
 [assembly: AssemblyProduct("Cyotek Bitmap Font Parser")]
-[assembly: AssemblyCopyright("Copyright © 2017 Cyotek Ltd. All Rights Reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2017-2020 Cyotek Ltd. All Rights Reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

@@ -1,21 +1,24 @@
-﻿/* AngelCode bitmap font parsing using C#
- * http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
- *
- * Copyright © 2012-2017 Cyotek Ltd.
- *
- * Licensed under the MIT License. See LICENSE.txt for the full text.
- */
-
- using System;
+using System;
 using System.IO;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnostics.Windows.Configs;
+using BenchmarkDotNet.Jobs;
 using Cyotek.Drawing.BitmapFont;
+
+// AngelCode bitmap font parsing using C#
+// https://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
+
+// Copyright © 2017-2020 Cyotek Ltd.
+
+// This work is licensed under the MIT License.
+// See LICENSE.TXT for the full text
+
+// Found this code useful?
+// https://www.paypal.me/cyotek
 
 namespace Benchmarks
 {
   [MemoryDiagnoser]
-  //[InliningDiagnoser]
-  //[HardwareCounters(HardwareCounter.BranchMispredictions, HardwareCounter.BranchInstructions)]
   public class LoaderBenchmarks
   {
     #region Constants
@@ -33,6 +36,7 @@ namespace Benchmarks
       string path;
 
       path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
+
       _textFileName = Path.Combine(path, "arial-32bi.fnt");
       _xmlFileName = Path.Combine(path, "arial-32bi.xml.fnt");
     }
