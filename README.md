@@ -15,9 +15,8 @@ This library is a generic parser for the BMFont format - it
 doesn't include any rendering functionality or exotic references
 and should be usable in any version of .NET from 2.0 upwards.
 BMFont can generate fonts in three formats - binary, text and
-XML. The library currently supports text and XML, binary support
-is available on a custom branch and will be merged to the core
-in due course.
+XML. This library supports all three formats, although it can
+only read version 3 binary fonts.
 
 > Note: This library only provides parsing functionality for
 > loading font meta data. It is up to you to provide
@@ -48,11 +47,14 @@ There are four main classes used to describe a font:
 
 There is also a support class, `Padding`, as I didn't want to
 reference `System.Windows.Forms` in order to use its own and
-using a `Rectangle` instead would be confusing. You can replace
-with this `System.Windows.Forms` version if you want.
+using a `Rectangle` instead would be confusing.
 
-Finally, the `BitmapFontLoader` class is a static class that
-will handle the loading of your fonts.
+## What format should I use
+
+All 3 formats contain the same information so ultimately there
+is no real different in the 3. However, the binary format is is
+far more efficient in both storage space and load speed than the
+other formats.
 
 ## Loading a font
 
@@ -64,6 +66,31 @@ or  `BitmapFontLoader.LoadFontFromXmlFile`.
 
 Each of these functions returns a new `BitmapFont` object on
 success.
+
+Alternatively, you can create a `BitmapFont` instance yourself
+and call one one of the following methods:
+
+* `Load(string)` - attempts to auto-detect the format from the
+  specified file
+* `Load(Stream)` - attempts to auto-detect the format from the
+  specified `Stream`
+* `LoadBinary(Stream)` - loads a binary font from the given
+  `Stream`
+* `LoadText(string)` - loads a text font from the given string
+* `LoadText(Stream)` - loads a text font from the given `Stream`
+* `LoadText(TextReader)` - loads a text font from the given
+  `TextReader`
+* `LoadXml(string)` - loads a XML font from the given string
+* `LoadXml(Stream)` - loads a XML font from the given `Stream`
+* `LoadXml(TextReader)` - loads a XML font from the given
+  `TextReader`
+
+> Note: Load methods on the `BitmapFont` and `BitmapFontLoader`
+> classes that take a string filename will fully qualify the
+> `FileName` property of loaded `Page` instances. `Page`
+> instances for all other load methods will have a relative
+> filename and it is up to the calling application to fully
+> qualify the path as appropriate when loading textures.
 
 ## Using a font
 

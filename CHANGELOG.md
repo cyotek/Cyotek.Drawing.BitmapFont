@@ -7,6 +7,7 @@
 * Added deployment targets for .NET Framework 3.5, 4.0, 4.5.2,
   4.6.2, 4.6.2, 4.8, .NET Standard 2.0, .NET Standard 2.1, .NET
   Core 2.1, .NET Core 2.2, and .NET Core 3.0
+* Added support for BMFont version 3 binary fonts
 
 ### Removed
 

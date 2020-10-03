@@ -1,9 +1,7 @@
+using BenchmarkDotNet.Attributes;
+using Cyotek.Drawing.BitmapFont;
 using System;
 using System.IO;
-using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Diagnostics.Windows.Configs;
-using BenchmarkDotNet.Jobs;
-using Cyotek.Drawing.BitmapFont;
 
 // AngelCode bitmap font parsing using C#
 // https://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
@@ -21,15 +19,17 @@ namespace Benchmarks
   [MemoryDiagnoser]
   public class LoaderBenchmarks
   {
-    #region Constants
+    #region Private Fields
+
+    private readonly string _binaryFileName;
 
     private readonly string _textFileName;
 
     private readonly string _xmlFileName;
 
-    #endregion
+    #endregion Private Fields
 
-    #region Constructors
+    #region Public Constructors
 
     public LoaderBenchmarks()
     {
@@ -37,18 +37,37 @@ namespace Benchmarks
 
       path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
 
-      _textFileName = Path.Combine(path, "arial-32bi.fnt");
-      _xmlFileName = Path.Combine(path, "arial-32bi.xml.fnt");
+      _textFileName = Path.Combine(path, "text.fnt");
+      _xmlFileName = Path.Combine(path, "xml.fnt");
+      _binaryFileName = Path.Combine(path, "binary.fnt");
     }
 
-    #endregion
+    #endregion Public Constructors
 
-    #region Methods
+    #region Public Methods
 
     [Benchmark]
-    public BitmapFont LoadAuto()
+    public BitmapFont LoadAutoBinary()
+    {
+      return BitmapFontLoader.LoadFontFromFile(_binaryFileName);
+    }
+
+    [Benchmark]
+    public BitmapFont LoadAutoText()
+    {
+      return BitmapFontLoader.LoadFontFromFile(_textFileName);
+    }
+
+    [Benchmark]
+    public BitmapFont LoadAutoXml()
     {
       return BitmapFontLoader.LoadFontFromFile(_xmlFileName);
+    }
+
+    [Benchmark]
+    public BitmapFont LoadBinary()
+    {
+      return BitmapFontLoader.LoadFontFromTextFile(_binaryFileName);
     }
 
     [Benchmark]
@@ -63,6 +82,6 @@ namespace Benchmarks
       return BitmapFontLoader.LoadFontFromXmlFile(_xmlFileName);
     }
 
-    #endregion
+    #endregion Public Methods
   }
 }

@@ -1,15 +1,18 @@
-﻿/* AngelCode bitmap font parsing using C#
- * http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
- *
- * Copyright © 2012-2015 Cyotek Ltd.
- *
- * Licensed under the MIT License. See license.txt for the full text.
- */
-
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+
+// AngelCode bitmap font parsing using C#
+// https://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
+
+// Copyright © 2012-2020 Cyotek Ltd.
+
+// This work is licensed under the MIT License.
+// See LICENSE.TXT for the full text
+
+// Found this code useful?
+// https://www.paypal.me/cyotek
 
 namespace Cyotek.Drawing.BitmapFont
 {
@@ -18,7 +21,33 @@ namespace Cyotek.Drawing.BitmapFont
   /// </summary>
   public static class BitmapFontLoader
   {
-    #region Static Methods
+    #region Public Methods
+
+    public static BitmapFont LoadFontFromBinaryFile(string fileName)
+    {
+      BitmapFont font;
+
+      if (string.IsNullOrEmpty(fileName))
+      {
+        throw new ArgumentNullException(nameof(fileName));
+      }
+
+      if (!File.Exists(fileName))
+      {
+        throw new FileNotFoundException(string.Format("Cannot find file '{0}'", fileName), fileName);
+      }
+
+      font = new BitmapFont();
+
+      using (Stream stream = File.OpenRead(fileName))
+      {
+        font.LoadBinary(stream);
+      }
+
+      QualifyResourcePaths(font, Path.GetDirectoryName(fileName));
+
+      return font;
+    }
 
     /// <summary>
     /// Loads a bitmap font from a file, attempting to auto detect the file type
@@ -36,7 +65,7 @@ namespace Cyotek.Drawing.BitmapFont
 
       if (string.IsNullOrEmpty(fileName))
       {
-        throw new ArgumentNullException("fileName", "File name not specified");
+        throw new ArgumentNullException(nameof(fileName), "File name not specified");
       }
 
       if (!File.Exists(fileName))
@@ -44,27 +73,22 @@ namespace Cyotek.Drawing.BitmapFont
         throw new FileNotFoundException(string.Format("Cannot find file '{0}'", fileName), fileName);
       }
 
-      using (FileStream file = File.OpenRead(fileName))
+      switch (BitmapFontLoader.GetFileFormat(fileName))
       {
-        using (TextReader reader = new StreamReader(file))
-        {
-          string line;
+        case BitmapFontFormat.Binary:
+          result = BitmapFontLoader.LoadFontFromBinaryFile(fileName);
+          break;
 
-          line = reader.ReadLine();
+        case BitmapFontFormat.Text:
+          result = BitmapFontLoader.LoadFontFromTextFile(fileName);
+          break;
 
-          if (line.StartsWith("info "))
-          {
-            result = LoadFontFromTextFile(fileName);
-          }
-          else if (line.StartsWith("<?xml"))
-          {
-            result = LoadFontFromXmlFile(fileName);
-          }
-          else
-          {
-            throw new InvalidDataException("Unknown file format.");
-          }
-        }
+        case BitmapFontFormat.Xml:
+          result = BitmapFontLoader.LoadFontFromXmlFile(fileName);
+          break;
+
+        default:
+          throw new InvalidDataException("Unknown file format.");
       }
 
       return result;
@@ -85,7 +109,7 @@ namespace Cyotek.Drawing.BitmapFont
 
       if (string.IsNullOrEmpty(fileName))
       {
-        throw new ArgumentNullException("fileName");
+        throw new ArgumentNullException(nameof(fileName));
       }
 
       if (!File.Exists(fileName))
@@ -120,7 +144,7 @@ namespace Cyotek.Drawing.BitmapFont
 
       if (string.IsNullOrEmpty(fileName))
       {
-        throw new ArgumentNullException("fileName");
+        throw new ArgumentNullException(nameof(fileName));
       }
 
       if (!File.Exists(fileName))
@@ -140,6 +164,51 @@ namespace Cyotek.Drawing.BitmapFont
       return font;
     }
 
+    #endregion Public Methods
+
+    #region Internal Methods
+
+    internal static BitmapFontFormat GetFileFormat(string fileName)
+    {
+      using (Stream stream = File.OpenRead(fileName))
+      {
+        return BitmapFontLoader.GetFileFormat(stream);
+      }
+    }
+
+    internal static BitmapFontFormat GetFileFormat(Stream stream)
+    {
+      BitmapFontFormat result;
+      byte[] buffer;
+      long position;
+
+      position = stream.Position;
+      buffer = new byte[5];
+
+      stream.Read(buffer, 0, 5);
+
+      stream.Position = position;
+
+      if (buffer[0] == 66 && buffer[1] == 77 && buffer[2] == 70 && buffer[3] == 3)
+      {
+        result = BitmapFontFormat.Binary;
+      }
+      else if (buffer[0] == 105 && buffer[1] == 110 && buffer[2] == 102 && buffer[3] == 111 && buffer[4] == 32)
+      {
+        result = BitmapFontFormat.Text;
+      }
+      else if (buffer[0] == 60 && buffer[1] == 63 && buffer[2] == 120 && buffer[3] == 109 && buffer[4] == 108)
+      {
+        result = BitmapFontFormat.Xml;
+      }
+      else
+      {
+        result = BitmapFontFormat.None;
+      }
+
+      return result;
+    }
+
     /// <summary>
     /// Returns a boolean from an array of name/value pairs.
     /// </summary>
@@ -149,14 +218,15 @@ namespace Cyotek.Drawing.BitmapFont
     /// <returns></returns>
     internal static bool GetNamedBool(string[] parts, string name, bool defaultValue = false)
     {
-      var s = GetNamedString(parts, name);
+      string s = GetNamedString(parts, name);
 
       bool result;
       int v;
       if (int.TryParse(s, out v))
       {
         result = v > 0;
-      } else
+      }
+      else
       {
         result = defaultValue;
       }
@@ -173,7 +243,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <returns></returns>
     internal static int GetNamedInt(string[] parts, string name, int defaultValue = 0)
     {
-      var s = GetNamedString(parts, name);
+      string s = GetNamedString(parts, name);
 
       int result;
       if (!int.TryParse(s, out result))
@@ -241,12 +311,12 @@ namespace Cyotek.Drawing.BitmapFont
       parts = s.Split(',');
 
       return new Padding()
-             {
-               Left = Convert.ToInt32(parts[3].Trim()),
-               Top = Convert.ToInt32(parts[0].Trim()),
-               Right = Convert.ToInt32(parts[1].Trim()),
-               Bottom = Convert.ToInt32(parts[2].Trim())
-             };
+      {
+        Left = Convert.ToInt32(parts[3].Trim()),
+        Top = Convert.ToInt32(parts[0].Trim()),
+        Right = Convert.ToInt32(parts[1].Trim()),
+        Bottom = Convert.ToInt32(parts[2].Trim())
+      };
     }
 
     /// <summary>
@@ -261,10 +331,10 @@ namespace Cyotek.Drawing.BitmapFont
       parts = s.Split(',');
 
       return new Point()
-             {
-               X = Convert.ToInt32(parts[0].Trim()),
-               Y = Convert.ToInt32(parts[1].Trim())
-             };
+      {
+        X = Convert.ToInt32(parts[0].Trim()),
+        Y = Convert.ToInt32(parts[1].Trim())
+      };
     }
 
     /// <summary>
@@ -371,6 +441,6 @@ namespace Cyotek.Drawing.BitmapFont
       return result;
     }
 
-    #endregion
+    #endregion Internal Methods
   }
 }
