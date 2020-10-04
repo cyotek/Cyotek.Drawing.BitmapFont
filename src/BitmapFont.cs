@@ -456,6 +456,7 @@ namespace Cyotek.Drawing.BitmapFont
       IDictionary<Kerning, int> kerningDictionary;
       IDictionary<char, Character> charDictionary;
       string line;
+      string[] parts;
 
       if (reader == null)
       {
@@ -465,6 +466,7 @@ namespace Cyotek.Drawing.BitmapFont
       pageData = new SortedDictionary<int, Page>();
       kerningDictionary = new Dictionary<Kerning, int>();
       charDictionary = new Dictionary<char, Character>();
+      parts = new string[13]; // the maximum number of fields on a single line;
 
       do
       {
@@ -472,45 +474,44 @@ namespace Cyotek.Drawing.BitmapFont
 
         if (line != null)
         {
-          string[] parts;
-
-          parts = BitmapFontLoader.Split(line, ' ');
+          BitmapFontLoader.Split(line, parts);
 
           if (parts.Length != 0)
           {
             switch (parts[0])
             {
               case "info":
-                this.FamilyName = BitmapFontLoader.GetNamedString(parts, "face");
-                this.FontSize = BitmapFontLoader.GetNamedInt(parts, "size");
-                this.Bold = BitmapFontLoader.GetNamedBool(parts, "bold");
-                this.Italic = BitmapFontLoader.GetNamedBool(parts, "italic");
-                this.Charset = BitmapFontLoader.GetNamedString(parts, "charset");
-                this.Unicode = BitmapFontLoader.GetNamedBool(parts, "unicode");
-                this.StretchedHeight = BitmapFontLoader.GetNamedInt(parts, "stretchH");
-                this.Smoothed = BitmapFontLoader.GetNamedBool(parts, "smooth");
-                this.SuperSampling = BitmapFontLoader.GetNamedInt(parts, "aa");
-                this.Padding = BitmapFontLoader.ParsePadding(BitmapFontLoader.GetNamedString(parts, "padding"));
-                this.Spacing = BitmapFontLoader.ParsePoint(BitmapFontLoader.GetNamedString(parts, "spacing"));
-                this.OutlineSize = BitmapFontLoader.GetNamedInt(parts, "outline");
+                this.FamilyName = BitmapFontLoader.GetNamedString(parts, "face", 1);
+                this.FontSize = BitmapFontLoader.GetNamedInt(parts, "size", 2);
+                this.Bold = BitmapFontLoader.GetNamedBool(parts, "bold", 3);
+                this.Italic = BitmapFontLoader.GetNamedBool(parts, "italic", 4);
+                this.Charset = BitmapFontLoader.GetNamedString(parts, "charset", 5);
+                this.Unicode = BitmapFontLoader.GetNamedBool(parts, "unicode", 6);
+                this.StretchedHeight = BitmapFontLoader.GetNamedInt(parts, "stretchH", 7);
+                this.Smoothed = BitmapFontLoader.GetNamedBool(parts, "smooth", 8);
+                this.SuperSampling = BitmapFontLoader.GetNamedInt(parts, "aa", 9);
+                this.Padding = BitmapFontLoader.ParsePadding(BitmapFontLoader.GetNamedString(parts, "padding", 10));
+                this.Spacing = BitmapFontLoader.ParsePoint(BitmapFontLoader.GetNamedString(parts, "spacing", 11));
+                this.OutlineSize = BitmapFontLoader.GetNamedInt(parts, "outline", 12);
                 break;
               case "common":
-                this.LineHeight = BitmapFontLoader.GetNamedInt(parts, "lineHeight");
-                this.BaseHeight = BitmapFontLoader.GetNamedInt(parts, "base");
-                this.TextureSize = new Size(BitmapFontLoader.GetNamedInt(parts, "scaleW"),
-                                            BitmapFontLoader.GetNamedInt(parts, "scaleH"));
-                this.Packed = BitmapFontLoader.GetNamedBool(parts, "packed");
-                this.AlphaChannel = BitmapFontLoader.GetNamedInt(parts, "alphaChnl");
-                this.RedChannel = BitmapFontLoader.GetNamedInt(parts, "redChnl");
-                this.GreenChannel = BitmapFontLoader.GetNamedInt(parts, "greenChnl");
-                this.BlueChannel = BitmapFontLoader.GetNamedInt(parts, "blueChnl");
+                this.LineHeight = BitmapFontLoader.GetNamedInt(parts, "lineHeight", 1);
+                this.BaseHeight = BitmapFontLoader.GetNamedInt(parts, "base", 2);
+                this.TextureSize = new Size(BitmapFontLoader.GetNamedInt(parts, "scaleW", 3),
+                                            BitmapFontLoader.GetNamedInt(parts, "scaleH", 4));
+                // TODO: 5 is pages, which we currently don't directly read
+                this.Packed = BitmapFontLoader.GetNamedBool(parts, "packed", 6);
+                this.AlphaChannel = BitmapFontLoader.GetNamedInt(parts, "alphaChnl", 7);
+                this.RedChannel = BitmapFontLoader.GetNamedInt(parts, "redChnl", 8);
+                this.GreenChannel = BitmapFontLoader.GetNamedInt(parts, "greenChnl", 9);
+                this.BlueChannel = BitmapFontLoader.GetNamedInt(parts, "blueChnl", 10);
                 break;
               case "page":
                 int id;
                 string name;
 
-                id = BitmapFontLoader.GetNamedInt(parts, "id");
-                name = BitmapFontLoader.GetNamedString(parts, "file");
+                id = BitmapFontLoader.GetNamedInt(parts, "id", 1);
+                name = BitmapFontLoader.GetNamedString(parts, "file", 2);
 
                 pageData.Add(id, new Page(id, name));
                 break;
@@ -519,27 +520,27 @@ namespace Cyotek.Drawing.BitmapFont
 
                 charData = new Character
                 {
-                  Char = (char)BitmapFontLoader.GetNamedInt(parts, "id"),
+                  Char = (char)BitmapFontLoader.GetNamedInt(parts, "id", 1),
                   Bounds =
-                               new Rectangle(BitmapFontLoader.GetNamedInt(parts, "x"),
-                                             BitmapFontLoader.GetNamedInt(parts, "y"),
-                                             BitmapFontLoader.GetNamedInt(parts, "width"),
-                                             BitmapFontLoader.GetNamedInt(parts, "height")),
+                               new Rectangle(BitmapFontLoader.GetNamedInt(parts, "x", 2),
+                                             BitmapFontLoader.GetNamedInt(parts, "y", 3),
+                                             BitmapFontLoader.GetNamedInt(parts, "width", 4),
+                                             BitmapFontLoader.GetNamedInt(parts, "height", 5)),
                   Offset =
-                               new Point(BitmapFontLoader.GetNamedInt(parts, "xoffset"),
-                                         BitmapFontLoader.GetNamedInt(parts, "yoffset")),
-                  XAdvance = BitmapFontLoader.GetNamedInt(parts, "xadvance"),
-                  TexturePage = BitmapFontLoader.GetNamedInt(parts, "page"),
-                  Channel = BitmapFontLoader.GetNamedInt(parts, "chnl")
+                               new Point(BitmapFontLoader.GetNamedInt(parts, "xoffset", 6),
+                                         BitmapFontLoader.GetNamedInt(parts, "yoffset", 7)),
+                  XAdvance = BitmapFontLoader.GetNamedInt(parts, "xadvance", 8),
+                  TexturePage = BitmapFontLoader.GetNamedInt(parts, "page", 9),
+                  Channel = BitmapFontLoader.GetNamedInt(parts, "chnl", 10)
                 };
                 charDictionary.Add(charData.Char, charData);
                 break;
               case "kerning":
                 Kerning key;
 
-                key = new Kerning((char)BitmapFontLoader.GetNamedInt(parts, "first"),
-                                  (char)BitmapFontLoader.GetNamedInt(parts, "second"),
-                                  BitmapFontLoader.GetNamedInt(parts, "amount"));
+                key = new Kerning((char)BitmapFontLoader.GetNamedInt(parts, "first", 1),
+                                  (char)BitmapFontLoader.GetNamedInt(parts, "second", 2),
+                                  BitmapFontLoader.GetNamedInt(parts, "amount", 3));
 
                 if (!kerningDictionary.ContainsKey(key))
                 {

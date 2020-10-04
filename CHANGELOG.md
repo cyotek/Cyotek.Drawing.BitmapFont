@@ -9,6 +9,10 @@
   Core 2.1, .NET Core 2.2, and .NET Core 3.0
 * Added support for BMFont version 3 binary fonts
 
+### Changed
+
+* Performance improvements when loading text fonts
+
 ### Removed
 
 * Due to switch to SDK projects, the .NET Framework 2.0 target
