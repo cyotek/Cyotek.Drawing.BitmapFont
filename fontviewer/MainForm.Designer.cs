@@ -101,7 +101,7 @@
       this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
       this.openToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
       this.openToolStripMenuItem.Text = "&Open...";
-      this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+      this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
       // 
       // toolStripMenuItem1
       // 
@@ -113,7 +113,7 @@
       this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
       this.exitToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
       this.exitToolStripMenuItem.Text = "E&xit";
-      this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+      this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
       // 
       // toolStrip
       // 
@@ -132,7 +132,7 @@
       this.openToolStripButton.Name = "openToolStripButton";
       this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
       this.openToolStripButton.Text = "Open";
-      this.openToolStripButton.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+      this.openToolStripButton.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
       // 
       // statusStrip
       // 
@@ -186,7 +186,7 @@
       this.charListBox.Name = "charListBox";
       this.charListBox.Size = new System.Drawing.Size(275, 289);
       this.charListBox.TabIndex = 0;
-      this.charListBox.SelectedIndexChanged += new System.EventHandler(this.charListBox_SelectedIndexChanged);
+      this.charListBox.SelectedIndexChanged += new System.EventHandler(this.CharListBox_SelectedIndexChanged);
       // 
       // fontPropertyGrid
       // 
@@ -293,7 +293,7 @@
       this.pageImageBox.Name = "pageImageBox";
       this.pageImageBox.Size = new System.Drawing.Size(533, 164);
       this.pageImageBox.TabIndex = 0;
-      this.pageImageBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pageImageBox_Paint);
+      this.pageImageBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PageImageBox_Paint);
       // 
       // previewTabPage
       // 
@@ -334,7 +334,7 @@
       this.previewTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
       this.previewTextBox.Size = new System.Drawing.Size(533, 100);
       this.previewTextBox.TabIndex = 0;
-      this.previewTextBox.TextChanged += new System.EventHandler(this.previewTextBox_TextChanged);
+      this.previewTextBox.TextChanged += new System.EventHandler(this.PreviewTextBox_TextChanged);
       // 
       // previewImageBox
       // 

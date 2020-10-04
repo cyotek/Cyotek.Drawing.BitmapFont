@@ -1,4 +1,4 @@
-﻿/* AngelCode bitmap font parsing using C#
+/* AngelCode bitmap font parsing using C#
  * http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
  *
  * Copyright © 2012-2015 Cyotek Ltd.
@@ -41,7 +41,7 @@ namespace BitmapFontViewer
 
     #region Methods
 
-    private void charListBox_SelectedIndexChanged(object sender, EventArgs e)
+    private void CharListBox_SelectedIndexChanged(object sender, EventArgs e)
     {
       Character character;
 
@@ -62,7 +62,8 @@ namespace BitmapFontViewer
     private void DrawCharacter(Graphics g, Character character, int x, int y)
     {
       g.DrawImage(_textures[character.TexturePage],
-                  new RectangleF(x, y, character.Bounds.Width, character.Bounds.Height), character.Bounds,
+                  new RectangleF(x, y, character.Width, character.Height),
+                  new Rectangle(character.X, character.Y, character.Width, character.Height),
                   GraphicsUnit.Pixel);
     }
 
@@ -105,7 +106,7 @@ namespace BitmapFontViewer
                 data = _font[character];
                 kerning = _font.GetKerning(previousCharacter, character);
 
-                this.DrawCharacter(g, data, x + data.Offset.X + kerning, y + data.Offset.Y);
+                this.DrawCharacter(g, data, x + data.XOffset + kerning, y + data.YOffset);
 
                 x += data.XAdvance + kerning;
                 break;
@@ -119,7 +120,7 @@ namespace BitmapFontViewer
       }
     }
 
-    private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+    private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
     {
       this.Close();
     }
@@ -181,10 +182,10 @@ namespace BitmapFontViewer
       }
 
       // force any preview text to update
-      this.previewTextBox_TextChanged(previewTextBox, EventArgs.Empty);
+      this.PreviewTextBox_TextChanged(previewTextBox, EventArgs.Empty);
     }
 
-    private void openToolStripMenuItem_Click(object sender, EventArgs e)
+    private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
     {
       if (openFileDialog.ShowDialog(this) == DialogResult.OK)
       {
@@ -192,18 +193,18 @@ namespace BitmapFontViewer
       }
     }
 
-    private void pageImageBox_Paint(object sender, PaintEventArgs e)
+    private void PageImageBox_Paint(object sender, PaintEventArgs e)
     {
-      if (!_currentCharacter.Bounds.IsEmpty)
+      if (_currentCharacter.Width > 0 && _currentCharacter.Height > 0)
       {
         using (Pen pen = new Pen(Color.Red))
         {
-          e.Graphics.DrawRectangle(pen, pageImageBox.GetOffsetRectangle(_currentCharacter.Bounds));
+          e.Graphics.DrawRectangle(pen, pageImageBox.GetOffsetRectangle(_currentCharacter.X, _currentCharacter.Y, _currentCharacter.Width, _currentCharacter.Height));
         }
       }
     }
 
-    private void previewTextBox_TextChanged(object sender, EventArgs e)
+    private void PreviewTextBox_TextChanged(object sender, EventArgs e)
     {
       if (previewImageBox.Image != null)
       {
@@ -227,7 +228,8 @@ namespace BitmapFontViewer
         characterImageBox.Image = null;
       }
 
-      image = new Bitmap(character.Bounds.Width, character.Bounds.Height);
+      image = new Bitmap(character.Width, character.Height);
+
       using (Graphics g = Graphics.FromImage(image))
       {
         this.DrawCharacter(g, character, 0, 0);

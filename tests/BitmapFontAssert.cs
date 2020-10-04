@@ -1,13 +1,16 @@
-﻿/* AngelCode bitmap font parsing using C#
- * http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
- *
- * Copyright © 2012-2017 Cyotek Ltd.
- *
- * Licensed under the MIT License. See LICENSE.txt for the full text.
- */
-
- using System.Collections.Generic;
+using System.Collections.Generic;
 using NUnit.Framework;
+
+// AngelCode bitmap font parsing using C#
+// https://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
+
+// Copyright © 2017-2020 Cyotek Ltd.
+
+// This work is licensed under the MIT License.
+// See LICENSE.TXT for the full text
+
+// Found this code useful?
+// https://www.paypal.me/cyotek
 
 namespace Cyotek.Drawing.BitmapFont.Tests
 {
@@ -60,12 +63,11 @@ namespace Cyotek.Drawing.BitmapFont.Tests
 
       foreach (KeyValuePair<Kerning, int> expectedPair in expected)
       {
-        int actualKerning;
         int expectedKerning;
 
         expectedKerning = expectedPair.Value;
 
-        if (!actual.TryGetValue(expectedPair.Key, out actualKerning))
+        if (!actual.TryGetValue(expectedPair.Key, out int actualKerning))
         {
           Assert.Fail("Kerning for pair '" + expectedPair.Key.FirstCharacter + " ','" + expectedPair.Key.SecondCharacter + "' not found.");
         }
@@ -98,12 +100,11 @@ namespace Cyotek.Drawing.BitmapFont.Tests
 
       foreach (KeyValuePair<char, Character> expectedPair in expected)
       {
-        Character actualCharacter;
         Character expectedCharacter;
 
         expectedCharacter = expectedPair.Value;
 
-        if (!actual.TryGetValue(expectedPair.Key, out actualCharacter))
+        if (!actual.TryGetValue(expectedPair.Key, out Character actualCharacter))
         {
           Assert.Fail("Character '" + expectedPair.Key + "' not found.");
         }
@@ -120,8 +121,12 @@ namespace Cyotek.Drawing.BitmapFont.Tests
       Assert.AreEqual(expected.Channel, actual.Channel, nameof(Character.Channel) + " does not match.");
       Assert.AreEqual(expected.TexturePage, actual.TexturePage, nameof(Character.TexturePage) + " does not match.");
       Assert.AreEqual(expected.XAdvance, actual.XAdvance, nameof(Character.XAdvance) + " does not match.");
-      Assert.AreEqual(expected.Offset, actual.Offset, nameof(Character.Offset) + " does not match.");
-      Assert.AreEqual(expected.Bounds, actual.Bounds, nameof(Character.Bounds) + " does not match.");
+      Assert.AreEqual(expected.XOffset, actual.XOffset, nameof(Character.XOffset) + " does not match.");
+      Assert.AreEqual(expected.YOffset, actual.YOffset, nameof(Character.YOffset) + " does not match.");
+      Assert.AreEqual(expected.X, actual.X, nameof(Character.X) + " does not match.");
+      Assert.AreEqual(expected.Y, actual.Y, nameof(Character.Y) + " does not match.");
+      Assert.AreEqual(expected.Width, actual.Width, nameof(Character.Width) + " does not match.");
+      Assert.AreEqual(expected.Height, actual.Height, nameof(Character.Height) + " does not match.");
     }
 
     #endregion
