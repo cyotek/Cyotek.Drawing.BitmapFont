@@ -1,6 +1,7 @@
 # C# AngelCode bitmap font parsing
 
 [![Build status][1]][2]
+![CodeQL][11]
 [![NuGet][3]][4]
 [![Donate][5]][6]
 
@@ -28,8 +29,8 @@ The easiest way of obtaining the library is via [NuGet][4].
 
 > `Install-Package Cyotek.Drawing.BitmapFont`
 
-If you don't use NuGet, then release binaries can be obtained
-from the [GitHub Releases page][9]
+If you don't use NuGet, pre-compiled binaries can be obtained
+from the [GitHub Releases page][9].
 
 Of course, you can always grab [the source][10] and build it
 yourself!
@@ -83,8 +84,10 @@ AMD FX(tm)-6300, 1 CPU, 6 logical and 3 physical cores
 To load a font, call `BitmapFontLoader.LoadFontFromFile`. This
 will attempt to auto detect the file type and load a font.
 Alternatively, if you already know the file type in advance,
-then call the variations `BitmapFontLoader.LoadFontFromTextFile`
-or  `BitmapFontLoader.LoadFontFromXmlFile`.
+then call the variations
+`BitmapFontLoader.LoadFontFromBinaryFile`,
+`BitmapFontLoader.LoadFontFromTextFile` or
+`BitmapFontLoader.LoadFontFromXmlFile`.
 
 Each of these functions returns a new `BitmapFont` object on
 success.
@@ -221,7 +224,8 @@ properties it contains:
 
 ![This sample application loads and previews bitmap fonts][23]
 
-Included in this repository is a sample WinForms application for viewing BMFont font definitions.
+Included in this repository is a sample WinForms application for
+viewing BMFont font definitions.
 
 > Note: All of the fonts I have created and tested were
 > unpacked. The font viewer does not support packed textures,
@@ -261,7 +265,7 @@ library.
 
 ## License
 
-Tis source is licensed under the MIT license. See `LICENSE.txt`
+This source is licensed under the MIT license. See `LICENSE.txt`
 for the full text.
 
 [1]: https://ci.appveyor.com/api/projects/status/pb7dnev46i9dwg1j?svg=true
@@ -274,6 +278,7 @@ for the full text.
 [8]: https://github.com/cyotek/Cyotek.Drawing.BitmapFont/pulls
 [9]: https://github.com/cyotek/Cyotek.Drawing.BitmapFont/releases
 [10]: https://github.com/cyotek/Cyotek.Drawing.BitmapFont
+[11]: https://github.com/cyotek/Cyotek.Drawing.BitmapFont/workflows/CodeQL/badge.svg
 
 [20]: https://www.cyotek.com/files/articleimages/bitmapfont1.png
 [21]: https://www.angelcode.com/products/bmfont/

@@ -5,8 +5,8 @@
 ### Added
 
 * Added deployment targets for .NET Framework 3.5, 4.0, 4.5.2,
-  4.6.2, 4.6.2, 4.8, .NET Standard 2.0, .NET Standard 2.1, .NET
-  Core 2.1, .NET Core 2.2, and .NET Core 3.0
+  4.6.2, 4.6.2, 4.8, .NET Standard 1.3, .NET Standard 2.0, .NET
+  Standard 2.1, .NET Core 2.1, .NET Core 2.2, and .NET Core 3.1
 * Added support for BMFont version 3 binary fonts
 * Added additional constructor to `Character` struct
 * Added `X`, `Y`, `Width` and `Height` properties to the
@@ -20,12 +20,12 @@
 
 ### Deprecated
 
-* The `Bounds` property has been deprecated and will be removed
-  in a future version. The `X`, `Y`, `Width` and `Height`
+* The `Character.Bounds` property has been deprecated and will
+  be removed in a future version. The `X`, `Y`, `Width` and
+  `Height` properties should be used instead
+* The `Character.Offset` property has been deprecated and will
+  be removed in a future version. The `OffsetX` and `OffsetY`
   properties should be used instead
-* The `Offset` property has been deprecated and will be removed
-  in a future version. The `OffsetX` and `OffsetY` properties
-  should be used instead
 
 ### Removed
 
