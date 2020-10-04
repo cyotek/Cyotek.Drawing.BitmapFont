@@ -67,7 +67,7 @@ namespace Benchmarks
     [Benchmark]
     public BitmapFont LoadBinary()
     {
-      return BitmapFontLoader.LoadFontFromTextFile(_binaryFileName);
+      return BitmapFontLoader.LoadFontFromBinaryFile(_binaryFileName);
     }
 
     [Benchmark]
