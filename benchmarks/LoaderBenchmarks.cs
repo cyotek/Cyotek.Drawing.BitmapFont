@@ -25,6 +25,10 @@ namespace Benchmarks
 
     private readonly string _textFileName;
 
+    private readonly V1TextLoader _v1TextLoader;
+
+    private readonly V1XmlLoader _v1XmlLoader;
+
     private readonly string _xmlFileName;
 
     #endregion Private Fields
@@ -34,6 +38,9 @@ namespace Benchmarks
     public LoaderBenchmarks()
     {
       string path;
+
+      _v1TextLoader = new V1TextLoader();
+      _v1XmlLoader = new V1XmlLoader();
 
       path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
 
@@ -80,6 +87,18 @@ namespace Benchmarks
     public BitmapFont LoadXml()
     {
       return BitmapFontLoader.LoadFontFromXmlFile(_xmlFileName);
+    }
+
+    [Benchmark]
+    public BitmapFont V1LoadText()
+    {
+      return _v1TextLoader.Load(_textFileName);
+    }
+
+    [Benchmark]
+    public BitmapFont V1LoadXml()
+    {
+      return _v1XmlLoader.Load(_xmlFileName);
     }
 
     #endregion Public Methods

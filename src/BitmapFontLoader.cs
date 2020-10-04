@@ -216,22 +216,9 @@ namespace Cyotek.Drawing.BitmapFont
     /// <param name="name">The name of the value to return.</param>
     /// <param name="defaultValue">Default value(if the key doesnt exist or can't be parsed)</param>
     /// <returns></returns>
-    internal static bool GetNamedBool(string[] parts, string name, bool defaultValue = false)
+    internal static bool GetNamedBool(string[] parts, string name, int estimatedStart)
     {
-      string s = GetNamedString(parts, name);
-
-      bool result;
-      int v;
-      if (int.TryParse(s, out v))
-      {
-        result = v > 0;
-      }
-      else
-      {
-        result = defaultValue;
-      }
-
-      return result;
+      return int.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), out int v) && v > 0;
     }
 
     /// <summary>
@@ -241,17 +228,9 @@ namespace Cyotek.Drawing.BitmapFont
     /// <param name="name">The name of the value to return.</param>
     /// <param name="defaultValue">Default value(if the key doesnt exist or can't be parsed)</param>
     /// <returns></returns>
-    internal static int GetNamedInt(string[] parts, string name, int defaultValue = 0)
+    internal static int GetNamedInt(string[] parts, string name, int estimatedStart)
     {
-      string s = GetNamedString(parts, name);
-
-      int result;
-      if (!int.TryParse(s, out result))
-      {
-        result = defaultValue;
-      }
-
-      return result;
+      return int.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), out int result) ? result : 0;
     }
 
     /// <summary>
@@ -259,44 +238,61 @@ namespace Cyotek.Drawing.BitmapFont
     /// </summary>
     /// <param name="parts">The array of parts.</param>
     /// <param name="name">The name of the value to return.</param>
-    /// <returns></returns>
-    internal static string GetNamedString(string[] parts, string name)
+    /// <param name="estimatedStart">The position in the value</param>
+    internal static string GetNamedString(string[] parts, string name, int estimatedStart)
     {
       string result;
 
-      result = string.Empty;
-
-      foreach (string part in parts)
+      if (string.Equals(BitmapFontLoader.GetValueName(parts[estimatedStart]), name, StringComparison.OrdinalIgnoreCase))
       {
-        int nameEndIndex;
+        // we have a value right were we expected it
+        result = BitmapFontLoader.SanitizeValue(parts[estimatedStart].Substring(name.Length + 1));
+      }
+      else
+      {
+        // we didn't find a value at our estimated position
+        // so enumerate the full array looking for the value
 
-        nameEndIndex = part.IndexOf('=');
-        if (nameEndIndex != -1)
+        result = string.Empty;
+
+        for (int i = 0; i < parts.Length; i++)
         {
-          string namePart;
-          string valuePart;
+          string part;
 
-          namePart = part.Substring(0, nameEndIndex);
-          valuePart = part.Substring(nameEndIndex + 1);
+          part = parts[i];
 
-          if (string.Equals(name, namePart, StringComparison.OrdinalIgnoreCase))
+          if (string.Equals(BitmapFontLoader.GetValueName(part), name, StringComparison.OrdinalIgnoreCase))
           {
-            int length;
-
-            length = valuePart.Length;
-
-            if (length > 1 && valuePart[0] == '"' && valuePart[length - 1] == '"')
-            {
-              valuePart = valuePart.Substring(1, length - 2);
-            }
-
-            result = valuePart;
+            result = BitmapFontLoader.SanitizeValue(part.Substring(name.Length + 1));
             break;
           }
         }
       }
 
       return result;
+    }
+
+    private static string SanitizeValue(string value)
+    {
+      int valueLength;
+
+      valueLength = value.Length;
+
+      if (valueLength > 1 && value[0] == '"' && value[valueLength - 1] == '"')
+      {
+        value = value.Substring(1, valueLength - 2);
+      }
+
+      return value;
+    }
+
+    private static string GetValueName(string nameValuePair)
+    {
+      int nameEndIndex;
+
+      nameEndIndex = nameValuePair.IndexOf('=');
+
+      return nameEndIndex != -1 ? nameValuePair.Substring(0, nameEndIndex) : null;
     }
 
     /// <summary>
@@ -306,17 +302,21 @@ namespace Cyotek.Drawing.BitmapFont
     /// <returns></returns>
     internal static Padding ParsePadding(string s)
     {
-      string[] parts;
+      int rStart;
+      int bStart;
+      int lStart;
 
-      parts = s.Split(',');
+      rStart = s.IndexOf(',');
+      bStart = s.IndexOf(',', rStart + 1);
+      lStart = s.IndexOf(',', bStart + 1);
 
-      return new Padding()
-      {
-        Left = Convert.ToInt32(parts[3].Trim()),
-        Top = Convert.ToInt32(parts[0].Trim()),
-        Right = Convert.ToInt32(parts[1].Trim()),
-        Bottom = Convert.ToInt32(parts[2].Trim())
-      };
+      return new Padding
+      (
+        int.Parse(s.Substring(lStart + 1)),
+        int.Parse(s.Substring(0, rStart)),
+        int.Parse(s.Substring(rStart + 1, bStart - rStart - 1)),
+        int.Parse(s.Substring(bStart + 1, lStart - bStart - 1))
+      );
     }
 
     /// <summary>
@@ -326,15 +326,15 @@ namespace Cyotek.Drawing.BitmapFont
     /// <returns></returns>
     internal static Point ParsePoint(string s)
     {
-      string[] parts;
+      int yStart;
 
-      parts = s.Split(',');
+      yStart = s.IndexOf(',');
 
-      return new Point()
-      {
-        X = Convert.ToInt32(parts[0].Trim()),
-        Y = Convert.ToInt32(parts[1].Trim())
-      };
+      return new Point
+      (
+        int.Parse(s.Substring(0, yStart)),
+        int.Parse(s.Substring(yStart + 1))
+      );
     }
 
     /// <summary>
@@ -364,63 +364,55 @@ namespace Cyotek.Drawing.BitmapFont
     /// Splits the specified string using a given delimiter, ignoring any instances of the delimiter as part of a quoted string.
     /// </summary>
     /// <param name="s">The string to split.</param>
-    /// <param name="delimiter">The delimiter.</param>
+    /// <param name="buffer">The output buffer where split strings will be placed. Must be larged enough to handle the contents of <paramref name="s"/>.</param>
     /// <returns></returns>
-    internal static string[] Split(string s, char delimiter)
+    internal static void Split(string s, string[] buffer)
     {
-      string[] results;
+      int index;
+      int partStart;
+      char delimiter;
 
-      if (s.IndexOf('"') != -1)
+      index = 0;
+      partStart = -1;
+      delimiter = ' ';
+
+      do
       {
-        List<string> parts;
-        int partStart;
+        int partEnd;
+        int quoteStart;
+        int quoteEnd;
+        int length;
+        bool hasQuotes;
 
-        partStart = -1;
-        parts = new List<string>();
+        quoteStart = s.IndexOf('"', partStart + 1);
+        quoteEnd = s.IndexOf('"', quoteStart + 1);
+        partEnd = s.IndexOf(delimiter, partStart + 1);
 
-        do
+        if (partEnd == -1)
         {
-          int partEnd;
-          int quoteStart;
-          int quoteEnd;
-          bool hasQuotes;
+          partEnd = s.Length;
+        }
 
-          quoteStart = s.IndexOf('"', partStart + 1);
-          quoteEnd = s.IndexOf('"', quoteStart + 1);
-          partEnd = s.IndexOf(delimiter, partStart + 1);
+        hasQuotes = quoteStart != -1 && partEnd > quoteStart && partEnd < quoteEnd;
+        if (hasQuotes)
+        {
+          partEnd = s.IndexOf(delimiter, quoteEnd + 1);
+        }
 
-          if (partEnd == -1)
-          {
-            partEnd = s.Length;
-          }
+        length = partEnd - partStart - 1;
+        if (length > 0)
+        {
+          buffer[index] = s.Substring(partStart + 1, length);
+          index++;
+        }
 
-          hasQuotes = quoteStart != -1 && partEnd > quoteStart && partEnd < quoteEnd;
-          if (hasQuotes)
-          {
-            partEnd = s.IndexOf(delimiter, quoteEnd + 1);
-          }
+        if (hasQuotes)
+        {
+          partStart = partEnd - 1;
+        }
 
-          parts.Add(s.Substring(partStart + 1, partEnd - partStart - 1));
-
-          if (hasQuotes)
-          {
-            partStart = partEnd - 1;
-          }
-
-          partStart = s.IndexOf(delimiter, partStart + 1);
-        } while (partStart != -1);
-
-        results = parts.ToArray();
-      }
-      else
-      {
-        results = s.Split(new char[]
-                          {
-                            delimiter
-                          }, StringSplitOptions.RemoveEmptyEntries);
-      }
-
-      return results;
+        partStart = s.IndexOf(delimiter, partStart + 1);
+      } while (partStart != -1);
     }
 
     /// <summary>

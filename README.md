@@ -56,6 +56,28 @@ is no real different in the 3. However, the binary format is is
 far more efficient in both storage space and load speed than the
 other formats.
 
+The following benchmarks were generated via
+[BenchmarkDotNet][24], using a font with 424 characters. Loading
+binary fonts is the clear winner, both in terms of speed and
+allocations, followed by text and finally XML.
+
+```
+BenchmarkDotNet=v0.12.1, OS=Windows 10.0.18363.1082 (1909/November2018Update/19H2)
+AMD FX(tm)-6300, 1 CPU, 6 logical and 3 physical cores
+.NET Core SDK=3.1.402
+  [Host]     : .NET Core 3.1.8 (CoreCLR 4.700.20.41105, CoreFX 4.700.20.41903), X64 RyuJIT
+  DefaultJob : .NET Core 3.1.8 (CoreCLR 4.700.20.41105, CoreFX 4.700.20.41903), X64 RyuJIT
+```
+
+|         Method |       Mean |    Error |   StdDev |    Gen 0 |   Gen 1 | Gen 2 |  Allocated |
+|--------------- |-----------:|---------:|---------:|---------:|--------:|------:|-----------:|
+|     LoadBinary |   135.8 us |  1.41 us |  1.32 us |  10.0098 |       - |     - |   41.33 KB |
+| LoadAutoBinary |   227.1 us |  3.60 us |  4.29 us |  10.9863 |  0.2441 |     - |   45.55 KB |
+|       LoadText | 2,734.2 us |  6.06 us |  5.37 us | 164.0625 |  3.9063 |     - |  674.75 KB |
+|   LoadAutoText | 2,778.5 us | 14.96 us | 13.26 us | 164.0625 |       - |     - |  678.98 KB |
+|        LoadXml | 3,216.2 us | 18.86 us | 14.73 us | 144.5313 | 70.3125 |     - |  780.34 KB |
+|    LoadAutoXml | 3,298.5 us | 26.18 us | 24.49 us | 152.3438 | 74.2188 |     - |  784.53 KB |
+
 ## Loading a font
 
 To load a font, call `BitmapFontLoader.LoadFontFromFile`. This
@@ -257,3 +279,4 @@ for the full text.
 [21]: https://www.angelcode.com/products/bmfont/
 [22]: https://www.cyotek.com/files/articleimages/bitmapfont3.png
 [23]: https://www.cyotek.com/files/articleimages/bitmapfont2.png
+[24]: https://benchmarkdotnet.org/
