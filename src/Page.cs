@@ -1,12 +1,15 @@
-﻿/* AngelCode bitmap font parsing using C#
- * http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
- *
- * Copyright © 2012-2015 Cyotek Ltd.
- *
- * Licensed under the MIT License. See license.txt for the full text.
- */
-
 using System.IO;
+
+// AngelCode bitmap font parsing using C#
+// https://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
+
+// Copyright © 2012-2020 Cyotek Ltd.
+
+// This work is licensed under the MIT License.
+// See LICENSE.TXT for the full text
+
+// Found this code useful?
+// https://www.paypal.me/cyotek
 
 namespace Cyotek.Drawing.BitmapFont
 {
@@ -15,7 +18,15 @@ namespace Cyotek.Drawing.BitmapFont
   /// </summary>
   public struct Page
   {
-    #region Constructors
+    #region Private Fields
+
+    private string _fileName;
+
+    private int _id;
+
+    #endregion Private Fields
+
+    #region Public Constructors
 
     /// <summary>
     /// Creates a texture page using the specified ID and source file name.
@@ -25,13 +36,13 @@ namespace Cyotek.Drawing.BitmapFont
     public Page(int id, string fileName)
       : this()
     {
-      this.FileName = fileName;
-      this.Id = id;
+      _fileName = fileName;
+      _id = id;
     }
 
-    #endregion
+    #endregion Public Constructors
 
-    #region Properties
+    #region Public Properties
 
     /// <summary>
     /// Gets or sets the filename of the source texture image.
@@ -39,7 +50,11 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The name of the file containing the source texture image.
     /// </value>
-    public string FileName { get; set; }
+    public string FileName
+    {
+      get { return _fileName; }
+      set { _fileName = value; }
+    }
 
     /// <summary>
     /// Gets or sets the page identifier.
@@ -47,11 +62,15 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The page identifier.
     /// </value>
-    public int Id { get; set; }
+    public int Id
+    {
+      get { return _id; }
+      set { _id = value; }
+    }
 
-    #endregion
+    #endregion Public Properties
 
-    #region Methods
+    #region Public Methods
 
     /// <summary>
     /// Returns the fully qualified type name of this instance.
@@ -62,9 +81,9 @@ namespace Cyotek.Drawing.BitmapFont
     /// <seealso cref="M:System.ValueType.ToString()"/>
     public override string ToString()
     {
-      return string.Format("{0} ({1})", this.Id, Path.GetFileName(this.FileName));
+      return string.Format("{0} ({1})", _id, Path.GetFileName(_fileName));
     }
 
-    #endregion
+    #endregion Public Methods
   }
 }

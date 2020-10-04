@@ -8,10 +8,24 @@
   4.6.2, 4.6.2, 4.8, .NET Standard 2.0, .NET Standard 2.1, .NET
   Core 2.1, .NET Core 2.2, and .NET Core 3.0
 * Added support for BMFont version 3 binary fonts
+* Added additional constructor to `Character` struct
+* Added `X`, `Y`, `Width` and `Height` properties to the
+  `Character` class
+* Added `OffsetX` and `OffsetY` properties to the `Character`
+  class
 
 ### Changed
 
 * Performance improvements when loading text fonts
+
+### Deprecated
+
+* The `Bounds` property has been deprecated and will be removed
+  in a future version. The `X`, `Y`, `Width` and `Height`
+  properties should be used instead
+* The `Offset` property has been deprecated and will be removed
+  in a future version. The `OffsetX` and `OffsetY` properties
+  should be used instead
 
 ### Removed
 

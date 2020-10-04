@@ -182,8 +182,8 @@ namespace Cyotek.Drawing.BitmapFont
       byte[] buffer;
       long position;
 
-      position = stream.Position;
       buffer = new byte[5];
+      position = stream.Position;
 
       stream.Read(buffer, 0, 5);
 
