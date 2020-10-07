@@ -230,7 +230,31 @@ namespace Cyotek.Drawing.BitmapFont
     /// <returns></returns>
     internal static int GetNamedInt(string[] parts, string name, int estimatedStart)
     {
-      return int.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), out int result) ? result : 0;
+      return int.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), out int result) ? result : default;
+    }
+
+    /// <summary>
+    /// Returns a byte from an array of name/value pairs.
+    /// </summary>
+    /// <param name="parts">The array of parts.</param>
+    /// <param name="name">The name of the value to return.</param>
+    /// <param name="defaultValue">Default value(if the key doesnt exist or can't be parsed)</param>
+    /// <returns></returns>
+    internal static short GetNamedShort(string[] parts, string name, int estimatedStart)
+    {
+      return short.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), out short result) ? result : default;
+    }
+
+    /// <summary>
+    /// Returns a byte from an array of name/value pairs.
+    /// </summary>
+    /// <param name="parts">The array of parts.</param>
+    /// <param name="name">The name of the value to return.</param>
+    /// <param name="defaultValue">Default value(if the key doesnt exist or can't be parsed)</param>
+    /// <returns></returns>
+    internal static byte GetNamedByte(string[] parts, string name, int estimatedStart)
+    {
+      return byte.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), out byte result) ? result : default;
     }
 
     /// <summary>
@@ -312,10 +336,10 @@ namespace Cyotek.Drawing.BitmapFont
 
       return new Padding
       (
-        int.Parse(s.Substring(lStart + 1)),
-        int.Parse(s.Substring(0, rStart)),
-        int.Parse(s.Substring(rStart + 1, bStart - rStart - 1)),
-        int.Parse(s.Substring(bStart + 1, lStart - bStart - 1))
+        byte.Parse(s.Substring(lStart + 1)),
+        byte.Parse(s.Substring(0, rStart)),
+        byte.Parse(s.Substring(rStart + 1, bStart - rStart - 1)),
+        byte.Parse(s.Substring(bStart + 1, lStart - bStart - 1))
       );
     }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -29,8 +29,8 @@ namespace Benchmarks
     public BitmapFont Load(TextReader reader)
     {
       BitmapFont result;
-      IDictionary<int, Page> pageData;
-      IDictionary<Kerning, int> kerningDictionary;
+      IDictionary<byte, Page> pageData;
+      IDictionary<Kerning, short> kerningDictionary;
       IDictionary<char, Character> charDictionary;
       string line;
 
@@ -41,8 +41,8 @@ namespace Benchmarks
         throw new ArgumentNullException("reader");
       }
 
-      pageData = new SortedDictionary<int, Page>();
-      kerningDictionary = new Dictionary<Kerning, int>();
+      pageData = new SortedDictionary<byte, Page>();
+      kerningDictionary = new Dictionary<Kerning, short>();
       charDictionary = new Dictionary<char, Character>();
 
       do
@@ -66,28 +66,28 @@ namespace Benchmarks
                 result.Italic = this.GetNamedBool(parts, "italic");
                 result.Charset = this.GetNamedString(parts, "charset");
                 result.Unicode = this.GetNamedBool(parts, "unicode");
-                result.StretchedHeight = this.GetNamedInt(parts, "stretchH");
+                result.StretchedHeight = this.GetNamedShort(parts, "stretchH");
                 result.Smoothed = this.GetNamedBool(parts, "smooth");
-                result.SuperSampling = this.GetNamedInt(parts, "aa");
+                result.SuperSampling = this.GetNamedShort(parts, "aa");
                 result.Padding = this.ParsePadding(this.GetNamedString(parts, "padding"));
                 result.Spacing = this.ParsePoint(this.GetNamedString(parts, "spacing"));
-                result.OutlineSize = this.GetNamedInt(parts, "outline");
+                result.OutlineSize = this.GetNamedByte(parts, "outline");
                 break;
               case "common":
-                result.LineHeight = this.GetNamedInt(parts, "lineHeight");
-                result.BaseHeight = this.GetNamedInt(parts, "base");
+                result.LineHeight = this.GetNamedShort(parts, "lineHeight");
+                result.BaseHeight = this.GetNamedShort(parts, "base");
                 result.TextureSize = new Size(this.GetNamedInt(parts, "scaleW"), this.GetNamedInt(parts, "scaleH"));
                 result.Packed = this.GetNamedBool(parts, "packed");
-                result.AlphaChannel = this.GetNamedInt(parts, "alphaChnl");
-                result.RedChannel = this.GetNamedInt(parts, "redChnl");
-                result.GreenChannel = this.GetNamedInt(parts, "greenChnl");
-                result.BlueChannel = this.GetNamedInt(parts, "blueChnl");
+                result.AlphaChannel = this.GetNamedByte(parts, "alphaChnl");
+                result.RedChannel = this.GetNamedByte(parts, "redChnl");
+                result.GreenChannel = this.GetNamedByte(parts, "greenChnl");
+                result.BlueChannel = this.GetNamedByte(parts, "blueChnl");
                 break;
               case "page":
-                int id;
+                byte id;
                 string name;
 
-                id = this.GetNamedInt(parts, "id");
+                id = this.GetNamedByte(parts, "id");
                 name = this.GetNamedString(parts, "file");
 
                 pageData.Add(id, new Page(id, name));
@@ -100,16 +100,16 @@ namespace Benchmarks
                              Char = (char)this.GetNamedInt(parts, "id"),
                              Bounds = new Rectangle(this.GetNamedInt(parts, "x"), this.GetNamedInt(parts, "y"), this.GetNamedInt(parts, "width"), this.GetNamedInt(parts, "height")),
                              Offset = new Point(this.GetNamedInt(parts, "xoffset"), this.GetNamedInt(parts, "yoffset")),
-                             XAdvance = this.GetNamedInt(parts, "xadvance"),
-                             TexturePage = this.GetNamedInt(parts, "page"),
-                             Channel = this.GetNamedInt(parts, "chnl")
+                             XAdvance = this.GetNamedShort(parts, "xadvance"),
+                             TexturePage = this.GetNamedByte(parts, "page"),
+                             Channel = this.GetNamedByte(parts, "chnl")
                            };
                 charDictionary.Add(charData.Char, charData);
                 break;
               case "kerning":
                 Kerning key;
 
-                key = new Kerning((char)this.GetNamedInt(parts, "first"), (char)this.GetNamedInt(parts, "second"), this.GetNamedInt(parts, "amount"));
+                key = new Kerning((char)this.GetNamedInt(parts, "first"), (char)this.GetNamedInt(parts, "second"), this.GetNamedShort(parts, "amount"));
 
                 if (!kerningDictionary.ContainsKey(key))
                 {
@@ -166,6 +166,32 @@ namespace Benchmarks
 
       int result;
       if (!int.TryParse(s, out result))
+      {
+        result = defaultValue;
+      }
+
+      return result;
+    }
+
+    internal short GetNamedShort(string[] parts, string name, short defaultValue = 0)
+    {
+      string s = this.GetNamedString(parts, name);
+
+      short result;
+      if (!short.TryParse(s, out result))
+      {
+        result = defaultValue;
+      }
+
+      return result;
+    }
+
+    internal byte GetNamedByte(string[] parts, string name, byte defaultValue = 0)
+    {
+      string s = this.GetNamedString(parts, name);
+
+      byte result;
+      if (!byte.TryParse(s, out result))
       {
         result = defaultValue;
       }
@@ -231,10 +257,10 @@ namespace Benchmarks
 
       return new Padding()
              {
-               Left = Convert.ToInt32(parts[3].Trim()),
-               Top = Convert.ToInt32(parts[0].Trim()),
-               Right = Convert.ToInt32(parts[1].Trim()),
-               Bottom = Convert.ToInt32(parts[2].Trim())
+               Left = Convert.ToByte(parts[3].Trim()),
+               Top = Convert.ToByte(parts[0].Trim()),
+               Right = Convert.ToByte(parts[1].Trim()),
+               Bottom = Convert.ToByte(parts[2].Trim())
              };
     }
 

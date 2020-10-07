@@ -22,7 +22,7 @@ namespace Cyotek.Drawing.BitmapFont
 
     private string _fileName;
 
-    private int _id;
+    private byte _id;
 
     #endregion Private Fields
 
@@ -33,7 +33,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// </summary>
     /// <param name="id">The identifier.</param>
     /// <param name="fileName">Filename of the texture image.</param>
-    public Page(int id, string fileName)
+    public Page(byte id, string fileName)
       : this()
     {
       _fileName = fileName;
@@ -62,7 +62,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The page identifier.
     /// </value>
-    public int Id
+    public byte Id
     {
       get { return _id; }
       set { _id = value; }

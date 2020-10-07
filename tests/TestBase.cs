@@ -49,7 +49,7 @@ namespace Cyotek.Drawing.BitmapFont.Tests
                          {
                            new Page(0, Path.Combine(this.DataPath, "simple_0.png"))
                          },
-          Kernings = new Dictionary<Kerning, int>
+          Kernings = new Dictionary<Kerning, short>
                             {
                               {
                                 new Kerning('f', 'f', -1), -1

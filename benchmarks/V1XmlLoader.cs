@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -34,8 +34,8 @@ namespace Benchmarks
       result = new BitmapFont();
 
       XmlDocument document;
-      IDictionary<int, Page> pageData;
-      IDictionary<Kerning, int> kerningDictionary;
+      IDictionary<byte, Page> pageData;
+      IDictionary<Kerning, short> kerningDictionary;
       IDictionary<char, Character> charDictionary;
       XmlNode root;
       XmlNode properties;
@@ -46,8 +46,8 @@ namespace Benchmarks
       }
 
       document = new XmlDocument();
-      pageData = new SortedDictionary<int, Page>();
-      kerningDictionary = new Dictionary<Kerning, int>();
+      pageData = new SortedDictionary<byte, Page>();
+      kerningDictionary = new Dictionary<Kerning, short>();
       charDictionary = new Dictionary<char, Character>();
 
       document.Load(reader);
@@ -60,24 +60,24 @@ namespace Benchmarks
       result.Bold = Convert.ToInt32(properties.Attributes["bold"].Value) != 0;
       result.Italic = Convert.ToInt32(properties.Attributes["italic"].Value) != 0;
       result.Unicode = Convert.ToInt32(properties.Attributes["unicode"].Value) != 0;
-      result.StretchedHeight = Convert.ToInt32(properties.Attributes["stretchH"].Value);
+      result.StretchedHeight = Convert.ToInt16(properties.Attributes["stretchH"].Value);
       result.Charset = properties.Attributes["charset"].Value;
       result.Smoothed = Convert.ToInt32(properties.Attributes["smooth"].Value) != 0;
-      result.SuperSampling = Convert.ToInt32(properties.Attributes["aa"].Value);
+      result.SuperSampling = Convert.ToInt16(properties.Attributes["aa"].Value);
       result.Padding = this.ParsePadding(properties.Attributes["padding"].Value);
       result.Spacing = this.ParsePoint(properties.Attributes["spacing"].Value);
-      result.OutlineSize = Convert.ToInt32(properties.Attributes["outline"].Value);
+      result.OutlineSize = Convert.ToByte(properties.Attributes["outline"].Value);
 
       // common attributes
       properties = root.SelectSingleNode("common");
-      result.BaseHeight = Convert.ToInt32(properties.Attributes["base"].Value);
-      result.LineHeight = Convert.ToInt32(properties.Attributes["lineHeight"].Value);
+      result.BaseHeight = Convert.ToInt16(properties.Attributes["base"].Value);
+      result.LineHeight = Convert.ToInt16(properties.Attributes["lineHeight"].Value);
       result.TextureSize = new Size(Convert.ToInt32(properties.Attributes["scaleW"].Value), Convert.ToInt32(properties.Attributes["scaleH"].Value));
       result.Packed = Convert.ToInt32(properties.Attributes["packed"].Value) != 0;
-      result.AlphaChannel = Convert.ToInt32(properties.Attributes["alphaChnl"].Value);
-      result.RedChannel = Convert.ToInt32(properties.Attributes["redChnl"].Value);
-      result.GreenChannel = Convert.ToInt32(properties.Attributes["greenChnl"].Value);
-      result.BlueChannel = Convert.ToInt32(properties.Attributes["blueChnl"].Value);
+      result.AlphaChannel = Convert.ToByte(properties.Attributes["alphaChnl"].Value);
+      result.RedChannel = Convert.ToByte(properties.Attributes["redChnl"].Value);
+      result.GreenChannel = Convert.ToByte(properties.Attributes["greenChnl"].Value);
+      result.BlueChannel = Convert.ToByte(properties.Attributes["blueChnl"].Value);
 
       // load texture information
       foreach (XmlNode node in root.SelectNodes("pages/page"))
@@ -85,7 +85,7 @@ namespace Benchmarks
         Page page;
 
         page = new Page();
-        page.Id = Convert.ToInt32(node.Attributes["id"].Value);
+        page.Id = Convert.ToByte(node.Attributes["id"].Value);
         page.FileName = node.Attributes["file"].Value;
 
         pageData.Add(page.Id, page);
@@ -101,9 +101,9 @@ namespace Benchmarks
         character.Char = (char)Convert.ToInt32(node.Attributes["id"].Value);
         character.Bounds = new Rectangle(Convert.ToInt32(node.Attributes["x"].Value), Convert.ToInt32(node.Attributes["y"].Value), Convert.ToInt32(node.Attributes["width"].Value), Convert.ToInt32(node.Attributes["height"].Value));
         character.Offset = new Point(Convert.ToInt32(node.Attributes["xoffset"].Value), Convert.ToInt32(node.Attributes["yoffset"].Value));
-        character.XAdvance = Convert.ToInt32(node.Attributes["xadvance"].Value);
-        character.TexturePage = Convert.ToInt32(node.Attributes["page"].Value);
-        character.Channel = Convert.ToInt32(node.Attributes["chnl"].Value);
+        character.XAdvance = Convert.ToInt16(node.Attributes["xadvance"].Value);
+        character.TexturePage = Convert.ToByte(node.Attributes["page"].Value);
+        character.Channel = Convert.ToByte(node.Attributes["chnl"].Value);
 
         charDictionary.Add(character.Char, character);
       }
@@ -114,7 +114,7 @@ namespace Benchmarks
       {
         Kerning key;
 
-        key = new Kerning((char)Convert.ToInt32(node.Attributes["first"].Value), (char)Convert.ToInt32(node.Attributes["second"].Value), Convert.ToInt32(node.Attributes["amount"].Value));
+        key = new Kerning((char)Convert.ToInt32(node.Attributes["first"].Value), (char)Convert.ToInt32(node.Attributes["second"].Value), Convert.ToInt16(node.Attributes["amount"].Value));
 
         if (!kerningDictionary.ContainsKey(key))
         {
@@ -139,10 +139,10 @@ namespace Benchmarks
 
       return new Padding()
              {
-               Left = Convert.ToInt32(parts[3].Trim()),
-               Top = Convert.ToInt32(parts[0].Trim()),
-               Right = Convert.ToInt32(parts[1].Trim()),
-               Bottom = Convert.ToInt32(parts[2].Trim())
+               Left = Convert.ToByte(parts[3].Trim()),
+               Top = Convert.ToByte(parts[0].Trim()),
+               Right = Convert.ToByte(parts[1].Trim()),
+               Bottom = Convert.ToByte(parts[2].Trim())
              };
     }
 

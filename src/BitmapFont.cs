@@ -33,11 +33,11 @@ namespace Cyotek.Drawing.BitmapFont
     /// </summary>
     public const int NoMaxWidth = -1;
 
-    private int _alphaChannel;
+    private byte _alphaChannel;
 
-    private int _baseHeight;
+    private short _baseHeight;
 
-    private int _blueChannel;
+    private byte _blueChannel;
 
     private bool _bold;
 
@@ -49,15 +49,15 @@ namespace Cyotek.Drawing.BitmapFont
 
     private int _fontSize;
 
-    private int _greenChannel;
+    private byte _greenChannel;
 
     private bool _italic;
 
-    private IDictionary<Kerning, int> _kernings;
+    private IDictionary<Kerning, short> _kernings;
 
-    private int _lineHeight;
+    private short _lineHeight;
 
-    private int _outlineSize;
+    private byte _outlineSize;
 
     private bool _packed;
 
@@ -65,15 +65,15 @@ namespace Cyotek.Drawing.BitmapFont
 
     private Page[] _pages;
 
-    private int _redChannel;
+    private byte _redChannel;
 
     private bool _smoothed;
 
     private Point _spacing;
 
-    private int _stretchedHeight;
+    private short _stretchedHeight;
 
-    private int _superSampling;
+    private short _superSampling;
 
     private Size _textureSize;
 
@@ -86,7 +86,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// The alpha channel.
     /// </value>
     /// <remarks>Set to 0 if the channel holds the glyph data, 1 if it holds the outline, 2 if it holds the glyph and the outline, 3 if its set to zero, and 4 if its set to one.</remarks>
-    public int AlphaChannel
+    public byte AlphaChannel
     {
       get { return _alphaChannel; }
       set { _alphaChannel = value; }
@@ -98,7 +98,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The number of pixels from the absolute top of the line to the base of the characters.
     /// </value>
-    public int BaseHeight
+    public short BaseHeight
     {
       get { return _baseHeight; }
       set { _baseHeight = value; }
@@ -111,7 +111,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// The blue channel.
     /// </value>
     /// <remarks>Set to 0 if the channel holds the glyph data, 1 if it holds the outline, 2 if it holds the glyph and the outline, 3 if its set to zero, and 4 if its set to one.</remarks>
-    public int BlueChannel
+    public byte BlueChannel
     {
       get { return _blueChannel; }
       set { _blueChannel = value; }
@@ -184,7 +184,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// The green channel.
     /// </value>
     /// <remarks>Set to 0 if the channel holds the glyph data, 1 if it holds the outline, 2 if it holds the glyph and the outline, 3 if its set to zero, and 4 if its set to one.</remarks>
-    public int GreenChannel
+    public byte GreenChannel
     {
       get { return _greenChannel; }
       set { _greenChannel = value; }
@@ -208,7 +208,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The character kernings for the font.
     /// </value>
-    public IDictionary<Kerning, int> Kernings
+    public IDictionary<Kerning, short> Kernings
     {
       get { return _kernings; }
       set { _kernings = value; }
@@ -220,7 +220,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The distance in pixels between each line of text.
     /// </value>
-    public int LineHeight
+    public short LineHeight
     {
       get { return _lineHeight; }
       set { _lineHeight = value; }
@@ -232,7 +232,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The outline thickness for the characters.
     /// </value>
-    public int OutlineSize
+    public byte OutlineSize
     {
       get { return _outlineSize; }
       set { _outlineSize = value; }
@@ -284,7 +284,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// The red channel.
     /// </value>
     /// <remarks>Set to 0 if the channel holds the glyph data, 1 if it holds the outline, 2 if it holds the glyph and the outline, 3 if its set to zero, and 4 if its set to one.</remarks>
-    public int RedChannel
+    public byte RedChannel
     {
       get { return _redChannel; }
       set { _redChannel = value; }
@@ -321,7 +321,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// The font height stretch.
     /// </value>
     /// <remarks>100% means no stretch.</remarks>
-    public int StretchedHeight
+    public short StretchedHeight
     {
       get { return _stretchedHeight; }
       set { _stretchedHeight = value; }
@@ -334,7 +334,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// The super sampling level of the font.
     /// </value>
     /// <remarks>A value of 1 indicates no super sampling is in use.</remarks>
-    public int SuperSampling
+    public short SuperSampling
     {
       get { return _superSampling; }
       set { _superSampling = value; }
@@ -400,13 +400,13 @@ namespace Cyotek.Drawing.BitmapFont
     /// <returns>
     /// The spacing between the specified characters.
     /// </returns>
-    public int GetKerning(char previous, char current)
+    public short GetKerning(char previous, char current)
     {
       Kerning key;
 
       key = new Kerning(previous, current, 0);
 
-      if (!_kernings.TryGetValue(key, out int result))
+      if (!_kernings.TryGetValue(key, out short result))
       {
         result = 0;
       }
@@ -603,8 +603,8 @@ namespace Cyotek.Drawing.BitmapFont
     /// <param name="reader">The <strong>TextReader</strong> used to feed the data into the font.</param>
     public virtual void LoadText(TextReader reader)
     {
-      IDictionary<int, Page> pageData;
-      IDictionary<Kerning, int> kerningDictionary;
+      IDictionary<byte, Page> pageData;
+      IDictionary<Kerning, short> kerningDictionary;
       IDictionary<char, Character> charDictionary;
       string line;
       string[] parts;
@@ -614,8 +614,8 @@ namespace Cyotek.Drawing.BitmapFont
         throw new ArgumentNullException(nameof(reader));
       }
 
-      pageData = new SortedDictionary<int, Page>();
-      kerningDictionary = new Dictionary<Kerning, int>();
+      pageData = new SortedDictionary<byte, Page>();
+      kerningDictionary = new Dictionary<Kerning, short>();
       charDictionary = new Dictionary<char, Character>();
       parts = new string[13]; // the maximum number of fields on a single line;
 
@@ -638,32 +638,32 @@ namespace Cyotek.Drawing.BitmapFont
                 _italic = BitmapFontLoader.GetNamedBool(parts, "italic", 4);
                 _charset = BitmapFontLoader.GetNamedString(parts, "charset", 5);
                 _unicode = BitmapFontLoader.GetNamedBool(parts, "unicode", 6);
-                _stretchedHeight = BitmapFontLoader.GetNamedInt(parts, "stretchH", 7);
+                _stretchedHeight = BitmapFontLoader.GetNamedShort(parts, "stretchH", 7);
                 _smoothed = BitmapFontLoader.GetNamedBool(parts, "smooth", 8);
-                _superSampling = BitmapFontLoader.GetNamedInt(parts, "aa", 9);
+                _superSampling = BitmapFontLoader.GetNamedShort(parts, "aa", 9);
                 _padding = BitmapFontLoader.ParsePadding(BitmapFontLoader.GetNamedString(parts, "padding", 10));
                 _spacing = BitmapFontLoader.ParsePoint(BitmapFontLoader.GetNamedString(parts, "spacing", 11));
-                _outlineSize = BitmapFontLoader.GetNamedInt(parts, "outline", 12);
+                _outlineSize = BitmapFontLoader.GetNamedByte(parts, "outline", 12);
                 break;
 
               case "common":
-                _lineHeight = BitmapFontLoader.GetNamedInt(parts, "lineHeight", 1);
-                _baseHeight = BitmapFontLoader.GetNamedInt(parts, "base", 2);
+                _lineHeight = BitmapFontLoader.GetNamedShort(parts, "lineHeight", 1);
+                _baseHeight = BitmapFontLoader.GetNamedShort(parts, "base", 2);
                 _textureSize = new Size(BitmapFontLoader.GetNamedInt(parts, "scaleW", 3),
                                             BitmapFontLoader.GetNamedInt(parts, "scaleH", 4));
                 // TODO: 5 is pages, which we currently don't directly read
                 _packed = BitmapFontLoader.GetNamedBool(parts, "packed", 6);
-                _alphaChannel = BitmapFontLoader.GetNamedInt(parts, "alphaChnl", 7);
-                _redChannel = BitmapFontLoader.GetNamedInt(parts, "redChnl", 8);
-                _greenChannel = BitmapFontLoader.GetNamedInt(parts, "greenChnl", 9);
-                _blueChannel = BitmapFontLoader.GetNamedInt(parts, "blueChnl", 10);
+                _alphaChannel = BitmapFontLoader.GetNamedByte(parts, "alphaChnl", 7);
+                _redChannel = BitmapFontLoader.GetNamedByte(parts, "redChnl", 8);
+                _greenChannel = BitmapFontLoader.GetNamedByte(parts, "greenChnl", 9);
+                _blueChannel = BitmapFontLoader.GetNamedByte(parts, "blueChnl", 10);
                 break;
 
               case "page":
-                int id;
+                byte id;
                 string name;
 
-                id = BitmapFontLoader.GetNamedInt(parts, "id", 1);
+                id = BitmapFontLoader.GetNamedByte(parts, "id", 1);
                 name = BitmapFontLoader.GetNamedString(parts, "file", 2);
 
                 pageData.Add(id, new Page(id, name));
@@ -675,15 +675,15 @@ namespace Cyotek.Drawing.BitmapFont
                 charData = new Character
                 (
                   (char)BitmapFontLoader.GetNamedInt(parts, "id", 1),
-                  BitmapFontLoader.GetNamedInt(parts, "x", 2),
-                  BitmapFontLoader.GetNamedInt(parts, "y", 3),
-                  BitmapFontLoader.GetNamedInt(parts, "width", 4),
-                  BitmapFontLoader.GetNamedInt(parts, "height", 5),
-                  BitmapFontLoader.GetNamedInt(parts, "xoffset", 6),
-                  BitmapFontLoader.GetNamedInt(parts, "yoffset", 7),
-                  BitmapFontLoader.GetNamedInt(parts, "xadvance", 8),
-                  BitmapFontLoader.GetNamedInt(parts, "page", 9),
-                  BitmapFontLoader.GetNamedInt(parts, "chnl", 10)
+                  BitmapFontLoader.GetNamedShort(parts, "x", 2),
+                  BitmapFontLoader.GetNamedShort(parts, "y", 3),
+                  BitmapFontLoader.GetNamedShort(parts, "width", 4),
+                  BitmapFontLoader.GetNamedShort(parts, "height", 5),
+                  BitmapFontLoader.GetNamedShort(parts, "xoffset", 6),
+                  BitmapFontLoader.GetNamedShort(parts, "yoffset", 7),
+                  BitmapFontLoader.GetNamedShort(parts, "xadvance", 8),
+                  BitmapFontLoader.GetNamedByte(parts, "page", 9),
+                  BitmapFontLoader.GetNamedByte(parts, "chnl", 10)
                 );
 
                 charDictionary.Add(charData.Char, charData);
@@ -694,7 +694,7 @@ namespace Cyotek.Drawing.BitmapFont
 
                 key = new Kerning((char)BitmapFontLoader.GetNamedInt(parts, "first", 1),
                                   (char)BitmapFontLoader.GetNamedInt(parts, "second", 2),
-                                  BitmapFontLoader.GetNamedInt(parts, "amount", 3));
+                                  BitmapFontLoader.GetNamedShort(parts, "amount", 3));
 
                 if (!kerningDictionary.ContainsKey(key))
                 {
@@ -735,8 +735,8 @@ namespace Cyotek.Drawing.BitmapFont
     public virtual void LoadXml(TextReader reader)
     {
       XmlDocument document;
-      IDictionary<int, Page> pageData;
-      IDictionary<Kerning, int> kerningDictionary;
+      IDictionary<byte, Page> pageData;
+      IDictionary<Kerning, short> kerningDictionary;
       IDictionary<char, Character> charDictionary;
       XmlNode root;
       XmlNode properties;
@@ -747,8 +747,8 @@ namespace Cyotek.Drawing.BitmapFont
       }
 
       document = new XmlDocument();
-      pageData = new SortedDictionary<int, Page>();
-      kerningDictionary = new Dictionary<Kerning, int>();
+      pageData = new SortedDictionary<byte, Page>();
+      kerningDictionary = new Dictionary<Kerning, short>();
       charDictionary = new Dictionary<char, Character>();
 
       document.Load(reader);
@@ -761,32 +761,32 @@ namespace Cyotek.Drawing.BitmapFont
       _bold = Convert.ToInt32(properties.Attributes["bold"].Value) != 0;
       _italic = Convert.ToInt32(properties.Attributes["italic"].Value) != 0;
       _unicode = Convert.ToInt32(properties.Attributes["unicode"].Value) != 0;
-      _stretchedHeight = Convert.ToInt32(properties.Attributes["stretchH"].Value);
+      _stretchedHeight = short.Parse(properties.Attributes["stretchH"].Value);
       _charset = properties.Attributes["charset"].Value;
       _smoothed = Convert.ToInt32(properties.Attributes["smooth"].Value) != 0;
-      _superSampling = Convert.ToInt32(properties.Attributes["aa"].Value);
+      _superSampling = short.Parse(properties.Attributes["aa"].Value);
       _padding = BitmapFontLoader.ParsePadding(properties.Attributes["padding"].Value);
       _spacing = BitmapFontLoader.ParsePoint(properties.Attributes["spacing"].Value);
-      _outlineSize = Convert.ToInt32(properties.Attributes["outline"].Value);
+      _outlineSize = byte.Parse(properties.Attributes["outline"].Value);
 
       // common attributes
       properties = root.SelectSingleNode("common");
-      _baseHeight = Convert.ToInt32(properties.Attributes["base"].Value);
-      _lineHeight = Convert.ToInt32(properties.Attributes["lineHeight"].Value);
+      _baseHeight = short.Parse(properties.Attributes["base"].Value);
+      _lineHeight = short.Parse(properties.Attributes["lineHeight"].Value);
       _textureSize = new Size(Convert.ToInt32(properties.Attributes["scaleW"].Value),
                                   Convert.ToInt32(properties.Attributes["scaleH"].Value));
       _packed = Convert.ToInt32(properties.Attributes["packed"].Value) != 0;
-      _alphaChannel = Convert.ToInt32(properties.Attributes["alphaChnl"].Value);
-      _redChannel = Convert.ToInt32(properties.Attributes["redChnl"].Value);
-      _greenChannel = Convert.ToInt32(properties.Attributes["greenChnl"].Value);
-      _blueChannel = Convert.ToInt32(properties.Attributes["blueChnl"].Value);
+      _alphaChannel = byte.Parse(properties.Attributes["alphaChnl"].Value);
+      _redChannel = byte.Parse(properties.Attributes["redChnl"].Value);
+      _greenChannel = byte.Parse(properties.Attributes["greenChnl"].Value);
+      _blueChannel = byte.Parse(properties.Attributes["blueChnl"].Value);
 
       // load texture information
       foreach (XmlNode node in root.SelectNodes("pages/page"))
       {
         Page page;
 
-        page = new Page(Convert.ToInt32(node.Attributes["id"].Value), node.Attributes["file"].Value);
+        page = new Page(byte.Parse(node.Attributes["id"].Value), node.Attributes["file"].Value);
 
         pageData.Add(page.Id, page);
       }
@@ -798,16 +798,16 @@ namespace Cyotek.Drawing.BitmapFont
         Character character;
 
         character = new Character(
-        (char)Convert.ToInt32(node.Attributes["id"].Value),
-        Convert.ToInt32(node.Attributes["x"].Value),
-        Convert.ToInt32(node.Attributes["y"].Value),
-        Convert.ToInt32(node.Attributes["width"].Value),
-        Convert.ToInt32(node.Attributes["height"].Value),
-        Convert.ToInt32(node.Attributes["xoffset"].Value),
-        Convert.ToInt32(node.Attributes["yoffset"].Value),
-        Convert.ToInt32(node.Attributes["xadvance"].Value),
-        Convert.ToInt32(node.Attributes["page"].Value),
-        Convert.ToInt32(node.Attributes["chnl"].Value)
+        (char)short.Parse(node.Attributes["id"].Value),
+        short.Parse(node.Attributes["x"].Value),
+        short.Parse(node.Attributes["y"].Value),
+        short.Parse(node.Attributes["width"].Value),
+        short.Parse(node.Attributes["height"].Value),
+        short.Parse(node.Attributes["xoffset"].Value),
+        short.Parse(node.Attributes["yoffset"].Value),
+        short.Parse(node.Attributes["xadvance"].Value),
+        byte.Parse(node.Attributes["page"].Value),
+        byte.Parse(node.Attributes["chnl"].Value)
         );
 
         charDictionary.Add(character.Char, character);
@@ -821,7 +821,7 @@ namespace Cyotek.Drawing.BitmapFont
 
         key = new Kerning((char)Convert.ToInt32(node.Attributes["first"].Value),
                           (char)Convert.ToInt32(node.Attributes["second"].Value),
-                          Convert.ToInt32(node.Attributes["amount"].Value));
+                          short.Parse(node.Attributes["amount"].Value));
 
         if (!kerningDictionary.ContainsKey(key))
         {
@@ -1064,10 +1064,10 @@ namespace Cyotek.Drawing.BitmapFont
     private void LoadKerningsBlock(byte[] buffer, int blockSize)
     {
       int pairCount;
-      Dictionary<Kerning, int> kernings;
+      Dictionary<Kerning, short> kernings;
 
       pairCount = blockSize / 10;
-      kernings = new Dictionary<Kerning, int>(pairCount);
+      kernings = new Dictionary<Kerning, short>(pairCount);
 
       for (int i = 0; i < pairCount; i++)
       {
@@ -1095,7 +1095,7 @@ namespace Cyotek.Drawing.BitmapFont
 
       nextStringStart = 0;
 
-      for (int i = 0; i < _pages.Length; i++)
+      for (byte i = 0; i < _pages.Length; i++)
       {
         Page page;
         string name;

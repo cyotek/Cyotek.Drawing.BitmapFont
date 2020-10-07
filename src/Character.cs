@@ -21,31 +21,31 @@ namespace Cyotek.Drawing.BitmapFont
   {
     #region Private Fields
 
-    private int _channel;
+    private byte _channel;
 
     private char _char;
 
-    private int _height;
+    private short _height;
 
-    private int _texturePage;
+    private byte _texturePage;
 
-    private int _width;
+    private short _width;
 
-    private int _x;
+    private short _x;
 
-    private int _xAdvance;
+    private short _xAdvance;
 
-    private int _xOffset;
+    private short _xOffset;
 
-    private int _y;
+    private short _y;
 
-    private int _yOffset;
+    private short _yOffset;
 
     #endregion Private Fields
 
     #region Public Constructors
 
-    public Character(char character, int x, int y, int width, int height, int xOffset, int yOffset, int xAdvance, int texturePage, int channel)
+    public Character(char character, short x, short y, short width, short height, short xOffset, short yOffset, short xAdvance, byte texturePage, byte channel)
     {
       _char = character;
       _x = x;
@@ -75,10 +75,10 @@ namespace Cyotek.Drawing.BitmapFont
       get { return new Rectangle(_x, _y, _width, _height); }
       set
       {
-        _x = value.X;
-        _y = value.Y;
-        _width = value.Width;
-        _height = value.Height;
+        _x =(short) value.X;
+        _y = (short)value.Y;
+        _width = (short)value.Width;
+        _height = (short)value.Height;
       }
     }
 
@@ -91,7 +91,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <remarks>
     /// 1 = blue, 2 = green, 4 = red, 8 = alpha, 15 = all channels
     /// </remarks>
-    public int Channel
+    public byte Channel
     {
       get { return _channel; }
       set { _channel = value; }
@@ -109,7 +109,7 @@ namespace Cyotek.Drawing.BitmapFont
       set { _char = value; }
     }
 
-    public int Height
+    public short Height
     {
       get { return _height; }
       set { _height = value; }
@@ -127,8 +127,8 @@ namespace Cyotek.Drawing.BitmapFont
       get { return new Point(_xOffset, _yOffset); }
       set
       {
-        _xOffset = value.X;
-        _yOffset = value.Y;
+        _xOffset = (short)value.X;
+        _yOffset = (short)value.Y;
       }
     }
 
@@ -138,19 +138,19 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The texture page where the character image is found.
     /// </value>
-    public int TexturePage
+    public byte TexturePage
     {
       get { return _texturePage; }
       set { _texturePage = value; }
     }
 
-    public int Width
+    public short Width
     {
       get { return _width; }
       set { _width = value; }
     }
 
-    public int X
+    public short X
     {
       get { return _x; }
       set { _x = value; }
@@ -162,25 +162,25 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// How much the current position should be advanced after drawing the character.
     /// </value>
-    public int XAdvance
+    public short XAdvance
     {
       get { return _xAdvance; }
       set { _xAdvance = value; }
     }
 
-    public int XOffset
+    public short XOffset
     {
       get { return _xOffset; }
       set { _xOffset = value; }
     }
 
-    public int Y
+    public short Y
     {
       get { return _y; }
       set { _y = value; }
     }
 
-    public int YOffset
+    public short YOffset
     {
       get { return _yOffset; }
       set { _yOffset = value; }

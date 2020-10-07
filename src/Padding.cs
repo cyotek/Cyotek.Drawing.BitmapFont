@@ -1,4 +1,4 @@
-﻿/* AngelCode bitmap font parsing using C#
+/* AngelCode bitmap font parsing using C#
  * http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
  *
  * Copyright © 2012-2015 Cyotek Ltd.
@@ -22,7 +22,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <param name="top">The padding size, in pixels, for the top edge.</param>
     /// <param name="right">The padding size, in pixels, for the right edge.</param>
     /// <param name="bottom">The padding size, in pixels, for the bottom edge.</param>
-    public Padding(int left, int top, int right, int bottom)
+    public Padding(byte left, byte top, byte right, byte bottom)
       : this()
     {
       this.Top = top;
@@ -41,7 +41,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The padding, in pixels, for the bottom edge.
     /// </value>
-    public int Bottom { get; set; }
+    public byte Bottom { get; set; }
 
     /// <summary>
     /// Gets or sets the padding value for the left edge.
@@ -49,7 +49,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The padding, in pixels, for the left edge.
     /// </value>
-    public int Left { get; set; }
+    public byte Left { get; set; }
 
     /// <summary>
     /// Gets or sets the padding value for the right edge.
@@ -57,7 +57,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The padding, in pixels, for the right edge.
     /// </value>
-    public int Right { get; set; }
+    public byte Right { get; set; }
 
     /// <summary>
     /// Gets or sets the padding value for the top edge.
@@ -65,7 +65,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// The padding, in pixels, for the top edge.
     /// </value>
-    public int Top { get; set; }
+    public byte Top { get; set; }
 
     #endregion
 

@@ -20,7 +20,7 @@ namespace Cyotek.Drawing.BitmapFont
   {
     #region Private Fields
 
-    private readonly int _amount;
+    private readonly short _amount;
 
     private readonly char _firstCharacter;
 
@@ -37,7 +37,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <param name="secondCharacter">The second character.</param>
     /// <param name="amount">How much the x position should be adjusted when drawing the second
     /// character immediately following the first.</param>
-    public Kerning(char firstCharacter, char secondCharacter, int amount)
+    public Kerning(char firstCharacter, char secondCharacter, short amount)
       : this()
     {
       _firstCharacter = firstCharacter;
@@ -55,7 +55,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <value>
     /// How much the x position should be adjusted when drawing the second character immediately following the first.
     /// </value>
-    public int Amount
+    public short Amount
     {
       get { return _amount; }
     }

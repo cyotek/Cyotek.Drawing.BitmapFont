@@ -57,17 +57,17 @@ namespace Cyotek.Drawing.BitmapFont.Tests
       }
     }
 
-    private static void AreEqual(IDictionary<Kerning, int> expected, IDictionary<Kerning, int> actual)
+    private static void AreEqual(IDictionary<Kerning, short> expected, IDictionary<Kerning, short> actual)
     {
       Assert.AreEqual(expected.Count, actual.Count, nameof(BitmapFont.Kernings) + " count does not match.");
 
-      foreach (KeyValuePair<Kerning, int> expectedPair in expected)
+      foreach (KeyValuePair<Kerning, short> expectedPair in expected)
       {
         int expectedKerning;
 
         expectedKerning = expectedPair.Value;
 
-        if (!actual.TryGetValue(expectedPair.Key, out int actualKerning))
+        if (!actual.TryGetValue(expectedPair.Key, out short actualKerning))
         {
           Assert.Fail("Kerning for pair '" + expectedPair.Key.FirstCharacter + " ','" + expectedPair.Key.SecondCharacter + "' not found.");
         }

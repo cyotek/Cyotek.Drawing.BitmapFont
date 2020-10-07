@@ -79,6 +79,15 @@ AMD FX(tm)-6300, 1 CPU, 6 logical and 3 physical cores
 |        LoadXml | 3,216.2 us | 18.86 us | 14.73 us | 144.5313 | 70.3125 |     - |  780.34 KB |
 |    LoadAutoXml | 3,298.5 us | 26.18 us | 24.49 us | 152.3438 | 74.2188 |     - |  784.53 KB |
 
+|         Method |       Mean |    Error |   StdDev |    Gen 0 |   Gen 1 | Gen 2 |  Allocated |
+|--------------- |-----------:|---------:|---------:|---------:|--------:|------:|-----------:|
+|     LoadBinary |   102.8 us |  1.10 us |  1.03 us |   7.9346 |       - |     - |   32.45 KB |
+| LoadAutoBinary |   166.5 us |  1.64 us |  1.45 us |   8.7891 |       - |     - |   36.68 KB |
+|       LoadText | 2,788.6 us | 17.41 us | 14.54 us | 160.1563 |  7.8125 |     - |  658.05 KB |
+|   LoadAutoText | 2,834.2 us | 21.72 us | 19.25 us | 160.1563 |  3.9063 |     - |  662.27 KB |
+|        LoadXml | 3,274.0 us | 23.50 us | 20.84 us | 125.0000 | 58.5938 |     - |  763.61 KB |
+|    LoadAutoXml | 3,296.8 us | 17.75 us | 16.60 us | 128.9063 | 62.5000 |     - |  767.83 KB |
+
 ## Loading a font
 
 To load a font, call `BitmapFontLoader.LoadFontFromFile`. This
