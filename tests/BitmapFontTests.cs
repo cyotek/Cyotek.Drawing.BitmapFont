@@ -19,6 +19,25 @@ namespace Cyotek.Drawing.BitmapFont.Tests
     #region Public Methods
 
     [Test]
+    public void Indexer_WithMissingCharacter_ReturnsFallback()
+    {
+      // arrange
+      BitmapFont target;
+      Character expected;
+      Character actual;
+
+      target = this.Simple;
+
+      expected = Character.Empty;
+
+      // act
+      actual = target['\n'];
+
+      // assert
+      Assert.AreEqual(expected, actual);
+    }
+
+    [Test]
     public void Kerning_can_be_retreived()
     {
       // arrange
@@ -40,6 +59,29 @@ namespace Cyotek.Drawing.BitmapFont.Tests
 
       // assert
       Assert.AreEqual(expected, actual);
+    }
+
+    [Test]
+    [TestCase("trebuchet-invalid-bin.fnt")]
+    [TestCase("trebuchet-invalid-text.fnt")]
+    [TestCase("trebuchet-invalid-xml.fnt")]
+    public void Load_WithInvalidChar_IsSuccessful(string baseName)
+    {
+      // arrange
+      BitmapFont target;
+      string fileName;
+      Character actual;
+
+      target = new BitmapFont();
+
+      fileName = Path.Combine(this.DataPath, baseName);
+
+      // act
+      target.Load(fileName);
+
+      // assert
+      actual = target.InvalidChar;
+      Assert.IsFalse(actual.IsEmpty);
     }
 
     [Test]

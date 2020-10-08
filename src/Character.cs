@@ -19,6 +19,15 @@ namespace Cyotek.Drawing.BitmapFont
   /// </summary>
   public struct Character
   {
+    #region Public Fields
+
+    /// <summary>
+    /// Gets a <see cref="Character"/> structure that has a Height and Width value of 0.
+    /// </summary>
+    public static readonly Character Empty = new Character();
+
+    #endregion Public Fields
+
     #region Private Fields
 
     private int _channel;
@@ -113,6 +122,18 @@ namespace Cyotek.Drawing.BitmapFont
     {
       get { return _height; }
       set { _height = value; }
+    }
+
+    /// <summary>
+    /// Tests whether this <see cref="Character"/> structure has width and height of 0.
+    /// </summary>
+    /// <value>
+    /// This property returns <c>true</c> when this <see cref="Character"/> structure has both a width
+    /// and height of 0; otherwise, <c>false</c>.
+    /// </value>
+    public bool IsEmpty
+    {
+      get { return _width == 0 && _height == 0; }
     }
 
     /// <summary>

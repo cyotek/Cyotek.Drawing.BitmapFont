@@ -28,10 +28,16 @@ namespace Cyotek.Drawing.BitmapFont
   /// <seealso cref="T:System.Collections.Generic.IEnumerable{Cyotek.Drawing.BitmapFont.Character}"/>
   public class BitmapFont : IEnumerable<Character>
   {
+    #region Public Fields
+
     /// <summary>
     /// When used with <see cref="MeasureFont(string,double)"/>, specifies that no wrapping should occur.
     /// </summary>
     public const int NoMaxWidth = -1;
+
+    #endregion Public Fields
+
+    #region Private Fields
 
     private int _alphaChannel;
 
@@ -50,6 +56,8 @@ namespace Cyotek.Drawing.BitmapFont
     private int _fontSize;
 
     private int _greenChannel;
+
+    private Character _invalid;
 
     private bool _italic;
 
@@ -78,6 +86,22 @@ namespace Cyotek.Drawing.BitmapFont
     private Size _textureSize;
 
     private bool _unicode;
+
+    #endregion Private Fields
+
+    #region Public Constructors
+
+    public BitmapFont()
+    {
+      _invalid = Character.Empty;
+      _pages = new Page[0];
+      _kernings = new Dictionary<Kerning, int>();
+      _characters = new Dictionary<char, Character>();
+    }
+
+    #endregion Public Constructors
+
+    #region Public Properties
 
     /// <summary>
     /// Gets or sets the alpha channel.
@@ -188,6 +212,13 @@ namespace Cyotek.Drawing.BitmapFont
     {
       get { return _greenChannel; }
       set { _greenChannel = value; }
+    }
+
+    /// <summary> Gets the fallback character used when a matching character cannot be found. </summary>
+    /// <value> The fallback character. </value>
+    public Character InvalidChar
+    {
+      get { return _invalid; }
     }
 
     /// <summary>
@@ -364,6 +395,10 @@ namespace Cyotek.Drawing.BitmapFont
       set { _unicode = value; }
     }
 
+    #endregion Public Properties
+
+    #region Public Indexers
+
     /// <summary>
     /// Indexer to get items within this collection using array index syntax.
     /// </summary>
@@ -373,8 +408,12 @@ namespace Cyotek.Drawing.BitmapFont
     /// </returns>
     public Character this[char character]
     {
-      get { return _characters[character]; }
+      get { return _characters.TryGetValue(character, out Character value) ? value : _invalid; }
     }
+
+    #endregion Public Indexers
+
+    #region Public Methods
 
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
@@ -512,6 +551,9 @@ namespace Cyotek.Drawing.BitmapFont
         throw new InvalidDataException("Only BMFont version 3 format data is supported.");
       }
 
+      _invalid = Character.Empty;
+
+
       // Following the first four bytes is a series of blocks with information. Each block starts with a one byte block type identifier, followed by a 4 byte integer that gives the size of the block, not including the block type identifier and the size value.
 
       while (stream.Read(buffer, 0, 5) != 0)
@@ -619,6 +661,8 @@ namespace Cyotek.Drawing.BitmapFont
       charDictionary = new Dictionary<char, Character>();
       parts = new string[13]; // the maximum number of fields on a single line;
 
+      _invalid = Character.Empty;
+
       do
       {
         line = reader.ReadLine();
@@ -671,10 +715,13 @@ namespace Cyotek.Drawing.BitmapFont
 
               case "char":
                 Character charData;
+                int index;
+
+                index = BitmapFontLoader.GetNamedInt(parts, "id", 1);
 
                 charData = new Character
                 (
-                  (char)BitmapFontLoader.GetNamedInt(parts, "id", 1),
+                  index >= 0 ? (char)index : '\0',
                   BitmapFontLoader.GetNamedInt(parts, "x", 2),
                   BitmapFontLoader.GetNamedInt(parts, "y", 3),
                   BitmapFontLoader.GetNamedInt(parts, "width", 4),
@@ -685,6 +732,11 @@ namespace Cyotek.Drawing.BitmapFont
                   BitmapFontLoader.GetNamedInt(parts, "page", 9),
                   BitmapFontLoader.GetNamedInt(parts, "chnl", 10)
                 );
+
+                if (index == -1)
+                {
+                  _invalid = charData;
+                }
 
                 charDictionary.Add(charData.Char, charData);
                 break;
@@ -754,6 +806,8 @@ namespace Cyotek.Drawing.BitmapFont
       document.Load(reader);
       root = document.DocumentElement;
 
+      _invalid = Character.Empty;
+
       // load the basic attributes
       properties = root.SelectSingleNode("info");
       _familyName = properties.Attributes["face"].Value;
@@ -796,9 +850,12 @@ namespace Cyotek.Drawing.BitmapFont
       foreach (XmlNode node in root.SelectNodes("chars/char"))
       {
         Character character;
+        int index;
+
+        index = Convert.ToInt32(node.Attributes["id"].Value);
 
         character = new Character(
-        (char)Convert.ToInt32(node.Attributes["id"].Value),
+        index >= 0 ? (char)index : '\0',
         Convert.ToInt32(node.Attributes["x"].Value),
         Convert.ToInt32(node.Attributes["y"].Value),
         Convert.ToInt32(node.Attributes["width"].Value),
@@ -809,6 +866,11 @@ namespace Cyotek.Drawing.BitmapFont
         Convert.ToInt32(node.Attributes["page"].Value),
         Convert.ToInt32(node.Attributes["chnl"].Value)
         );
+
+        if (index == -1)
+        {
+          _invalid = character;
+        }
 
         charDictionary.Add(character.Char, character);
       }
@@ -972,6 +1034,10 @@ namespace Cyotek.Drawing.BitmapFont
       return this.GetEnumerator();
     }
 
+    #endregion Public Methods
+
+    #region Private Methods
+
     private string GetString(byte[] buffer, int index)
     {
       StringBuilder sb;
@@ -1007,12 +1073,15 @@ namespace Cyotek.Drawing.BitmapFont
       {
         int start;
         Character chr;
+        int index;
 
         start = i * 20;
 
+        index = WordHelpers.MakeDWordLittleEndian(buffer, start);
+
         chr = new Character
         (
-          (char)WordHelpers.MakeDWordLittleEndian(buffer, start),
+          index >= 0 ? (char)index : '\0',
           WordHelpers.MakeWordLittleEndian(buffer, start + 4),
           WordHelpers.MakeWordLittleEndian(buffer, start + 6),
           WordHelpers.MakeWordLittleEndian(buffer, start + 8),
@@ -1023,6 +1092,11 @@ namespace Cyotek.Drawing.BitmapFont
           buffer[start + 18],
           buffer[start + 19]
         );
+
+        if (index == -1)
+        {
+          _invalid = chr;
+        }
 
         characters.Add(chr.Char, chr);
       }
@@ -1111,5 +1185,7 @@ namespace Cyotek.Drawing.BitmapFont
         _pages[i] = page;
       }
     }
+
+    #endregion Private Methods
   }
 }

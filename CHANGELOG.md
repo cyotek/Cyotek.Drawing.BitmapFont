@@ -13,10 +13,19 @@
   `Character` class
 * Added `OffsetX` and `OffsetY` properties to the `Character`
   class
+* Added `IsEmpty` and static `Empty` properties to the
+  `Character` class
+* Added `InvalidChar` to the `BitmapFont` class. If a BMFont
+  explicitly defines the "invalid" character, this will be
+  assigned to this property, otherwise it will use
+  `Character.Empty`
 
 ### Changed
 
 * Performance improvements when loading text fonts
+* `BitmapFont[char]` will no longer throw if a character not
+  present in the font is requested, instead the value of the
+  `InvalidChar` property will be returned
 
 ### Deprecated
 
