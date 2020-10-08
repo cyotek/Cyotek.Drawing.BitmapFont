@@ -1,15 +1,18 @@
-﻿/* AngelCode bitmap font parsing using C#
- * http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
- *
- * Copyright © 2012-2015 Cyotek Ltd.
- *
- * Licensed under the MIT License. See license.txt for the full text.
- */
-
 using System;
 using System.ComponentModel;
 
-namespace BitmapFontViewer
+// AngelCode bitmap font parsing using C#
+// https://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
+
+// Copyright © 2012-2020 Cyotek Ltd.
+
+// This work is licensed under the MIT License.
+// See LICENSE.TXT for the full text
+
+// Found this code useful?
+// https://www.paypal.me/cyotek
+
+namespace Cyotek.Demo.BitmapFontViewer
 {
   // Based on http://www.csharp-examples.net/readonly-propertygrid/
 

@@ -263,6 +263,9 @@ Is there a target not on this list you'd like to see? Raise an
 See `CONTRIBUTORS.md` for details of contributions to this
 library.
 
+* [EightBit Atari-Regula font][26] by MrRobot
+* [Marediv font][25] by Pixel Kitchen
+
 ## License
 
 This source is licensed under the MIT license. See `LICENSE.txt`
@@ -285,3 +288,5 @@ for the full text.
 [22]: https://www.cyotek.com/files/articleimages/bitmapfont3.png
 [23]: https://www.cyotek.com/files/articleimages/bitmapfont2.png
 [24]: https://benchmarkdotnet.org/
+[25]: https://www.fontspace.com/marediv-font-f32318
+[26]: https://github.com/TheRobotFactory/EightBit-Atari-Fonts

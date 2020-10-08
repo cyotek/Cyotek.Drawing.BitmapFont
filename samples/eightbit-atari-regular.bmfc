@@ -1,0 +1,63 @@
+# AngelCode Bitmap Font Generator configuration file
+fileVersion=1
+
+# font settings
+fontName=EightBit Atari
+fontFile=
+charSet=162
+fontSize=32
+aa=1
+scaleH=100
+useSmoothing=0
+isBold=0
+isItalic=0
+useUnicode=1
+disableBoxChars=1
+outputInvalidCharGlyph=0
+dontIncludeKerningPairs=0
+useHinting=1
+renderFromOutline=0
+useClearType=1
+autoFitNumPages=0
+autoFitFontSizeMin=0
+autoFitFontSizeMax=0
+
+# character alignment
+paddingDown=0
+paddingUp=0
+paddingRight=0
+paddingLeft=0
+spacingHoriz=1
+spacingVert=1
+useFixedHeight=0
+forceZero=0
+widthPaddingFactor=0.00
+
+# output file
+outWidth=512
+outHeight=512
+outBitDepth=32
+fontDescFormat=0
+fourChnlPacked=0
+textureFormat=png
+textureCompression=0
+alphaChnl=0
+redChnl=3
+greenChnl=3
+blueChnl=3
+invA=0
+invR=0
+invG=0
+invB=0
+
+# outline
+outlineThickness=0
+
+# selected chars
+chars=13,32-126,160-255,305,321-322,338-339,352-353,376,381-382,402,710-711,728-733,8211-8212,8216-8218
+chars=8220-8222,8224-8226,8230,8240,8249-8250,8260,8364,8482,8486,8592-8595,8706,8710,8719,8721-8722,8730
+chars=8734,8747,8776,8800,8804-8805,9243,9473,9475,9487,9491,9495,9499,9507,9515,9523,9531,9547,9585-9586
+chars=9601,9604,9612,9615,9620-9624,9629,9654,9664,9674,9698-9699,9824,9827,9829-9830,10531,11044,57344
+chars=57345-58111,63743,64257-64258
+
+# imported icon images

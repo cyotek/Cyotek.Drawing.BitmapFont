@@ -13,3 +13,4 @@ push.cmd
 *.ncrunchproject
 *.suo
 *.user
+res/optimizeimages.bat

@@ -1,0 +1,3 @@
+Based on code from the article AngelCode bitmap font parsing using C# <https://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp>
+
+Some code in this demonstration comes from the Reading DOOM WAD files <https://www.cyotek.com/blog/reading-doom-wad-files>, Writing DOOM WAD files <https://www.cyotek.com/blog/writing-doom-wad-files> and Loading the color palette from a BBM/LBM image file using C# <https://www.cyotek.com/blog/loading-the-color-palette-from-a-bbm-lbm-image-file-using-csharp> posts on cyotek.com.
