@@ -166,56 +166,72 @@ properties it contains:
 ```csharp
     private void DrawCharacter(Graphics g, Character character, int x, int y)
     {
-      g.DrawImage(_textures[character.TexturePage], new RectangleF(x, y, character.Bounds.Width, character.Bounds.Height), character.Bounds, GraphicsUnit.Pixel);
+      g.DrawImage(_textures[character.TexturePage],
+                  new RectangleF(x, y, character.Width, character.Height),
+                  new Rectangle(character.X, character.Y, character.Width, character.Height),
+                  GraphicsUnit.Pixel);
     }
 
     private void DrawPreview()
     {
-      Size size;
-      Bitmap image;
-      string normalizedText;
-      int x;
-      int y;
-      char previousCharacter;
-
-      previousCharacter = ' ';
-      normalizedText = _font.NormalizeLineBreaks(previewTextBox.Text);
-      size = _font.MeasureFont(normalizedText);
-
-      if (size.Height != 0 && size.Width != 0)
+      if (_font != null)
       {
-        image = new Bitmap(size.Width, size.Height);
-        x = 0;
-        y = 0;
+        string text;
+        Size size;
 
-        using (Graphics g = Graphics.FromImage(image))
+        text = previewTextBox.Text;
+        size = _font.MeasureFont(text);
+
+        if (size.Height != 0 && size.Width != 0)
         {
-          foreach (char character in normalizedText)
+          Bitmap image;
+          int x;
+          int y;
+          char previousCharacter;
+
+          image = new Bitmap(size.Width, size.Height);
+          x = 0;
+          y = 0;
+          previousCharacter = ' ';
+
+          using (Graphics g = Graphics.FromImage(image))
           {
-            switch (character)
+            foreach (char character in text)
             {
-              case '\n':
-                x = 0;
-                y += _font.LineHeight;
-                break;
-              default:
-                Character data;
-                int kerning;
+              switch (character)
+              {
+                case '\n':
+                  x = 0;
+                  y += _font.LineHeight;
+                  break;
 
-                data = _font[character];
-                kerning = _font.GetKerning(previousCharacter, character);
+                case '\r':
+                  break;
 
-                this.DrawCharacter(g, data, x + data.Offset.X + kerning, y + data.Offset.Y);
+                default:
+                  Character data;
 
-                x += data.XAdvance + kerning;
-                break;
+                  data = _font[character];
+
+                  if (!data.IsEmpty)
+                  {
+                    int kerning;
+                    kerning = _font.GetKerning(previousCharacter, character);
+
+                    this.DrawCharacter(g, data, x + data.XOffset + kerning, y + data.YOffset);
+
+                    x += data.XAdvance + kerning;
+                  }
+                  break;
+              }
+
+              previousCharacter = character;
             }
-
-            previousCharacter = character;
           }
-        }
 
-        previewImageBox.Image = image;
+          previewImageBox.Image = image;
+          previewImageBox.ActualSize();
+        }
       }
     }
 ```
@@ -283,10 +299,10 @@ for the full text.
 [10]: https://github.com/cyotek/Cyotek.Drawing.BitmapFont
 [11]: https://github.com/cyotek/Cyotek.Drawing.BitmapFont/workflows/CodeQL/badge.svg
 
-[20]: https://www.cyotek.com/files/articleimages/bitmapfont1.png
+[20]: res/original-demo.png
 [21]: https://www.angelcode.com/products/bmfont/
-[22]: https://www.cyotek.com/files/articleimages/bitmapfont3.png
-[23]: https://www.cyotek.com/files/articleimages/bitmapfont2.png
+[22]: res/viewer-preview.png
+[23]: res/viewer-characters.png
 [24]: https://benchmarkdotnet.org/
 [25]: https://www.fontspace.com/marediv-font-f32318
 [26]: https://github.com/TheRobotFactory/EightBit-Atari-Fonts
