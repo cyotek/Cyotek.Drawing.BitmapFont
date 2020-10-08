@@ -32,6 +32,10 @@
     <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net35'">$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Cyotek.Drawing.BitmapFont.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Xml.XmlDocument">
       <Version>4.3.0</Version>

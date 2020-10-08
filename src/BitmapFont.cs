@@ -91,6 +91,7 @@ namespace Cyotek.Drawing.BitmapFont
 
     #region Public Constructors
 
+    /// <summary> Default constructor. </summary>
     public BitmapFont()
     {
       _invalid = Character.Empty;
@@ -552,7 +553,6 @@ namespace Cyotek.Drawing.BitmapFont
       }
 
       _invalid = Character.Empty;
-
 
       // Following the first four bytes is a series of blocks with information. Each block starts with a one byte block type identifier, followed by a 4 byte integer that gives the size of the block, not including the block type identifier and the size value.
 

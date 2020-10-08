@@ -54,6 +54,18 @@ namespace Cyotek.Drawing.BitmapFont
 
     #region Public Constructors
 
+    /// <summary> Constructor. </summary>
+    /// <param name="character">  The character. </param>
+    /// <param name="x">  The X-coordinate. </param>
+    /// <param name="y">  The Y-coordinate. </param>
+    /// <param name="width">  The character width. </param>
+    /// <param name="height"> The character height. </param>
+    /// <param name="xOffset">  The X offset. </param>
+    /// <param name="yOffset">  The Y offset. </param>
+    /// <param name="xAdvance"> How much the current position should be advanced after drawing the
+    ///  character. </param>
+    /// <param name="texturePage">  The texture page where the character image is found. </param>
+    /// <param name="channel">  The texture channel where the character image is found. </param>
     public Character(char character, int x, int y, int width, int height, int xOffset, int yOffset, int xAdvance, int texturePage, int channel)
     {
       _char = character;
@@ -118,6 +130,8 @@ namespace Cyotek.Drawing.BitmapFont
       set { _char = value; }
     }
 
+    /// <summary> Gets or sets the character height. </summary>
+    /// <value> The height. </value>
     public int Height
     {
       get { return _height; }
@@ -165,12 +179,16 @@ namespace Cyotek.Drawing.BitmapFont
       set { _texturePage = value; }
     }
 
+    /// <summary> Gets or sets the character width. </summary>
+    /// <value> The width. </value>
     public int Width
     {
       get { return _width; }
       set { _width = value; }
     }
 
+    /// <summary> Gets or sets the X-coordinate. </summary>
+    /// <value> The X-coordinate. </value>
     public int X
     {
       get { return _x; }
@@ -189,18 +207,24 @@ namespace Cyotek.Drawing.BitmapFont
       set { _xAdvance = value; }
     }
 
+    /// <summary> Gets or sets the X offset. </summary>
+    /// <value> The X-coordinate offset. </value>
     public int XOffset
     {
       get { return _xOffset; }
       set { _xOffset = value; }
     }
 
+    /// <summary> Gets or sets the Y-coordinate. </summary>
+    /// <value> The Y-coordinate. </value>
     public int Y
     {
       get { return _y; }
       set { _y = value; }
     }
 
+    /// <summary> Gets or sets the Y offset. </summary>
+    /// <value> The Y-coordinate offset. </value>
     public int YOffset
     {
       get { return _yOffset; }

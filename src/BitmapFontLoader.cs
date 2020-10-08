@@ -23,6 +23,11 @@ namespace Cyotek.Drawing.BitmapFont
   {
     #region Public Methods
 
+    /// <summary> Loads a bitmap font stored in binary format. </summary>
+    /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+    /// <exception cref="FileNotFoundException"> Thrown when the requested file is not present. </exception>
+    /// <param name="fileName"> Name of the file to load. </param>
+    /// <returns> A <see cref="BitmapFont"/> containing the loaded data. </returns>
     public static BitmapFont LoadFontFromBinaryFile(string fileName)
     {
       BitmapFont font;
@@ -49,16 +54,12 @@ namespace Cyotek.Drawing.BitmapFont
       return font;
     }
 
-    /// <summary>
-    /// Loads a bitmap font from a file, attempting to auto detect the file type
-    /// </summary>
-    /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
-    /// <exception cref="FileNotFoundException">Thrown when the requested file is not present.</exception>
-    /// <exception cref="InvalidDataException">Thrown when an Invalid Data error condition occurs.</exception>
-    /// <param name="fileName">Name of the file to load.</param>
-    /// <returns>
-    /// A <see cref="BitmapFont"/> containing the loaded data.
-    /// </returns>
+    /// <summary> Loads a bitmap font from a file, attempting to auto detect the file type. </summary>
+    /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+    /// <exception cref="FileNotFoundException"> Thrown when the requested file is not present. </exception>
+    /// <exception cref="InvalidDataException"> Thrown when an Invalid Data error condition occurs. </exception>
+    /// <param name="fileName"> Name of the file to load. </param>
+    /// <returns> A <see cref="BitmapFont"/> containing the loaded data. </returns>
     public static BitmapFont LoadFontFromFile(string fileName)
     {
       BitmapFont result;
@@ -94,15 +95,11 @@ namespace Cyotek.Drawing.BitmapFont
       return result;
     }
 
-    /// <summary>
-    /// Loads a bitmap font from a file containing font data in text format.
-    /// </summary>
-    /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
-    /// <exception cref="FileNotFoundException">Thrown when the requested file is not present.</exception>
-    /// <param name="fileName">Name of the file to load.</param>
-    /// <returns>
-    /// A <see cref="BitmapFont"/> containing the loaded data.
-    /// </returns>
+    /// <summary> Loads a bitmap font from a file containing font data in text format. </summary>
+    /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+    /// <exception cref="FileNotFoundException"> Thrown when the requested file is not present. </exception>
+    /// <param name="fileName"> Name of the file to load. </param>
+    /// <returns> A <see cref="BitmapFont"/> containing the loaded data. </returns>
     public static BitmapFont LoadFontFromTextFile(string fileName)
     {
       BitmapFont font;
@@ -129,15 +126,11 @@ namespace Cyotek.Drawing.BitmapFont
       return font;
     }
 
-    /// <summary>
-    /// Loads a bitmap font from a file containing font data in XML format.
-    /// </summary>
-    /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
-    /// <exception cref="FileNotFoundException">Thrown when the requested file is not present.</exception>
-    /// <param name="fileName">Name of the file to load.</param>
-    /// <returns>
-    /// A <see cref="BitmapFont"/> containing the loaded data.
-    /// </returns>
+    /// <summary> Loads a bitmap font from a file containing font data in XML format. </summary>
+    /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+    /// <exception cref="FileNotFoundException"> Thrown when the requested file is not present. </exception>
+    /// <param name="fileName"> Name of the file to load. </param>
+    /// <returns> A <see cref="BitmapFont"/> containing the loaded data. </returns>
     public static BitmapFont LoadFontFromXmlFile(string fileName)
     {
       BitmapFont font;
@@ -168,6 +161,9 @@ namespace Cyotek.Drawing.BitmapFont
 
     #region Internal Methods
 
+    /// <summary> Attempts to determine the format of the given font file. </summary>
+    /// <param name="fileName"> Name of the file to test. </param>
+    /// <returns> The file format. </returns>
     internal static BitmapFontFormat GetFileFormat(string fileName)
     {
       using (Stream stream = File.OpenRead(fileName))
@@ -176,6 +172,9 @@ namespace Cyotek.Drawing.BitmapFont
       }
     }
 
+    /// <summary> Attempts to determine the format of the given font file. </summary>
+    /// <param name="stream"> The <see cref="Stream"/> containing the font information. </param>
+    /// <returns> The file format. </returns>
     internal static BitmapFontFormat GetFileFormat(Stream stream)
     {
       BitmapFontFormat result;
@@ -209,13 +208,11 @@ namespace Cyotek.Drawing.BitmapFont
       return result;
     }
 
-    /// <summary>
-    /// Returns a boolean from an array of name/value pairs.
-    /// </summary>
-    /// <param name="parts">The array of parts.</param>
-    /// <param name="name">The name of the value to return.</param>
-    /// <param name="defaultValue">Default value(if the key doesnt exist or can't be parsed)</param>
-    /// <returns></returns>
+    /// <summary> Returns a boolean from an array of name/value pairs. </summary>
+    /// <param name="parts">  The array of parts. </param>
+    /// <param name="name"> The name of the value to return. </param>
+    /// <param name="estimatedStart"> The estimated position in the part array where the value is located. </param>
+    /// <returns> The parsed value, or <c>false</c> if not found </returns>
     internal static bool GetNamedBool(string[] parts, string name, int estimatedStart)
     {
       return int.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), out int v) && v > 0;
@@ -226,8 +223,8 @@ namespace Cyotek.Drawing.BitmapFont
     /// </summary>
     /// <param name="parts">The array of parts.</param>
     /// <param name="name">The name of the value to return.</param>
-    /// <param name="defaultValue">Default value(if the key doesnt exist or can't be parsed)</param>
-    /// <returns></returns>
+    /// <param name="estimatedStart"> The estimated position in the part array where the value is located. </param>
+    /// <returns> The parsed value, or <c>0</c> if not found </returns>
     internal static int GetNamedInt(string[] parts, string name, int estimatedStart)
     {
       return int.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), out int result) ? result : 0;
@@ -238,7 +235,8 @@ namespace Cyotek.Drawing.BitmapFont
     /// </summary>
     /// <param name="parts">The array of parts.</param>
     /// <param name="name">The name of the value to return.</param>
-    /// <param name="estimatedStart">The position in the value</param>
+    /// <param name="estimatedStart"> The estimated position in the part array where the value is located. </param>
+    /// <returns> The parsed value, or the empty string if not found </returns>
     internal static string GetNamedString(string[] parts, string name, int estimatedStart)
     {
       string result;
@@ -270,29 +268,6 @@ namespace Cyotek.Drawing.BitmapFont
       }
 
       return result;
-    }
-
-    private static string SanitizeValue(string value)
-    {
-      int valueLength;
-
-      valueLength = value.Length;
-
-      if (valueLength > 1 && value[0] == '"' && value[valueLength - 1] == '"')
-      {
-        value = value.Substring(1, valueLength - 2);
-      }
-
-      return value;
-    }
-
-    private static string GetValueName(string nameValuePair)
-    {
-      int nameEndIndex;
-
-      nameEndIndex = nameValuePair.IndexOf('=');
-
-      return nameEndIndex != -1 ? nameValuePair.Substring(0, nameEndIndex) : null;
     }
 
     /// <summary>
@@ -434,5 +409,38 @@ namespace Cyotek.Drawing.BitmapFont
     }
 
     #endregion Internal Methods
+
+    #region Private Methods
+
+    /// <summary> Returns the name from a name value pair. </summary>
+    /// <param name="nameValuePair">  The name value pair to parse. </param>
+    /// <returns> The extracted name. </returns>
+    private static string GetValueName(string nameValuePair)
+    {
+      int nameEndIndex;
+
+      nameEndIndex = nameValuePair.IndexOf('=');
+
+      return nameEndIndex != -1 ? nameValuePair.Substring(0, nameEndIndex) : null;
+    }
+
+    /// <summary> Removes quotes surrounding a string value. </summary>
+    /// <param name="value">  The value to sanitize. </param>
+    /// <returns> The sanitized string. </returns>
+    private static string SanitizeValue(string value)
+    {
+      int valueLength;
+
+      valueLength = value.Length;
+
+      if (valueLength > 1 && value[0] == '"' && value[valueLength - 1] == '"')
+      {
+        value = value.Substring(1, valueLength - 2);
+      }
+
+      return value;
+    }
+
+    #endregion Private Methods
   }
 }
