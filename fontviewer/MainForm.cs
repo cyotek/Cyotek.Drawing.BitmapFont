@@ -141,14 +141,18 @@ namespace Cyotek.Demo.Windows.Forms
 
                 default:
                   Character data;
-                  int kerning;
 
                   data = _font[character];
-                  kerning = _font.GetKerning(previousCharacter, character);
 
-                  this.DrawCharacter(g, data, x + data.XOffset + kerning, y + data.YOffset);
+                  if (!data.IsEmpty)
+                  {
+                    int kerning;
+                    kerning = _font.GetKerning(previousCharacter, character);
 
-                  x += data.XAdvance + kerning;
+                    this.DrawCharacter(g, data, x + data.XOffset + kerning, y + data.YOffset);
+
+                    x += data.XAdvance + kerning;
+                  }
                   break;
               }
 
