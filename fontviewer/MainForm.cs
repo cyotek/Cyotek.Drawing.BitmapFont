@@ -162,6 +162,11 @@ namespace Cyotek.Demo.Windows.Forms
       }
     }
 
+    private object EncodeCharacter(char chr)
+    {
+      return chr < 32 || chr == '\'' || chr == '\\' ? string.Format("\\u{0:D4}", (int)chr) : chr.ToString();
+    }
+
     private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
     {
       this.Close();
@@ -170,6 +175,76 @@ namespace Cyotek.Demo.Windows.Forms
     private void FilePane_SelectedFileChanged(object sender, EventArgs e)
     {
       this.OpenFont(filePane.SelectedFile.FullPath);
+    }
+
+    private void GenerateCodeToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      if (_font != null)
+      {
+        StringBuilder sb;
+        string indent;
+
+        sb = new StringBuilder(2048);
+        indent = new string(' ', 4);
+
+        sb.AppendLine("BitmapFont font;");
+        sb.AppendLine();
+        sb.AppendLine("font = new BitmapFont");
+        sb.AppendLine("{");
+        sb.Append(indent).AppendFormat("FamilyName = \"{0}\",", _font.FamilyName).AppendLine();
+        sb.Append(indent).AppendFormat("FontSize = {0},", _font.FontSize).AppendLine();
+        sb.Append(indent).AppendFormat("Bold = {0},", _font.Bold).AppendLine();
+        sb.Append(indent).AppendFormat("Italic = {0},", _font.Italic).AppendLine();
+        sb.Append(indent).AppendFormat("CharSet = \"{0}\",", _font.Charset).AppendLine();
+        sb.Append(indent).AppendFormat("Unicode = {0},", _font.Unicode).AppendLine();
+        sb.Append(indent).AppendFormat("StretchedHeight = {0},", _font.StretchedHeight).AppendLine();
+        sb.Append(indent).AppendFormat("Smoothed = {0},", _font.Smoothed).AppendLine();
+        sb.Append(indent).AppendFormat("Padding = new Padding({0}, {1}, {2}, {3}),", _font.Padding.Left, _font.Padding.Top, _font.Padding.Right, _font.Padding.Bottom).AppendLine();
+        sb.Append(indent).AppendFormat("Spacing = new Point({0}, {1}),", _font.Spacing.X, _font.Spacing.Y).AppendLine();
+        sb.Append(indent).AppendFormat("SuperSampling = {0},", _font.SuperSampling).AppendLine();
+        sb.Append(indent).AppendFormat("Outline = {0},", _font.OutlineSize).AppendLine();
+
+        sb.Append(indent).AppendFormat("LineHeight = {0},", _font.LineHeight).AppendLine();
+        sb.Append(indent).AppendFormat("BaseHeight = {0},", _font.BaseHeight).AppendLine();
+        sb.Append(indent).AppendFormat("TextureSize = new Size({0}, {1}),", _font.TextureSize.Width, _font.TextureSize.Height).AppendLine();
+        sb.Append(indent).AppendFormat("Packed = {0},", _font.Packed).AppendLine();
+        sb.Append(indent).AppendFormat("AlphaChannel = {0},", _font.AlphaChannel).AppendLine();
+        sb.Append(indent).AppendFormat("RedChannel = {0},", _font.RedChannel).AppendLine();
+        sb.Append(indent).AppendFormat("GreenChannel = {0},", _font.GreenChannel).AppendLine();
+        sb.Append(indent).AppendFormat("BlueChannel = {0},", _font.BlueChannel).AppendLine();
+
+        sb.Append(indent).AppendLine("Pages = new[]");
+        sb.Append(indent).AppendLine("{");
+        foreach (Page page in _font.Pages)
+        {
+          sb.Append(' ', indent.Length * 2).AppendFormat("new Page({0}, \"{1}\",", page.Id, Path.GetFileName(page.FileName)).AppendLine();
+        }
+        sb.Append(indent).AppendLine("},");
+
+        sb.Append(indent).AppendLine("Kernings = new Dictionary<Kerning, int>");
+        sb.Append(indent).AppendLine("{");
+        foreach (Kerning kerning in _font.Kernings.Keys)
+        {
+          sb.Append(' ', indent.Length * 2).AppendFormat("{{ new Kerning('{0}', '{1}', {2}), {2} }},", kerning.FirstCharacter, kerning.SecondCharacter, kerning.Amount).AppendLine();
+        }
+        sb.Append(indent).AppendLine("},");
+
+        sb.Append(indent).AppendLine("Characters = new Dictionary<char, Character>");
+        sb.Append(indent).AppendLine("{");
+        foreach (Character chr in _font.Characters.Values)
+        {
+          sb.Append(' ', indent.Length * 2).AppendFormat("{{ '{0}', new Character('{0}', {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}) }},", this.EncodeCharacter(chr.Char), chr.X, chr.Y, chr.Width, chr.Height, chr.XOffset, chr.YOffset, chr.XAdvance, chr.TexturePage, chr.Channel).AppendLine();
+        }
+        sb.Append(indent).AppendLine("},");
+
+        sb.AppendLine("};");
+
+        InformationDialog.ShowDialog(Application.ProductName, "Generated &code:", sb.ToString());
+      }
+      else
+      {
+        MessageBox.Show("No font loaded.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+      }
     }
 
     private void ListCharacters()
@@ -342,75 +417,5 @@ namespace Cyotek.Demo.Windows.Forms
     }
 
     #endregion Private Methods
-
-    private void GenerateCodeToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      if (_font != null)
-      {
-        StringBuilder sb;
-        string indent;
-
-        sb = new StringBuilder(2048);
-        indent = new string(' ', 4);
-
-        sb.AppendLine("BitmapFont font;");
-        sb.AppendLine();
-        sb.AppendLine("font = new BitmapFont");
-        sb.AppendLine("{");
-        sb.Append(indent).AppendFormat("FamilyName = \"{0}\",", _font.FamilyName).AppendLine();
-        sb.Append(indent).AppendFormat("FontSize = {0},", _font.FontSize).AppendLine();
-        sb.Append(indent).AppendFormat("Bold = {0},", _font.Bold).AppendLine();
-        sb.Append(indent).AppendFormat("Italic = {0},", _font.Italic).AppendLine();
-        sb.Append(indent).AppendFormat("CharSet = \"{0}\",", _font.Charset).AppendLine();
-        sb.Append(indent).AppendFormat("Unicode = {0},", _font.Unicode).AppendLine();
-        sb.Append(indent).AppendFormat("StretchedHeight = {0},", _font.StretchedHeight).AppendLine();
-        sb.Append(indent).AppendFormat("Smoothed = {0},", _font.Smoothed).AppendLine();
-        sb.Append(indent).AppendFormat("Padding = new Padding({0}, {1}, {2}, {3}),", _font.Padding.Left, _font.Padding.Top, _font.Padding.Right, _font.Padding.Bottom).AppendLine();
-        sb.Append(indent).AppendFormat("Spacing = new Point({0}, {1}),", _font.Spacing.X, _font.Spacing.Y).AppendLine();
-        sb.Append(indent).AppendFormat("SuperSampling = {0},", _font.SuperSampling).AppendLine();
-        sb.Append(indent).AppendFormat("Outline = {0},", _font.OutlineSize).AppendLine();
-
-        sb.Append(indent).AppendFormat("LineHeight = {0},", _font.LineHeight).AppendLine();
-        sb.Append(indent).AppendFormat("BaseHeight = {0},", _font.BaseHeight).AppendLine();
-        sb.Append(indent).AppendFormat("TextureSize = new Size({0}, {1}),", _font.TextureSize.Width, _font.TextureSize.Height).AppendLine();
-        sb.Append(indent).AppendFormat("Packed = {0},", _font.Packed).AppendLine();
-        sb.Append(indent).AppendFormat("AlphaChannel = {0},", _font.AlphaChannel).AppendLine();
-        sb.Append(indent).AppendFormat("RedChannel = {0},", _font.RedChannel).AppendLine();
-        sb.Append(indent).AppendFormat("GreenChannel = {0},", _font.GreenChannel).AppendLine();
-        sb.Append(indent).AppendFormat("BlueChannel = {0},", _font.BlueChannel).AppendLine();
-
-        sb.Append(indent).AppendLine("Pages = new[]");
-        sb.Append(indent).AppendLine("{");
-        foreach (Page page in _font.Pages)
-        {
-          sb.Append(' ', indent.Length * 2).AppendFormat("new Page({0}, \"{1}\",", page.Id, Path.GetFileName(page.FileName)).AppendLine();
-        }
-        sb.Append(indent).AppendLine("},");
-
-        sb.Append(indent).AppendLine("Kernings = new Dictionary<Kerning, int>");
-        sb.Append(indent).AppendLine("{");
-        foreach (Kerning kerning in _font.Kernings.Keys)
-        {
-          sb.Append(' ', indent.Length * 2).AppendFormat("{{ new Kerning('{0}', '{1}', {2}), {2} }},", kerning.FirstCharacter, kerning.SecondCharacter, kerning.Amount).AppendLine();
-        }
-        sb.Append(indent).AppendLine("},");
-
-        sb.Append(indent).AppendLine("Characters = new Dictionary<char, Character>");
-        sb.Append(indent).AppendLine("{");
-        foreach (Character chr in _font.Characters.Values)
-        {
-          sb.Append(' ', indent.Length * 2).AppendFormat("{{ '{0}', new Character('{0}', {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}) }},", chr.Char, chr.X, chr.Y, chr.Width, chr.Height, chr.XOffset, chr.YOffset, chr.XAdvance, chr.TexturePage, chr.Channel).AppendLine();
-        }
-        sb.Append(indent).AppendLine("},");
-
-        sb.AppendLine("};");
-
-        InformationDialog.ShowDialog(Application.ProductName, "Generated &code:", sb.ToString());
-      }
-      else
-      {
-        MessageBox.Show("No font loaded.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-      }
-    }
   }
 }
