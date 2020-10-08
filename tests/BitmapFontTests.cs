@@ -66,6 +66,42 @@ namespace Cyotek.Drawing.BitmapFont.Tests
       BitmapFontAssert.AreEqual(expected, actual);
     }
 
+    [Test]
+    [TestCase("trebuchet-ms-text.fnt")]
+    [TestCase("trebuchet-ms-xml.fnt")]
+    [TestCase("trebuchet-ms-bin.fnt")]
+    public void MultiTextureLoadTestCases(string baseFileName)
+    {
+      // arrange
+      BitmapFont expected;
+      BitmapFont actual;
+      string fileName;
+      string path;
+
+      expected = this.ExtendedFont;
+
+      path = this.DataPath;
+
+      for (int i = 0; i < expected.Pages.Length; i++)
+      {
+        Page page;
+
+        page = expected.Pages[i];
+        page.FileName = Path.Combine(path, page.FileName);
+        expected.Pages[i] = page;
+      }
+
+      actual = new BitmapFont();
+
+      fileName = Path.Combine(this.DataPath, baseFileName);
+
+      // act
+      actual.Load(fileName);
+
+      // assert
+      BitmapFontAssert.AreEqual(expected, actual);
+    }
+
     #endregion Public Methods
   }
 }

@@ -1103,7 +1103,7 @@ namespace Cyotek.Drawing.BitmapFont
         page = _pages[i];
 
         name = this.GetString(buffer, nextStringStart);
-        nextStringStart += name.Length;
+        nextStringStart += name.Length + 1; // +1 for the null terminator
 
         page.Id = i;
         page.FileName = name;
