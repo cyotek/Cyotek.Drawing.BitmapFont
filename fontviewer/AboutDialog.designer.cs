@@ -54,7 +54,7 @@
       this.copyrightLabel.Location = new System.Drawing.Point(50, 44);
       this.copyrightLabel.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
       this.copyrightLabel.Name = "copyrightLabel";
-      this.copyrightLabel.Size = new System.Drawing.Size(402, 34);
+      this.copyrightLabel.Size = new System.Drawing.Size(522, 34);
       this.copyrightLabel.TabIndex = 3;
       this.copyrightLabel.Text = "Copyright";
       // 
@@ -62,7 +62,7 @@
       // 
       this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.closeButton.Location = new System.Drawing.Point(377, 246);
+      this.closeButton.Location = new System.Drawing.Point(497, 326);
       this.closeButton.Name = "closeButton";
       this.closeButton.Size = new System.Drawing.Size(75, 23);
       this.closeButton.TabIndex = 0;
@@ -83,7 +83,7 @@
       this.webLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.webLinkLabel.AutoSize = true;
       this.webLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-      this.webLinkLabel.Location = new System.Drawing.Point(12, 251);
+      this.webLinkLabel.Location = new System.Drawing.Point(12, 331);
       this.webLinkLabel.Name = "webLinkLabel";
       this.webLinkLabel.Size = new System.Drawing.Size(89, 13);
       this.webLinkLabel.TabIndex = 5;
@@ -108,7 +108,7 @@
       this.infoLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
       this.infoLinkLabel.Location = new System.Drawing.Point(53, 78);
       this.infoLinkLabel.Name = "infoLinkLabel";
-      this.infoLinkLabel.Size = new System.Drawing.Size(399, 165);
+      this.infoLinkLabel.Size = new System.Drawing.Size(519, 245);
       this.infoLinkLabel.TabIndex = 4;
       this.infoLinkLabel.UseMnemonic = false;
       this.infoLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.InfoLinkLabel_LinkClicked);
@@ -119,7 +119,7 @@
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.CancelButton = this.closeButton;
-      this.ClientSize = new System.Drawing.Size(464, 281);
+      this.ClientSize = new System.Drawing.Size(584, 361);
       this.Controls.Add(this.infoLinkLabel);
       this.Controls.Add(this.versionLabel);
       this.Controls.Add(this.iconPictureBox);

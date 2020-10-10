@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AA21D910-910A-444F-8A13-AE8EEFECC6E1}</ProjectGuid>
+    <ProjectGuid>{443ED861-BCC2-4770-83CC-A7587ABE80F7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cyotek.Demo.BitmapFontViewer</RootNamespace>
-    <AssemblyName>ctkbmfnt</AssemblyName>
+    <RootNamespace>Cyotek.Demo.TextMaker</RootNamespace>
+    <AssemblyName>ctktxtmk</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -41,8 +41,11 @@
     <ApplicationIcon>..\res\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cyotek.Windows.Forms.ImageBox, Version=1.1.5.1, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
-      <HintPath>..\packages\CyotekImageBox.1.1.5.1\lib\net20\Cyotek.Windows.Forms.ImageBox.dll</HintPath>
+    <Reference Include="Cyotek.Windows.Forms.ColorPicker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cyotek.Windows.Forms.ColorPicker.1.7.2\lib\net35\Cyotek.Windows.Forms.ColorPicker.dll</HintPath>
+    </Reference>
+    <Reference Include="Cyotek.Windows.Forms.ImageBox, Version=1.2.0.0, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
+      <HintPath>..\packages\CyotekImageBox.1.2.1\lib\net20\Cyotek.Windows.Forms.ImageBox.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -50,29 +53,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutDialog.cs">
+    <Compile Include="..\fontviewer\AboutDialog.cs">
+      <Link>AboutDialog.cs</Link>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutDialog.designer.cs">
+    <Compile Include="..\fontviewer\AboutDialog.designer.cs">
+      <Link>AboutDialog.designer.cs</Link>
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="BaseForm.cs">
+    <Compile Include="..\fontviewer\BaseForm.cs">
+      <Link>BaseForm.cs</Link>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FileDialogHelper.cs" />
-    <Compile Include="FileInfo.cs" />
-    <Compile Include="FilePane.cs">
-      <SubType>UserControl</SubType>
+    <Compile Include="..\fontviewer\FileDialogHelper.cs">
+      <Link>FileDialogHelper.cs</Link>
     </Compile>
-    <Compile Include="FilePane.designer.cs">
-      <DependentUpon>FilePane.cs</DependentUpon>
+    <Compile Include="ClipboardHelper.cs" />
+    <Compile Include="ColorButton.cs">
+      <SubType>Component</SubType>
     </Compile>
-    <Compile Include="InformationDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="InformationDialog.designer.cs">
-      <DependentUpon>InformationDialog.cs</DependentUpon>
-    </Compile>
+    <Compile Include="ColorExtensions.cs" />
+    <Compile Include="Filters.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,14 +82,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyGrid.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="SimpleJson.cs" />
+    <Compile Include="TextBitmapConfiguration.cs" />
+    <Compile Include="TextBitmapMaker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\Cyotek.Drawing.BitmapFont.csproj">
@@ -97,22 +93,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AboutDialog.resx">
+    <EmbeddedResource Include="..\fontviewer\AboutDialog.resx">
+      <Link>AboutDialog.resx</Link>
       <DependentUpon>AboutDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FilePane.resx">
-      <DependentUpon>FilePane.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InformationDialog.resx">
-      <DependentUpon>InformationDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +112,6 @@
     <None Include="about.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Open.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\samples\**\*.*">

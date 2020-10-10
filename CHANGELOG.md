@@ -42,6 +42,10 @@
   the library was originally compiled under is no longer
   available
 
+### Fixed
+
+* API documentation is once again included in the NuGet package
+
 ## 1.3.4
 
 ### Added

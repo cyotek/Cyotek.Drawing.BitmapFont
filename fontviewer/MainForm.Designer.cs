@@ -66,7 +66,6 @@ namespace Cyotek.Demo.Windows.Forms
       this.pageImageBox = new Cyotek.Windows.Forms.ImageBox();
       this.kerningsTabPage = new System.Windows.Forms.TabPage();
       this.kerningsListBox = new System.Windows.Forms.ListBox();
-      this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
       this.menuStrip.SuspendLayout();
       this.toolStrip.SuspendLayout();
       this.statusStrip.SuspendLayout();
@@ -521,12 +520,6 @@ namespace Cyotek.Demo.Windows.Forms
       this.kerningsListBox.Size = new System.Drawing.Size(533, 417);
       this.kerningsListBox.TabIndex = 1;
       // 
-      // openFileDialog
-      // 
-      this.openFileDialog.DefaultExt = "fnt";
-      this.openFileDialog.Filter = "Bitmap Font Files (*.fnt)|*.fnt|All Files (*.*)|*.*";
-      this.openFileDialog.Title = "Open Font";
-      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -598,7 +591,6 @@ namespace Cyotek.Demo.Windows.Forms
     private Cyotek.Windows.Forms.ImageBox characterImageBox;
     private Cyotek.Windows.Forms.ImageBox pageImageBox;
     private Cyotek.Demo.BitmapFontViewer.PropertyGrid characterPropertyGrid;
-    private System.Windows.Forms.OpenFileDialog openFileDialog;
     private System.Windows.Forms.ListBox charListBox;
     private Cyotek.Demo.BitmapFontViewer.PropertyGrid fontPropertyGrid;
     private System.Windows.Forms.TabControl tabControl;

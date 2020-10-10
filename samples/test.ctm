@@ -1,0 +1,12 @@
+{
+  "font" : "Marediv (32px)",
+  "backgroundColor" : "#B0E0E680",
+  "textColor" : "Purple",
+  "text" : "AngelCode BMFont parsing\r\nusing Cyotek.Drawing.Bitmap",
+  "padding" : [
+    12,
+    12,
+    12,
+    12
+  ]
+}

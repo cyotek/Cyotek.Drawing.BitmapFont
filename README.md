@@ -156,12 +156,12 @@ properties it contains:
 
 ## Example rendering using GDI
 
-> The sample project shows a very basic way of rending using
-> GDI; however this is just for demonstration purposes and you
-> should probably come up with something more efficient in a
-> real application!
+> The sample project shows a very way of rending using GDI;
+> however this is just for demonstration purposes and you should
+> probably come up with something more efficient in a real
+> application!
 
-![Example rendering using the bitmap font viewer][22]
+![Example rendering using the Text Maker sample][28]
 
 ```csharp
     private void DrawCharacter(Graphics g, Character character, int x, int y)
@@ -279,8 +279,11 @@ Is there a target not on this list you'd like to see? Raise an
 See `CONTRIBUTORS.md` for details of contributions to this
 library.
 
-* [EightBit Atari-Regula font][26] by MrRobot
+* [SimpleJSON][27] by Bunny83
+* [EightBit Atari-Regular font][26] by MrRobot
 * [Marediv font][25] by Pixel Kitchen
+* [Dynastium font][29] by Pixel Kitchen
+* [General Failure font][30] by Pixel Kitchen
 
 ## License
 
@@ -306,3 +309,7 @@ for the full text.
 [24]: https://benchmarkdotnet.org/
 [25]: https://www.fontspace.com/marediv-font-f32318
 [26]: https://github.com/TheRobotFactory/EightBit-Atari-Fonts
+[27]: https://github.com/Bunny83/SimpleJSON
+[28]: res/textmaker-preview.png
+[29]: https://www.fontspace.com/dynastium-font-f32031
+[30]: https://www.fontspace.com/general-failure-font-f32565

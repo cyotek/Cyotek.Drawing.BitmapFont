@@ -4,4 +4,6 @@ Some code in this demonstration comes from assorted blog posts on cyotek.com, se
 
 EightBit Atari-Regular by MrRobot <https://github.com/TheRobotFactory/EightBit-Atari-Fonts>. Dynastium, General Failure and Marediv fonts by Pixel Kitchen <https://www.fontspace.com/pixel-kitchen>.
 
+JSON support courtesy of SimpleJSON <https://github.com/Bunny83/SimpleJSON>.
+
 See README.md for complete list of acknowledgements.

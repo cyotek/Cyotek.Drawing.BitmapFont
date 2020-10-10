@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cyotek.BitmapFontViewer", "fontviewer\Cyotek.BitmapFontViewer.csproj", "{AA21D910-910A-444F-8A13-AE8EEFECC6E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cyotek.Demo.BitmapFontViewer", "fontviewer\Cyotek.Demo.BitmapFontViewer.csproj", "{AA21D910-910A-444F-8A13-AE8EEFECC6E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cyotek.Demo.TextMaker", "textmaker\Cyotek.Demo.TextMaker.csproj", "{443ED861-BCC2-4770-83CC-A7587ABE80F7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cyotek.Drawing.BitmapFont", "src\Cyotek.Drawing.BitmapFont.csproj", "{A8E42972-0BC3-4F26-99DF-87B6379E875F}"
 EndProject
@@ -59,6 +61,16 @@ Global
 		{73515AF8-FA45-495F-91BA-AD5DAE58944C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{73515AF8-FA45-495F-91BA-AD5DAE58944C}.Release|x86.ActiveCfg = Release|Any CPU
 		{73515AF8-FA45-495F-91BA-AD5DAE58944C}.Release|x86.Build.0 = Release|Any CPU
+		{443ED861-BCC2-4770-83CC-A7587ABE80F7}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{443ED861-BCC2-4770-83CC-A7587ABE80F7}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{443ED861-BCC2-4770-83CC-A7587ABE80F7}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{443ED861-BCC2-4770-83CC-A7587ABE80F7}.Debug|x86.ActiveCfg = Debug|x86
+		{443ED861-BCC2-4770-83CC-A7587ABE80F7}.Debug|x86.Build.0 = Debug|x86
+		{443ED861-BCC2-4770-83CC-A7587ABE80F7}.Release|Any CPU.ActiveCfg = Release|x86
+		{443ED861-BCC2-4770-83CC-A7587ABE80F7}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{443ED861-BCC2-4770-83CC-A7587ABE80F7}.Release|Mixed Platforms.Build.0 = Release|x86
+		{443ED861-BCC2-4770-83CC-A7587ABE80F7}.Release|x86.ActiveCfg = Release|x86
+		{443ED861-BCC2-4770-83CC-A7587ABE80F7}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

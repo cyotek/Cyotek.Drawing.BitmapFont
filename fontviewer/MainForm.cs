@@ -1,3 +1,4 @@
+using Cyotek.Demo.TextMaker;
 using Cyotek.Drawing.BitmapFont;
 using System;
 using System.Collections.Generic;
@@ -51,8 +52,7 @@ namespace Cyotek.Demo.Windows.Forms
       base.OnShown(e);
 
       path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "samples");
-      openFileDialog.InitialDirectory = path;
-
+      
       _textures = new Dictionary<int, Image>();
       previewTextBox.Text = Application.ProductName;
 
@@ -107,8 +107,8 @@ namespace Cyotek.Demo.Windows.Forms
     {
       if (_font != null)
       {
-        Size size;
         string text;
+        Size size;
 
         text = previewTextBox.Text;
         size = _font.MeasureFont(text);
@@ -314,7 +314,7 @@ namespace Cyotek.Demo.Windows.Forms
     {
       this.Reset();
 
-      //  try
+      try
       {
         _font = BitmapFontLoader.LoadFontFromFile(fileName);
 
@@ -327,7 +327,6 @@ namespace Cyotek.Demo.Windows.Forms
         this.ListKernings();
         this.DrawPreview();
       }
-      try { }
       catch (Exception ex)
       {
         MessageBox.Show(string.Format("Failed to load font. {0}", ex.Message), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -336,9 +335,13 @@ namespace Cyotek.Demo.Windows.Forms
 
     private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+      string fileName;
+
+      fileName = FileDialogHelper.GetOpenFileName("Open Font", Filters.Font, "fnt");
+
+      if (!string.IsNullOrEmpty(fileName))
       {
-        this.OpenFont(openFileDialog.FileName);
+        this.OpenFont(fileName);
       }
     }
 
