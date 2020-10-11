@@ -25,6 +25,54 @@ namespace Cyotek.Drawing.BitmapFont.Tests
       get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data"); }
     }
 
+    protected BitmapFont FakeFont
+    {
+      get
+      {
+        return new BitmapFont
+        {
+          FamilyName = "Fake",
+          FontSize = 10,
+          LineHeight = 12,
+          Characters =
+          {
+            { 'a', new Character('a', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'b', new Character('b', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'c', new Character('c', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'd', new Character('d', 0, 0, 10, 10, 0, 0, 12, 0, 0) },
+            { 'e', new Character('e', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'f', new Character('f', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'g', new Character('g', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'h', new Character('h', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'i', new Character('i', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'j', new Character('j', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'k', new Character('k', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'l', new Character('l', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'm', new Character('m', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'n', new Character('n', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'o', new Character('o', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'p', new Character('p', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'q', new Character('q', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'r', new Character('r', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 's', new Character('s', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 't', new Character('t', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'u', new Character('u', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'v', new Character('v', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'w', new Character('w', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'x', new Character('x', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'y', new Character('y', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { 'z', new Character('z', 0, 0, 10, 10, 0, 0, 10, 0, 0) },
+            { ' ', new Character(' ', 0, 0, 10, 10, 0, 0, 5, 0, 0) }
+          },
+          Kernings =
+          {
+            { new Kerning('b', 'a', 4), 4  },
+            { new Kerning('a', 'e', -3), -3  }
+          }
+        };
+      }
+    }
+
     protected BitmapFont ExtendedFont
     {
       get

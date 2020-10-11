@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Drawing;
 using System.IO;
 
 // AngelCode bitmap font parsing using C#
@@ -106,6 +107,53 @@ namespace Cyotek.Drawing.BitmapFont.Tests
 
       // assert
       BitmapFontAssert.AreEqual(expected, actual);
+    }
+
+    [Test]
+    [TestCase(null, 0, 0)]
+    [TestCase("", 0, 0)]
+    [TestCase("abcde", 52, 12)] // variable character width
+    [TestCase("abc de", 57, 12)] // whitespace
+    [TestCase("bad", 36, 12)] // positive kerning
+    [TestCase("caed", 39, 12)] // negative kerning
+    [TestCase("a\nb\nc\nd\ne", 12, 60)] // unix linebreaks
+    [TestCase("a\r\nb\r\nc\r\nd\r\ne", 12, 60)] // windows linebreaks
+    [TestCase("a\nb\r\nc\nd\r\ne", 12, 60)] // mixed linebreaks
+    public void MeasureFontTestCases(string value, int expectedW, int expectedH)
+    {
+      // arrange2
+      BitmapFont target;
+      Size actual;
+
+      target = this.FakeFont;
+
+      // act
+      actual = target.MeasureFont(value);
+
+      // assert
+      Assert.AreEqual(expectedW, actual.Width, "Width mismatch.");
+      Assert.AreEqual(expectedH, actual.Height, "Height mismatch.");
+    }
+
+    [Test]
+    [TestCase(null, 0, 0)]
+    [TestCase("", 0, 0)]
+    [TestCase("bitmap font", 60, 24)]
+    [TestCase("bitmap font\ntest", 60, 36)]
+    public void MeasureFontWithMaximumWidthTestCases(string value, int expectedW, int expectedH)
+    {
+      // arrange2
+      BitmapFont target;
+      Size actual;
+
+      target = this.FakeFont;
+
+      // act
+      actual = target.MeasureFont(value, 61); // TODO: MaxWidth condition is current >=, for v3 change to >
+
+      // assert
+      Assert.AreEqual(expectedW, actual.Width, "Width mismatch.");
+      Assert.AreEqual(expectedH, actual.Height, "Height mismatch.");
     }
 
     [Test]
