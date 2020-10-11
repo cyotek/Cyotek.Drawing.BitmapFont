@@ -10,20 +10,29 @@ SET DLLNAME=Cyotek.Drawing.BitmapFont.dll
 
 IF EXIST %RELDIR%*.nupkg DEL /F %RELDIR%*.nupkg
 IF EXIST %RELDIR%*.snupkg DEL /F %RELDIR%*.snupkg
+IF EXIST %RELDIR%*.zip DEL /F %RELDIR%*.zip
 
 dotnet build %PRJFILE% --configuration Release
-CALL signcmd %RELDIR%net35\%DLLNAME%
-CALL signcmd %RELDIR%net40\%DLLNAME%
-CALL signcmd %RELDIR%net452\%DLLNAME%
-CALL signcmd %RELDIR%net462\%DLLNAME%
-CALL signcmd %RELDIR%net472\%DLLNAME%
-CALL signcmd %RELDIR%net48\%DLLNAME%
-CALL signcmd %RELDIR%netcoreapp2.1\%DLLNAME%
-CALL signcmd %RELDIR%netcoreapp2.2\%DLLNAME%
-CALL signcmd %RELDIR%netcoreapp3.1\%DLLNAME%
-CALL signcmd %RELDIR%netstandard1.3\%DLLNAME%
-CALL signcmd %RELDIR%netstandard2.0\%DLLNAME%
-CALL signcmd %RELDIR%netstandard2.1\%DLLNAME%
+
+PUSHD %RELDIR%
+
+CALL signcmd net35\%DLLNAME%
+CALL signcmd net40\%DLLNAME%
+CALL signcmd net452\%DLLNAME%
+CALL signcmd net462\%DLLNAME%
+CALL signcmd net472\%DLLNAME%
+CALL signcmd net48\%DLLNAME%
+CALL signcmd netcoreapp2.1\%DLLNAME%
+CALL signcmd netcoreapp2.2\%DLLNAME%
+CALL signcmd netcoreapp3.1\%DLLNAME%
+CALL signcmd netstandard1.3\%DLLNAME%
+CALL signcmd netstandard2.0\%DLLNAME%
+CALL signcmd netstandard2.1\%DLLNAME%
+
+%zipexe% a Cyotek.Drawing.BitmapFont.x.x.x.zip -r
+
+POPD
+
 dotnet pack %PRJFILE% --configuration Release --no-build
 CALL sign-package %RELDIR%*.nupkg
 CALL sign-package %RELDIR%*.snupkg
