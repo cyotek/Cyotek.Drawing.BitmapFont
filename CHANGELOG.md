@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.1
+
+### Fixed
+
+* Fixed an issue if a text based font was missing a named value
+
 ## 2.0.0
 
 ### Added
