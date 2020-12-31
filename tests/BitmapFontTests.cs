@@ -63,6 +63,28 @@ namespace Cyotek.Drawing.BitmapFont.Tests
     }
 
     [Test]
+    public void Load_HandlesHieroFonts()
+    {
+      // arrange
+      BitmapFont target;
+      string fileName;
+      string expectedName;
+
+      target = new BitmapFont();
+
+      fileName = Path.Combine(this.DataPath, "hiero-sample.fnt");
+
+      expectedName = "Arial";
+
+      // act
+      target.Load(fileName);
+
+      // assert
+      Assert.AreEqual(expectedName, target.FamilyName);
+      // TODO: Full validation of font?
+    }
+
+    [Test]
     [TestCase("trebuchet-invalid-bin.fnt")]
     [TestCase("trebuchet-invalid-text.fnt")]
     [TestCase("trebuchet-invalid-xml.fnt")]

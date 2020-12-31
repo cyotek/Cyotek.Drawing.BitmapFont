@@ -419,9 +419,9 @@ namespace Cyotek.Drawing.BitmapFont
     {
       int nameEndIndex;
 
-      nameEndIndex = nameValuePair.IndexOf('=');
-
-      return nameEndIndex != -1 ? nameValuePair.Substring(0, nameEndIndex) : null;
+      return !string.IsNullOrEmpty(nameValuePair) && (nameEndIndex = nameValuePair.IndexOf('=')) != -1
+        ? nameValuePair.Substring(0, nameEndIndex)
+        : null;
     }
 
     /// <summary> Removes quotes surrounding a string value. </summary>
