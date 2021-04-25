@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.0.2
+
+### Fixed
+
+* Fixed a crash loading text or xml fonts with negative values
+  if the OS culture uses a different sign
+  
 ## 2.0.1
 
 ### Fixed

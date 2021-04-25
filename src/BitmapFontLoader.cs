@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 
 // AngelCode bitmap font parsing using C#
 // https://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
 
-// Copyright © 2012-2020 Cyotek Ltd.
+// Copyright © 2012-2021 Cyotek Ltd.
 
 // This work is licensed under the MIT License.
 // See LICENSE.TXT for the full text
@@ -215,7 +216,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <returns> The parsed value, or <c>false</c> if not found </returns>
     internal static bool GetNamedBool(string[] parts, string name, int estimatedStart)
     {
-      return int.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), out int v) && v > 0;
+      return int.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), NumberStyles.Number, CultureInfo.InvariantCulture, out int v) && v > 0;
     }
 
     /// <summary>
@@ -227,7 +228,7 @@ namespace Cyotek.Drawing.BitmapFont
     /// <returns> The parsed value, or <c>0</c> if not found </returns>
     internal static int GetNamedInt(string[] parts, string name, int estimatedStart)
     {
-      return int.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), out int result) ? result : 0;
+      return int.TryParse(BitmapFontLoader.GetNamedString(parts, name, estimatedStart), NumberStyles.Number, CultureInfo.InvariantCulture, out int result) ? result : 0;
     }
 
     /// <summary>
@@ -287,10 +288,10 @@ namespace Cyotek.Drawing.BitmapFont
 
       return new Padding
       (
-        int.Parse(s.Substring(lStart + 1)),
-        int.Parse(s.Substring(0, rStart)),
-        int.Parse(s.Substring(rStart + 1, bStart - rStart - 1)),
-        int.Parse(s.Substring(bStart + 1, lStart - bStart - 1))
+        int.Parse(s.Substring(lStart + 1), CultureInfo.InvariantCulture),
+        int.Parse(s.Substring(0, rStart), CultureInfo.InvariantCulture),
+        int.Parse(s.Substring(rStart + 1, bStart - rStart - 1), CultureInfo.InvariantCulture),
+        int.Parse(s.Substring(bStart + 1, lStart - bStart - 1), CultureInfo.InvariantCulture)
       );
     }
 
@@ -307,8 +308,8 @@ namespace Cyotek.Drawing.BitmapFont
 
       return new Point
       (
-        int.Parse(s.Substring(0, yStart)),
-        int.Parse(s.Substring(yStart + 1))
+        int.Parse(s.Substring(0, yStart), CultureInfo.InvariantCulture),
+        int.Parse(s.Substring(yStart + 1), CultureInfo.InvariantCulture)
       );
     }
 

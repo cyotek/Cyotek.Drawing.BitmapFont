@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -9,7 +10,7 @@ using System.Xml;
 // AngelCode bitmap font parsing using C#
 // https://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
 
-// Copyright © 2012-2020 Cyotek Ltd.
+// Copyright © 2012-2021 Cyotek Ltd.
 
 // This work is licensed under the MIT License.
 // See LICENSE.TXT for the full text
@@ -811,36 +812,36 @@ namespace Cyotek.Drawing.BitmapFont
       // load the basic attributes
       properties = root.SelectSingleNode("info");
       _familyName = properties.Attributes["face"].Value;
-      _fontSize = Convert.ToInt32(properties.Attributes["size"].Value);
-      _bold = Convert.ToInt32(properties.Attributes["bold"].Value) != 0;
-      _italic = Convert.ToInt32(properties.Attributes["italic"].Value) != 0;
-      _unicode = Convert.ToInt32(properties.Attributes["unicode"].Value) != 0;
-      _stretchedHeight = Convert.ToInt32(properties.Attributes["stretchH"].Value);
+      _fontSize = Convert.ToInt32(properties.Attributes["size"].Value, CultureInfo.InvariantCulture);
+      _bold = Convert.ToInt32(properties.Attributes["bold"].Value, CultureInfo.InvariantCulture) != 0;
+      _italic = Convert.ToInt32(properties.Attributes["italic"].Value, CultureInfo.InvariantCulture) != 0;
+      _unicode = Convert.ToInt32(properties.Attributes["unicode"].Value, CultureInfo.InvariantCulture) != 0;
+      _stretchedHeight = Convert.ToInt32(properties.Attributes["stretchH"].Value, CultureInfo.InvariantCulture);
       _charset = properties.Attributes["charset"].Value;
-      _smoothed = Convert.ToInt32(properties.Attributes["smooth"].Value) != 0;
-      _superSampling = Convert.ToInt32(properties.Attributes["aa"].Value);
+      _smoothed = Convert.ToInt32(properties.Attributes["smooth"].Value, CultureInfo.InvariantCulture) != 0;
+      _superSampling = Convert.ToInt32(properties.Attributes["aa"].Value, CultureInfo.InvariantCulture);
       _padding = BitmapFontLoader.ParsePadding(properties.Attributes["padding"].Value);
       _spacing = BitmapFontLoader.ParsePoint(properties.Attributes["spacing"].Value);
-      _outlineSize = Convert.ToInt32(properties.Attributes["outline"].Value);
+      _outlineSize = Convert.ToInt32(properties.Attributes["outline"].Value, CultureInfo.InvariantCulture);
 
       // common attributes
       properties = root.SelectSingleNode("common");
-      _baseHeight = Convert.ToInt32(properties.Attributes["base"].Value);
-      _lineHeight = Convert.ToInt32(properties.Attributes["lineHeight"].Value);
-      _textureSize = new Size(Convert.ToInt32(properties.Attributes["scaleW"].Value),
-                                  Convert.ToInt32(properties.Attributes["scaleH"].Value));
-      _packed = Convert.ToInt32(properties.Attributes["packed"].Value) != 0;
-      _alphaChannel = Convert.ToInt32(properties.Attributes["alphaChnl"].Value);
-      _redChannel = Convert.ToInt32(properties.Attributes["redChnl"].Value);
-      _greenChannel = Convert.ToInt32(properties.Attributes["greenChnl"].Value);
-      _blueChannel = Convert.ToInt32(properties.Attributes["blueChnl"].Value);
+      _baseHeight = Convert.ToInt32(properties.Attributes["base"].Value, CultureInfo.InvariantCulture);
+      _lineHeight = Convert.ToInt32(properties.Attributes["lineHeight"].Value, CultureInfo.InvariantCulture);
+      _textureSize = new Size(Convert.ToInt32(properties.Attributes["scaleW"].Value, CultureInfo.InvariantCulture),
+                                  Convert.ToInt32(properties.Attributes["scaleH"].Value, CultureInfo.InvariantCulture));
+      _packed = Convert.ToInt32(properties.Attributes["packed"].Value, CultureInfo.InvariantCulture) != 0;
+      _alphaChannel = Convert.ToInt32(properties.Attributes["alphaChnl"].Value, CultureInfo.InvariantCulture);
+      _redChannel = Convert.ToInt32(properties.Attributes["redChnl"].Value, CultureInfo.InvariantCulture);
+      _greenChannel = Convert.ToInt32(properties.Attributes["greenChnl"].Value, CultureInfo.InvariantCulture);
+      _blueChannel = Convert.ToInt32(properties.Attributes["blueChnl"].Value, CultureInfo.InvariantCulture);
 
       // load texture information
       foreach (XmlNode node in root.SelectNodes("pages/page"))
       {
         Page page;
 
-        page = new Page(Convert.ToInt32(node.Attributes["id"].Value), node.Attributes["file"].Value);
+        page = new Page(Convert.ToInt32(node.Attributes["id"].Value, CultureInfo.InvariantCulture), node.Attributes["file"].Value);
 
         pageData.Add(page.Id, page);
       }
@@ -852,19 +853,19 @@ namespace Cyotek.Drawing.BitmapFont
         Character character;
         int index;
 
-        index = Convert.ToInt32(node.Attributes["id"].Value);
+        index = Convert.ToInt32(node.Attributes["id"].Value, CultureInfo.InvariantCulture);
 
         character = new Character(
         index >= 0 ? (char)index : '\0',
-        Convert.ToInt32(node.Attributes["x"].Value),
-        Convert.ToInt32(node.Attributes["y"].Value),
-        Convert.ToInt32(node.Attributes["width"].Value),
-        Convert.ToInt32(node.Attributes["height"].Value),
-        Convert.ToInt32(node.Attributes["xoffset"].Value),
-        Convert.ToInt32(node.Attributes["yoffset"].Value),
-        Convert.ToInt32(node.Attributes["xadvance"].Value),
-        Convert.ToInt32(node.Attributes["page"].Value),
-        Convert.ToInt32(node.Attributes["chnl"].Value)
+        Convert.ToInt32(node.Attributes["x"].Value, CultureInfo.InvariantCulture),
+        Convert.ToInt32(node.Attributes["y"].Value, CultureInfo.InvariantCulture),
+        Convert.ToInt32(node.Attributes["width"].Value, CultureInfo.InvariantCulture),
+        Convert.ToInt32(node.Attributes["height"].Value, CultureInfo.InvariantCulture),
+        Convert.ToInt32(node.Attributes["xoffset"].Value, CultureInfo.InvariantCulture),
+        Convert.ToInt32(node.Attributes["yoffset"].Value, CultureInfo.InvariantCulture),
+        Convert.ToInt32(node.Attributes["xadvance"].Value, CultureInfo.InvariantCulture),
+        Convert.ToInt32(node.Attributes["page"].Value, CultureInfo.InvariantCulture),
+        Convert.ToInt32(node.Attributes["chnl"].Value, CultureInfo.InvariantCulture)
         );
 
         if (index == -1)
@@ -881,9 +882,9 @@ namespace Cyotek.Drawing.BitmapFont
       {
         Kerning key;
 
-        key = new Kerning((char)Convert.ToInt32(node.Attributes["first"].Value),
-                          (char)Convert.ToInt32(node.Attributes["second"].Value),
-                          Convert.ToInt32(node.Attributes["amount"].Value));
+        key = new Kerning((char)Convert.ToInt32(node.Attributes["first"].Value, CultureInfo.InvariantCulture),
+                          (char)Convert.ToInt32(node.Attributes["second"].Value, CultureInfo.InvariantCulture),
+                          Convert.ToInt32(node.Attributes["amount"].Value, CultureInfo.InvariantCulture));
 
         if (!kerningDictionary.ContainsKey(key))
         {
