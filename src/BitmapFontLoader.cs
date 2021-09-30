@@ -373,6 +373,11 @@ namespace Cyotek.Drawing.BitmapFont
         if (hasQuotes)
         {
           partEnd = s.IndexOf(delimiter, quoteEnd + 1);
+
+          if (partEnd == -1)
+          {
+            partEnd = s.Length;
+          }
         }
 
         length = partEnd - partStart - 1;
