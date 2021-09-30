@@ -40,6 +40,29 @@ namespace Cyotek.Drawing.BitmapFont.Tests
     }
 
     [Test]
+    public void LoadFontFromFileHandlesTextureNamesContainingSpaces()
+    {
+      // arrange
+      BitmapFont expected;
+      BitmapFont actual;
+      string fileName;
+
+      expected = this.Simple;
+      expected.Pages[0] = new Page
+      {
+        FileName = Path.Combine(this.DataPath, "simple example with spaces.png")
+      };
+
+      fileName = Path.Combine(this.DataPath, "simple-spaces.fnt");
+
+      // act
+      actual = BitmapFontLoader.LoadFontFromFile(fileName);
+
+      // assert
+      BitmapFontAssert.AreEqual(expected, actual);
+    }
+
+    [Test]
     [TestCase("simple.fnt")]
     [TestCase("simple-xml.fnt")]
     [TestCase("simple-bin.fnt")]
