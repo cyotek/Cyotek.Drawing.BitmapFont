@@ -16,11 +16,11 @@
   <PropertyGroup>
     <Company>Cyotek Ltd</Company>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>cyopublic.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\res\Cyotek.Drawing.BitmapFont.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\res\icon.png" Link="icon.png" Pack="true" PackagePath="\" />
+    <None Include="..\res\Cyotek.Drawing.BitmapFont.snk" Link="Cyotek.Drawing.BitmapFont.snk" />
   </ItemGroup>
 
   <ItemGroup>
