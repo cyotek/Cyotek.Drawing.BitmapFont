@@ -2,11 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48</TargetFrameworks>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <TargetFrameworks Condition=" '$(Configuration)' != 'Debug' ">net48;net35;net40;net452;net462;net472;netcoreapp2.1;netcoreapp2.2;netcoreapp3.1;netstandard1.3;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net48;net35;net40;net452;net462;net472;net5.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.1;netstandard1.3;netstandard2.0;netstandard2.1</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -16,10 +12,11 @@
   <PropertyGroup>
     <Company>Cyotek Ltd</Company>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>cyopublic.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\res\Cyotek.Drawing.BitmapFont.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\res\Cyotek.Drawing.BitmapFont.snk" Link="Cyotek.Drawing.BitmapFont.snk" />
     <None Include="..\res\icon.png" Link="icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
@@ -30,6 +27,8 @@
   <PropertyGroup>
     <!-- https://github.com/dotnet/msbuild/issues/1333#issuecomment-296346352 -->
     <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net35'">$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
+    <!-- https://github.com/dotnet/msbuild/issues/5985#issuecomment-752735876 -->
+    <AutomaticallyUseReferenceAssemblyPackages Condition=" '$(TargetFramework)' == 'net35' ">false</AutomaticallyUseReferenceAssemblyPackages>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
