@@ -2,15 +2,16 @@
 
 SETLOCAL
 
-CALL ..\..\..\build\set35vars.bat
+CALL %CTKBLDROOT%setupEnv.cmd
 
+SET BASENAME=Cyotek.Drawing.BitmapFont
 SET RELDIR=src\bin\Release\
-SET PRJFILE=src\Cyotek.Drawing.BitmapFont.csproj
-SET DLLNAME=Cyotek.Drawing.BitmapFont.dll
+SET PRJFILE=src\%BASENAME%.csproj
+SET DLLNAME=%BASENAME%.dll
 
-IF EXIST %RELDIR%*.nupkg DEL /F %RELDIR%*.nupkg
+IF EXIST %RELDIR%*.nupkg  DEL /F %RELDIR%*.nupkg
 IF EXIST %RELDIR%*.snupkg DEL /F %RELDIR%*.snupkg
-IF EXIST %RELDIR%*.zip DEL /F %RELDIR%*.zip
+IF EXIST %RELDIR%*.zip    DEL /F %RELDIR%*.zip
 
 dotnet build %PRJFILE% --configuration Release
 
@@ -22,6 +23,7 @@ CALL signcmd net452\%DLLNAME%
 CALL signcmd net462\%DLLNAME%
 CALL signcmd net472\%DLLNAME%
 CALL signcmd net48\%DLLNAME%
+CALL signcmd net5.0\%DLLNAME%
 CALL signcmd netcoreapp2.1\%DLLNAME%
 CALL signcmd netcoreapp2.2\%DLLNAME%
 CALL signcmd netcoreapp3.1\%DLLNAME%
