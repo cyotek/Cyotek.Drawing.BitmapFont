@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <None Include="..\res\Cyotek.Drawing.BitmapFont.snk" Link="Cyotek.Drawing.BitmapFont.snk" />
+    <None Include="..\res\icon.png" Link="icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
