@@ -1,5 +1,10 @@
 # Contributors
 
+## Version 2.0.3
+
+* @abenedik for fixing a crash when loading a plain text font
+  and texture filenames contained spaces
+
 ## Version 2.0
 
 * @Tom94 for the initial conversion to SDK project format

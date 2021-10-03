@@ -1,5 +1,19 @@
 # Change Log
 
+## 2.0.3
+
+### Added
+
+* Added deployment target for .NET 5.0
+
+### Fixed
+
+* Fixed a crash which occurred when trying to load a plain text
+  font and texture file names contained spaces. Thanks to
+  abenedik for the fix
+* No longer requires a custom `global.json` to force an older
+  SDK version in order to build the 3.5 target
+
 ## 2.0.2
 
 ### Fixed
