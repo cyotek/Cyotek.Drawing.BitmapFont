@@ -66,6 +66,7 @@ namespace Cyotek.Drawing.BitmapFont.Tests
     [TestCase("simple.fnt")]
     [TestCase("simple-xml.fnt")]
     [TestCase("simple-bin.fnt")]
+    [TestCase("empty-line-regression-test.fnt")]
     public void LoadFontFromFileTestCases(string baseFileName)
     {
       // arrange

@@ -394,6 +394,12 @@ namespace Cyotek.Drawing.BitmapFont
 
         partStart = s.IndexOf(delimiter, partStart + 1);
       } while (partStart != -1);
+
+      // reset any unused parts of the buffer
+      for (; index < buffer.Length; index++)
+      {
+        buffer[index] = string.Empty;
+      }
     }
 
     /// <summary>
