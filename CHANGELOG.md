@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.0.4
+
+### Fixed
+
+* Fixed issues (including a crash) that could occur loading
+  plain text fonts that contained blank lines
+
 ## 2.0.3
 
 ### Added

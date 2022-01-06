@@ -7,6 +7,7 @@ NDependOut/
 _NCrunch_*/
 nuget/
 testresults/
+dist/
 
 push.cmd
 
