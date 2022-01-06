@@ -29,6 +29,9 @@ CALL :runtests net472
 IF %ERRORLEVEL% NEQ 0 GOTO :failed
 CALL :runtests net48
 IF %ERRORLEVEL% NEQ 0 GOTO :failed
+
+REM Can't test .NET 5 (or 6 then?)
+REM https://github.com/nunit/nunit-console/issues/1048
 REM CALL :runtests net5.0
 REM IF %ERRORLEVEL% NEQ 0 GOTO :failed
 REM CALL :runtests netcoreapp2.1
@@ -47,10 +50,10 @@ EXIT /b 1
 :runtests
 SET PLATFORM=%1
 
-"%NUNITEXE%" "%RELDIR%%PLATFORM%\%DLLNAME%" -result="./testresults/%BASENAME%-%PLATFORM%.xml"
+"%NUNITEXE%" "%RELDIR%%PLATFORM%\%DLLNAME%" -result="./testresults/%BASENAME%-%PLATFORM%.xml" -noheader
 IF %ERRORLEVEL% NEQ 0 EXIT /b 1
 
-"%NUNITEXE%" "%RELDIR%%PLATFORM%\%DLLNAME%" -result="./testresults/%BASENAME%-%PLATFORM%-x86.xml" -x86
+"%NUNITEXE%" "%RELDIR%%PLATFORM%\%DLLNAME%" -result="./testresults/%BASENAME%-%PLATFORM%-x86.xml" -x86 -noheader
 IF %ERRORLEVEL% NEQ 0 EXIT /b 1
 
 EXIT /b 0

@@ -25,6 +25,9 @@ IF EXIST %DISTDIR%        RMDIR /Q /S %DISTDIR%
 
 MKDIR %DISTDIR%
 
+CALL runtests.cmd
+IF %ERRORLEVEL% NEQ 0 GOTO :failed
+
 CALL :builddemo
 IF %ERRORLEVEL% NEQ 0 GOTO :failed
 
