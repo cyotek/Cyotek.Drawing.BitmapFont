@@ -9,10 +9,10 @@
 // Found this code useful?
 // https://www.cyotek.com/contribute
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using NUnit.Framework;
 
 namespace Cyotek.Drawing.BitmapFont.Tests
 {
@@ -20,20 +20,7 @@ namespace Cyotek.Drawing.BitmapFont.Tests
   {
     #region Protected Properties
 
-    protected string DataPath
-    {
-      get
-      {
-#if NET5_0_OR_GREATER
-        // when run via the nunit console, AppDomain.CurrentDomain.BaseDirectory is
-        // returning the directory where the console runner executable is so
-        // naturally tests fail due to missing data files
-        return Path.Combine(Path.GetDirectoryName(typeof(TestBase).Assembly.Location), "data");
-#else
-        return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
-#endif
-      }
-    }
+    protected string DataPath => Path.Combine(TestContext.CurrentContext.TestDirectory, "data");
 
     protected BitmapFont FakeFont
     {
