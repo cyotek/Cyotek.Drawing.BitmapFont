@@ -8,7 +8,7 @@ SET BASENAME=Cyotek.Drawing.BitmapFont
 SET RELDIR=tests\bin\Release\
 SET PRJFILE=tests\%BASENAME%.Tests.csproj
 SET DLLNAME=%BASENAME%.Tests.dll
-SET NUNITVER=3.12.0
+SET NUNITVER=3.14.0
 SET NUNITEXE=%USERPROFILE%\.nuget\packages\nunit.consolerunner\%NUNITVER%\tools\nunit3-console.exe
 
 IF EXIST testresults RMDIR testresults /Q /S
@@ -29,11 +29,9 @@ CALL :runtests net472
 IF %ERRORLEVEL% NEQ 0 GOTO :failed
 CALL :runtests net48
 IF %ERRORLEVEL% NEQ 0 GOTO :failed
+CALL :runtests net5.0
+IF %ERRORLEVEL% NEQ 0 GOTO :failed
 
-REM Can't test .NET 5 (or 6 then?)
-REM https://github.com/nunit/nunit-console/issues/1048
-REM CALL :runtests net5.0
-REM IF %ERRORLEVEL% NEQ 0 GOTO :failed
 REM CALL :runtests netcoreapp2.1
 REM IF %ERRORLEVEL% NEQ 0 GOTO :failed
 REM CALL :runtests netcoreapp2.2

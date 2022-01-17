@@ -1,18 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-
 // AngelCode bitmap font parsing using C#
 // https://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
 
-// Copyright © 2012-2020 Cyotek Ltd.
+// Copyright © 2012-2022 Cyotek Ltd.
 
 // This work is licensed under the MIT License.
 // See LICENSE.TXT for the full text
 
 // Found this code useful?
-// https://www.paypal.me/cyotek
+// https://www.cyotek.com/contribute
+
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 
 namespace Cyotek.Drawing.BitmapFont.Tests
 {
@@ -22,7 +22,17 @@ namespace Cyotek.Drawing.BitmapFont.Tests
 
     protected string DataPath
     {
-      get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data"); }
+      get
+      {
+#if NET5_0_OR_GREATER
+        // when run via the nunit console, AppDomain.CurrentDomain.BaseDirectory is
+        // returning the directory where the console runner executable is so
+        // naturally tests fail due to missing data files
+        return Path.Combine(Path.GetDirectoryName(typeof(TestBase).Assembly.Location), "data");
+#else
+        return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
+#endif
+      }
     }
 
     protected BitmapFont FakeFont
@@ -726,6 +736,6 @@ namespace Cyotek.Drawing.BitmapFont.Tests
       get { return Path.Combine(this.DataPath, "simple-xml.fnt"); }
     }
 
-    #endregion Protected Properties
+#endregion Protected Properties
   }
 }
